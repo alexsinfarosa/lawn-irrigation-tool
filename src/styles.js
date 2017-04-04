@@ -12,3 +12,7 @@ export const Main = styled(Page)`
   justify-content: center;
   align-items: center;
 `;
+
+export const Svg = styled.svg`
+  fill: red;
+`;

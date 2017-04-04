@@ -2,6 +2,9 @@ import { observable, action } from "mobx";
 import { states } from "../states";
 
 export default class AppStore {
+  // SVG -------------------------------------------------------------------------------------
+  @observable width = 500;
+  @observable height = 500;
   // logic------------------------------------------------------------------------------------
   @observable protocol = window.location.protocol;
 

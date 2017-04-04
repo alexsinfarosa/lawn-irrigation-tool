@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import d3 from "d3";
-import { RadialBarChart, RadialBar, Tooltip, Rectangle } from "recharts";
+import { RadialBarChart, RadialBar, Tooltip } from "recharts";
 
 // styled components
 // import { Svg } from "../styles";
@@ -31,7 +31,7 @@ export default class Widget extends Component {
           clockWise={true}
           dataKey="uv"
         />
-        <Rectangle x={350} y={10} width={2} />
+        <rect x={350} y={150} width={1} height={200} color="red" />
         {/* <Legend
           iconSize={10}
           width={120}

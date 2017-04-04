@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { when } from "mobx";
 import axios from "axios";
 
-import { Page } from "./styles";
+import { Page, Main } from "./styles";
 
 @inject("store")
 @observer
@@ -35,7 +35,9 @@ class App extends Component {
   render() {
     return (
       <Page>
-        <p>hello</p>
+        <Main>
+          <p>hello</p>
+        </Main>
       </Page>
     );
   }

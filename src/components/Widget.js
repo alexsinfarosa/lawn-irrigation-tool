@@ -1,125 +1,110 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import d3 from "d3";
-import { PieChart, Pie, Sector, Cell } from "recharts";
-
-// styled components
-// import { Svg } from "../styles";
+import * as d3 from "d3";
 
 @inject("store")
 @observer
 export default class Widget extends Component {
   render() {
-    const RADIAN = Math.PI / 180;
-    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-    const renderCustomizedLabel = (
-      { cx, cy, midAngle, innerRadius, outerRadius, percent, index }
-    ) => {
-      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    // console.log(d3);
+    const width = 300;
+    const height = 300;
+    const margin = {
+      top: 60,
+      right: 40,
+      bottom: 30,
+      left: 40
     };
-    const data0 = [
-      { name: "B", value: 10 },
-      { name: "C", value: 20 },
-      { name: "D", value: 30 },
-      { name: "E", value: 40 },
-      { name: "F", value: 50 },
-      { name: "G", value: 60 },
-      { name: "H", value: 70 },
-      { name: "I", value: 80 },
-      { name: "L", value: 90 },
-      { name: "M", value: 100 }
-    ];
-    const data1 = [
-      { name: "Group A", value: 100 },
-      { name: "Group B", value: 200 },
-      { name: "Group C", value: 300 },
-      { name: "Group D", value: 400 }
-    ];
-    const data2 = [
-      { name: "Group A", value: 150 },
-      { name: "Group B", value: 350 },
-      { name: "Group C", value: 320 },
-      { name: "Group D", value: 100 }
-    ];
-    const data3 = [
-      { name: "Group A", value: 200 },
-      { name: "Group B", value: 370 },
-      { name: "Group C", value: 430 },
-      { name: "Group D", value: 300 }
-    ];
+
+    const config = {
+      minAngle: -90,
+      maxAngle: 90,
+      innerTickRingOffset: -30,
+      innerTickCounterclockSpin: 0,
+      innerTickNumber: 10,
+      outerTickRingOffset: 25,
+      outerTickCounterclockSpin: 5,
+      outerTickBorderLength: 30
+    };
+
+    const radius = Math.min(width, height) / 2;
+
+    const percentToDeg = percent => percent * 180 / 100;
+
+    // const element = d3.select(".gauge");
+
+    const arc = d3
+      .arc()
+      .innerRadius(radius)
+      .outerRadius(radius - 10)
+      .startAngle(-90 * (Math.PI / 180))
+      .endAngle(90 * (Math.PI / 180));
+
+    const scale = d3.scaleLinear().domain([0, 10]).range([0, 1]);
+
+    const innerTicks = scale.ticks(config.innerTickNumber).map(tick => ({
+      value: tick,
+      label: tick
+    }));
+    console.log(innerTicks.map(e => e.value));
+    // const innerTicksGroup = chart.append("g").attr("class", "inner-ticks");
+    //
+    // innerTicksGroup
+    //   .selectAll("text")
+    //   .data(innerTicks)
+    //   .enter()
+    //   .append("text")
+    //   .attr("class", "tick")
+    //   .attr("text-anchor", "middle")
+    //   .attr("transform", function(d) {
+    //     var ratio = scale(d.value);
+    //     var newAngle = config.minAngle + ratio * 180;
+    //     return `rotate(${newAngle}) translate(0, ${-(radius + config.innerTickRingOffset)})`;
+    //   })
+    //   .text(d => d.label);
+
+    const rotate = d => {
+      const ratio = scale(d.value);
+      const newAngle = config.minAngle + ratio * 180;
+      return `rotate(${newAngle}) translate(0, ${-(radius + config.innerTickRingOffset)})`;
+    };
+
+    innerTicks.map(e => console.log(e.label));
+
     return (
-      <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
-        <Pie
-          outerRadius={120}
-          innerRadius={110}
-          startAngle={180}
-          endAngle={0}
-          data={data0}
-          cx={400}
-          cy={400}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill="#8884d8"
+      <svg width="100%" height={`${height + margin.top + margin.bottom}`}>
+        <g
+          transform={
+            `translate(${width / 2 + margin.left}, ${height / 2 + margin.top})`
+          }
         >
-          {data0.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-
-        <Pie
-          outerRadius={180}
-          innerRadius={160}
-          startAngle={180}
-          endAngle={0}
-          data={data1}
-          cx={400}
-          cy={400}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill="#8884d8"
-        >
-          {data1.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-
-        <Pie
-          outerRadius={210}
-          innerRadius={190}
-          startAngle={180}
-          endAngle={0}
-          data={data2}
-          cx={400}
-          cy={400}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill="#8884d8"
-        >
-          {data2.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-
-        <Pie
-          outerRadius={240}
-          innerRadius={220}
-          startAngle={180}
-          endAngle={0}
-          data={data3}
-          cx={400}
-          cy={400}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill="#8884d8"
-        >
-          {data3.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+          <path d={arc()} />
+          <circle cx={0} cy={0} r={5} />
+          <line
+            stroke="#aaa"
+            strokeWidth={2}
+            x1={0}
+            y1={0}
+            x2={-160}
+            y2={0}
+            transform={`rotate(${percentToDeg(40)})`}
+          />
+          <g>
+            {innerTicks.map((e, i) => {
+              return (
+                <text
+                  style={{ fill: "#333", fontSize: "9px" }}
+                  textAnchor="middle"
+                  key={i}
+                  transform={rotate(e)}
+                >
+                  {e.label}
+                </text>
+              );
+            })}
+          </g>
+        </g>
+      </svg>
     );
   }
 }

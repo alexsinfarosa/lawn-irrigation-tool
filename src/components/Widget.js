@@ -7,6 +7,7 @@ import * as d3 from "d3";
 export default class Widget extends Component {
   render() {
     // console.log(d3);
+    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
     const width = 500;
     const height = 500;
     const margin = {
@@ -71,7 +72,7 @@ export default class Widget extends Component {
             `translate(${width / 2 + margin.left}, ${height / 2 + margin.top})`
           }
         >
-          <path d={currentYear()} fill="red" />
+          <path d={currentYear()} fill="aqua" />
           <path d={p20402069()} fill="lightgreen" />
           <path d={p20692099()} fill="orange" />
           <circle cx={0} cy={0} r={7} />

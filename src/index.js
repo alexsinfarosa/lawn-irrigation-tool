@@ -6,7 +6,7 @@ import App from "./App.js";
 
 // Style
 import "./index.styl";
-import "normalize.css";
+import "bulma/css/bulma.css";
 
 //mobx
 import store from "./stores";

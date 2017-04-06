@@ -6,16 +6,17 @@ import * as d3 from "d3";
 @observer
 export default class Widget extends Component {
   render() {
+    const { temperature } = this.props.store.app;
     // console.log(d3);
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-    const width = 500;
-    const height = 500;
     const margin = {
-      top: 160,
-      right: 40,
-      bottom: 30,
-      left: 340
+      top: 0,
+      right: 10,
+      bottom: 50,
+      left: 10
     };
+    const width = 700 - margin.left - margin.right;
+    const height = 500;
 
     const config = {
       minAngle: -90,
@@ -66,17 +67,13 @@ export default class Widget extends Component {
     };
 
     return (
-      <svg width="100%" height={`${height + margin.top + margin.bottom}`}>
-        <g
-          transform={
-            `translate(${width / 2 + margin.left}, ${height / 2 + margin.top})`
-          }
-        >
+      <svg width={width} height={height}>
+        <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
           <path d={currentYear()} fill="aqua" />
           <path d={p20402069()} fill="lightgreen" />
           <path d={p20692099()} fill="orange" />
           <circle cx={0} cy={0} r={7} />
-          <text textAnchor="middle" x={0} y={40}>{49}</text>
+          <text textAnchor="middle" x={0} y={40}>{temperature}</text>
           <line
             stroke="#aaa"
             strokeWidth={2}
@@ -84,7 +81,7 @@ export default class Widget extends Component {
             y1={0}
             x2={-210}
             y2={0}
-            transform={`rotate(${percentToDeg(17)})`}
+            transform={`rotate(${percentToDeg(temperature)})`}
           />
           <g>
             {innerTicks.map((e, i) => {

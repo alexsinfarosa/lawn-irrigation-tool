@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 
-// styled-components
-import { Select, Selector } from "./styles";
-
 @inject("store")
 @observer
 class Station extends Component {
@@ -25,23 +22,20 @@ class Station extends Component {
       <option key={`${station.id} ${station.network}`}>{station.name}</option>
     ));
     return (
-      <Selector>
-        <label>
-          Weather station:
-          <small style={{ paddingLeft: "5px" }}>
-            {getCurrentStateStations.length}
-          </small>
-        </label>
-
-        <Select
-          name="station"
-          value={station.name}
-          onChange={this.handleChange}
-        >
-          {selectStation ? null : <option>Select Station</option>}
-          {stationList}
-        </Select>
-      </Selector>
+      <div className="field">
+        <p className="control">
+          <span className="select is-small">
+            <select
+              name="station"
+              value={station.name}
+              onChange={this.handleChange}
+            >
+              {selectStation ? null : <option>Select Station</option>}
+              {stationList}
+            </select>
+          </span>
+        </p>
+      </div>
     );
   }
 }

@@ -4,10 +4,21 @@ import { when } from "mobx";
 import axios from "axios";
 
 // styled components
-import { Page, Main } from "./styles";
+import {
+  Page,
+  MyApp,
+  Main,
+  Top,
+  LeftContainer,
+  RightContainer,
+  Bottom
+} from "./styles";
 
 // components
+import State from "./components/State";
+import Station from "./components/Station";
 import Widget from "./components/Widget";
+import Slider from "./components/Slider";
 
 @inject("store")
 @observer
@@ -39,9 +50,21 @@ class App extends Component {
   render() {
     return (
       <Page>
-        <Main>
-          <Widget />
-        </Main>
+        <MyApp>
+          <LeftContainer>
+            <State />
+            <br />
+            <Station />
+          </LeftContainer>
+
+          <RightContainer>
+            <Top>Top</Top>
+            <Widget />
+            <Bottom>
+              <Slider />
+            </Bottom>
+          </RightContainer>
+        </MyApp>
       </Page>
     );
   }

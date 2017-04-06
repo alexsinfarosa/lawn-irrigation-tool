@@ -5,7 +5,7 @@ import { inject, observer } from "mobx-react";
 import { states } from "../states";
 
 // styled-components
-import { Select, Selector } from "./styles";
+// import { Select, Selector } from "./styles";
 
 @inject("store")
 @observer
@@ -23,19 +23,22 @@ class State extends Component {
     ));
 
     return (
-      <Selector>
-        <label>State:</label>
-        <Select
-          name="state"
-          value={this.props.store.app.state.name}
-          onChange={this.handleChange}
-        >
-          {this.props.store.app.selectState
-            ? null
-            : <option>Select State</option>}
-          {stateList}
-        </Select>
-      </Selector>
+      <div className="field">
+        <p className="control">
+          <span className="select is-small">
+            <select
+              name="state"
+              value={this.props.store.app.state.name}
+              onChange={this.handleChange}
+            >
+              {this.props.store.app.selectState
+                ? null
+                : <option>Select State</option>}
+              {stateList}
+            </select>
+          </span>
+        </p>
+      </div>
     );
   }
 }

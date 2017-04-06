@@ -47,4 +47,8 @@ export default class AppStore {
   // Slider -------------------------------------------------------------------------------------
   @observable temperature = 0;
   @action setTemperature = d => this.temperature = d;
+
+  // Days ---------------------------------------------------------------------------------------
+  @observable days = 11;
+  @action setDays = d => this.days = d;
 }

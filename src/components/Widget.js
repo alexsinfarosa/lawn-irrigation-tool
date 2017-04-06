@@ -10,13 +10,13 @@ export default class Widget extends Component {
     // console.log(d3);
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
     const margin = {
-      top: 0,
+      top: 50,
       right: 10,
       bottom: 50,
       left: 10
     };
     const width = 700 - margin.left - margin.right;
-    const height = 500;
+    const height = 400;
 
     const config = {
       minAngle: -90,
@@ -29,7 +29,7 @@ export default class Widget extends Component {
       outerTickBorderLength: 30
     };
 
-    const radius = Math.min(width, height) / 2;
+    const radius = Math.min(width, height) / 1.7;
     const percentToDeg = percent => percent * 180 / 60;
 
     const currentYear = d3
@@ -68,12 +68,19 @@ export default class Widget extends Component {
 
     return (
       <svg width={width} height={height}>
+        <text
+          textAnchor="middle"
+          x={width / 2}
+          y={radius}
+          style={{ fontSize: "1.5em" }}
+        >
+          {temperature}
+        </text>
         <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
           <path d={currentYear()} fill="aqua" />
           <path d={p20402069()} fill="lightgreen" />
           <path d={p20692099()} fill="orange" />
           <circle cx={0} cy={0} r={7} />
-          <text textAnchor="middle" x={0} y={40}>{temperature}</text>
           <line
             stroke="#aaa"
             strokeWidth={2}

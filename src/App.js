@@ -48,6 +48,7 @@ class App extends Component {
   };
 
   render() {
+    const { temperature, days } = this.props.store.app;
     return (
       <Page>
         <MyApp>
@@ -58,7 +59,17 @@ class App extends Component {
           </LeftContainer>
 
           <RightContainer>
-            <Top>Top</Top>
+            <Top>
+              There have been
+              {" "}
+              <strong>{days}</strong>
+              {" "}
+              days above
+              {" "}
+              <strong>{temperature}</strong>
+              {" "}
+              (F) so far this year
+            </Top>
             <Widget />
             <Bottom>
               <Slider />

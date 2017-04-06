@@ -16,6 +16,7 @@ export const MyApp = styled.div`
 export const Top = styled.div`
   ${/* background-color: pink; */ ""}
   text-align: center;
+  font-size: 1.1em;
 `;
 
 export const LeftContainer = styled.div`

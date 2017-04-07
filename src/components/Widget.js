@@ -8,7 +8,12 @@ export default class Widget extends Component {
   render() {
     const { temperature } = this.props.store.app;
     // console.log(d3);
-    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+    // const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+    const COLORS = d3
+      .scaleOrdinal()
+      .range(["#BBDEFB", "#FFF9C4", "#FFE0B2", "#ffcdd2", "#9E9E9E"]);
+
+    console.log(COLORS(4));
     const margin = {
       top: 50,
       right: 10,
@@ -68,6 +73,26 @@ export default class Widget extends Component {
 
     return (
       <svg width={width} height={height}>
+        <defs>
+          <linearGradient id="current">
+            <stop offset="15%" stopColor="#0D47A1" />
+            <stop offset="30%" stopColor="#FFEB3B" />
+            <stop offset="45%" stopColor="#F57F17" />
+            <stop offset="60%" stopColor="#b71c1c" />
+          </linearGradient>
+          <linearGradient id="p1">
+            <stop offset="5%" stopColor="#0D47A1" />
+            <stop offset="30%" stopColor="#FFEB3B" />
+            <stop offset="81%" stopColor="#F57F17" />
+            <stop offset="100%" stopColor="#b71c1c" />
+          </linearGradient>
+          <linearGradient id="p2">
+            <stop offset="45%" stopColor="#0D47A1" />
+            <stop offset="60%" stopColor="#FFEB3B" />
+            <stop offset="85%" stopColor="#F57F17" />
+            <stop offset="100%" stopColor="#b71c1c" />
+          </linearGradient>
+        </defs>
         <text
           textAnchor="middle"
           x={width / 2}
@@ -77,16 +102,16 @@ export default class Widget extends Component {
           {temperature}
         </text>
         <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
-          <path d={currentYear()} fill="aqua" />
-          <path d={p20402069()} fill="lightgreen" />
-          <path d={p20692099()} fill="orange" />
+          <path d={currentYear()} fill={`url(#current)`} />
+          <path d={p20402069()} fill={`url(#p1)`} />
+          <path d={p20692099()} fill={`url(#p2)`} />
           <circle cx={0} cy={0} r={7} />
           <line
             stroke="#aaa"
             strokeWidth={2}
             x1={0}
             y1={0}
-            x2={-210}
+            x2={-205}
             y2={0}
             transform={`rotate(${percentToDeg(temperature)})`}
           />

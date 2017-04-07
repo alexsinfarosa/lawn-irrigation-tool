@@ -7,7 +7,6 @@ import axios from "axios";
 import {
   Page,
   MyApp,
-  Main,
   Top,
   LeftContainer,
   RightContainer,
@@ -17,7 +16,7 @@ import {
 // components
 import State from "./components/State";
 import Station from "./components/Station";
-import Widget from "./components/Widget";
+import WidgetTest from "./components/WidgetTest";
 import Slider from "./components/Slider";
 
 @inject("store")
@@ -66,11 +65,11 @@ class App extends Component {
               {" "}
               days above
               {" "}
-              <strong>{temperature}</strong>
+              <strong>{temperature}˚F</strong>
               {" "}
-              (F) so far this year
+              so far this year
             </Top>
-            <Widget />
+            <WidgetTest />
             <Bottom>
               <Slider />
             </Bottom>

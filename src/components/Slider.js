@@ -13,7 +13,7 @@ class Slider extends Component {
   render() {
     return (
       <div>
-        <label className="temperature">Temperature (F)</label>
+        <label className="temperature">Temperature</label>
         <input
           type="range"
           min="0"

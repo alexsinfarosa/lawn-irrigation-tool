@@ -73,26 +73,6 @@ export default class Widget extends Component {
 
     return (
       <svg width={width} height={height}>
-        <defs>
-          <linearGradient id="current">
-            <stop offset="15%" stopColor="#0D47A1" />
-            <stop offset="30%" stopColor="#FFEB3B" />
-            <stop offset="45%" stopColor="#F57F17" />
-            <stop offset="60%" stopColor="#b71c1c" />
-          </linearGradient>
-          <linearGradient id="p1">
-            <stop offset="5%" stopColor="#0D47A1" />
-            <stop offset="30%" stopColor="#FFEB3B" />
-            <stop offset="81%" stopColor="#F57F17" />
-            <stop offset="100%" stopColor="#b71c1c" />
-          </linearGradient>
-          <linearGradient id="p2">
-            <stop offset="45%" stopColor="#0D47A1" />
-            <stop offset="60%" stopColor="#FFEB3B" />
-            <stop offset="85%" stopColor="#F57F17" />
-            <stop offset="100%" stopColor="#b71c1c" />
-          </linearGradient>
-        </defs>
         <text
           textAnchor="middle"
           x={width / 2}

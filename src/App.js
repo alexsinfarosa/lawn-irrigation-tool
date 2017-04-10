@@ -13,8 +13,12 @@ import {
   Bottom
 } from "./styles";
 
+// utilities
+import { currentYearData } from "./fetchData";
+import { quartileBounds } from "./utils";
+
 // components
-import State from "./components/State";
+// import State from "./components/State";
 import Station from "./components/Station";
 import WidgetTest from "./components/WidgetTest";
 import Slider from "./components/Slider";
@@ -38,7 +42,16 @@ class App extends Component {
       // rhum = station reporting relative humidity
       .get(`${protocol}//newa2.nrcc.cornell.edu/newaUtil/stateStationList/all`)
       .then(res => {
-        this.props.store.app.setStations(res.data.stations);
+        const selectedStations = res.data.stations.filter(e => {
+          return e.name === "Boston Logan" ||
+            e.name === "Hartford" ||
+            e.name === "Providence" ||
+            e.name === "Philadelphia" ||
+            e.name === "Islip" ||
+            e.name === "NYC-Central Park";
+        });
+        this.props.store.app.setStations(selectedStations);
+        this.getData();
       })
       .catch(err => {
         console.log(err);
@@ -46,14 +59,21 @@ class App extends Component {
       });
   };
 
+  async getData() {
+    const { protocol, station } = this.props.store.app;
+    const observedData = await currentYearData(protocol, station);
+    console.log(observedData);
+    const data = observedData.map(year => year[1]);
+    this.props.store.app.setDays(data[data.length - 1]);
+    this.props.store.app.setObservedData(quartileBounds(data));
+  }
+
   render() {
     const { temperature, days } = this.props.store.app;
     return (
       <Page>
         <MyApp>
           <LeftContainer>
-            <State />
-            <br />
             <Station />
           </LeftContainer>
 

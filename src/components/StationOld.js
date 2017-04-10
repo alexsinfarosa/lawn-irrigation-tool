@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 
 @inject("store")
 @observer
 class Station extends Component {
   handleChange = e => {
+    this.props.store.app.setSelectStation(true);
     this.props.store.app.setStation(e.target.value);
   };
 
   render() {
-    console.log(toJS(this.props.store.app.station));
+    // console.log(toJS(this.props.store.app.station));
     const {
+      getCurrentStateStations,
       station,
-      stations,
       selectStation
     } = this.props.store.app;
 
-    const stationList = stations.map(station => (
+    const stationList = getCurrentStateStations.map(station => (
       <option key={`${station.id} ${station.network}`}>{station.name}</option>
     ));
     return (

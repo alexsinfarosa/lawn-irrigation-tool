@@ -6,38 +6,24 @@ import * as d3 from "d3";
 @observer
 export default class Widget extends Component {
   render() {
-    const { temperature } = this.props.store.app;
-    const acis = [10, 20, 40, 60];
+    const {
+      observedData,
+      days
+    } = this.props.store.app;
+    console.log(observedData.slice());
+    // const obData = [3, 7, 20, 40, 60];
+    const p1Data = [9, 25, 35, 25, 7];
+    const p2Data = [5, 10, 30, 40, 15];
     const margin = {
       top: 50,
       right: 10,
       bottom: 50,
       left: 10
     };
-
     const width = 700 - margin.left - margin.right;
     const height = 400;
     const radius = Math.min(width, height) / 2;
-    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-    // Returns a path data string
-    const currentYear = d3.arc().innerRadius(radius).outerRadius(radius + 20);
-    const pieChart = d3
-      .pie()
-      .sort(null)
-      .startAngle(-0.5 * Math.PI)
-      .endAngle(0.5 * Math.PI);
-
-    const graph = pieChart(acis).map((e, i) => {
-      console.log(e);
-      const centroid = currentYear.centroid(e);
-      return (
-        <g key={i}>
-          <path d={currentYear(e)} fill={COLORS[i]} />
-          <text d={i} x={centroid[0]} y={centroid[1]} dy="0.33em" fill="red" />
-        </g>
-      );
-    });
+    const COLORS = ["#1E88E5", "#FDD835", "#FFB300", "#e53935", "#757575"];
 
     const config = {
       minAngle: -90,
@@ -63,6 +49,52 @@ export default class Widget extends Component {
       return `rotate(${newAngle}) translate(0, ${-(radius + config.innerTickRingOffset)})`;
     };
 
+    // Returns a path data string
+    const archCY = d3.arc().innerRadius(radius).outerRadius(radius + 20);
+    const archP1 = d3.arc().innerRadius(radius + 25).outerRadius(radius + 45);
+    const archP2 = d3.arc().innerRadius(radius + 50).outerRadius(radius + 70);
+    const pieChart = d3
+      .pie()
+      .sort(null)
+      .startAngle(-0.5 * Math.PI)
+      .endAngle(0.5 * Math.PI);
+
+    const currentYear = pieChart(observedData).map((e, i) => {
+      // const centroid = archCY.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archCY(e)} fill={COLORS[i]} />
+          {/* <text
+            d={i}
+            x={centroid[0]}
+            y={centroid[1]}
+            dy="0.33em"
+            fill="black"
+          /> */}
+        </g>
+      );
+    });
+
+    const p1 = pieChart(p1Data).map((e, i) => {
+      // const centroid = archP1.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archP1(e)} fill={COLORS[i]} />
+          {/* <text d={i} x={centroid[0]} y={centroid[1]} dy="0.33em" fill="red" /> */}
+        </g>
+      );
+    });
+
+    const p2 = pieChart(p2Data).map((e, i) => {
+      // const centroid = archP2.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archP2(e)} fill={COLORS[i]} />
+          {/* <text d={i} x={centroid[0]} y={centroid[1]} dy="0.33em" fill="red" /> */}
+        </g>
+      );
+    });
+
     return (
       <svg width={width} height={height}>
         <text
@@ -71,19 +103,21 @@ export default class Widget extends Component {
           y={radius + 50}
           style={{ fontSize: "1.5em" }}
         >
-          {temperature}
+          {days}
         </text>
         <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
-          {graph}
+          {p2}
+          {p1}
+          {currentYear}
           <circle cx={0} cy={0} r={7} />
           <line
             stroke="#aaa"
             strokeWidth={2}
             x1={0}
             y1={0}
-            x2={-170}
+            x2={-167}
             y2={0}
-            transform={`rotate(${percentToDeg(temperature)})`}
+            transform={`rotate(${percentToDeg(days)})`}
           />
           <g>
             {innerTicks.map((e, i) => {

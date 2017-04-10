@@ -24,6 +24,32 @@ export default class AppStore {
 
   //Station---------------------------------------------------------------------------------
   @observable stations = [];
+  @observable selStations = [
+    {
+      name: "NYC-Central Park",
+      sid: "nycthr",
+      lon: -73.96917,
+      lat: 40.77889
+    },
+    {
+      name: "Boston Logan",
+      sid: "bosthr",
+      lon: -71.01056,
+      lat: 42.36056
+    },
+    {
+      name: "Hartford",
+      sid: "bdlthr",
+      lon: -86.1403,
+      lat: 42.2275
+    },
+    {
+      name: "Isip",
+      sid: "ispthr",
+      lon: -86.1403,
+      lat: 42.2275
+    }
+  ];
   @action setStations = d => this.stations = d;
   @computed get getCurrentStateStations() {
     return this.stations.filter(
@@ -40,15 +66,20 @@ export default class AppStore {
   @observable selectStation = this.station.name ? true : false;
   @action setSelectStation = d => this.selectStation = d;
 
-  // ACISData -----------------------------------------------------------------------------------
-  @observable ACISData = [];
-  @action setACISData = d => this.ACISData = d;
+  // Data -----------------------------------------------------------------------------------
+  @observable observedData = [];
+  @action setObservedData = d => this.observedData = d;
+
+  @observable days = 0;
+  @action setDays = d => this.days = d;
+
+  @observable projectedData1 = [];
+  @action setProjectedData1 = d => this.projectedData1 = d;
+
+  @observable projectedData2 = [];
+  @action setProjectedData2 = d => this.projectedData2 = d;
 
   // Slider -------------------------------------------------------------------------------------
-  @observable temperature = 0;
+  @observable temperature = 90;
   @action setTemperature = d => this.temperature = d;
-
-  // Days ---------------------------------------------------------------------------------------
-  @observable days = 11;
-  @action setDays = d => this.days = d;
 }

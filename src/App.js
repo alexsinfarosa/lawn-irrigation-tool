@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { when } from "mobx";
 import axios from "axios";
 
 // styled components
@@ -28,43 +27,15 @@ import Slider from "./components/Slider";
 class App extends Component {
   constructor(props) {
     super(props);
-    when(
-      // once...
-      () => this.props.store.app.stations.length === 0,
-      // ... then
-      () => this.fetchAllStations()
-    );
+    this.getData();
   }
-
-  fetchAllStations = () => {
-    const protocol = this.props.store.app.protocol;
-    axios
-      // rhum = station reporting relative humidity
-      .get(`${protocol}//newa2.nrcc.cornell.edu/newaUtil/stateStationList/all`)
-      .then(res => {
-        const selectedStations = res.data.stations.filter(e => {
-          return e.name === "Boston Logan" ||
-            e.name === "Hartford" ||
-            e.name === "Providence" ||
-            e.name === "Philadelphia" ||
-            e.name === "Islip" ||
-            e.name === "NYC-Central Park";
-        });
-        this.props.store.app.setStations(selectedStations);
-        this.getData();
-      })
-      .catch(err => {
-        console.log(err);
-        this.props.store.app.setStations([]);
-      });
-  };
 
   async getData() {
     const { protocol, station } = this.props.store.app;
     const observedData = await currentYearData(protocol, station);
-    console.log(observedData);
+
     const data = observedData.map(year => year[1]);
-    this.props.store.app.setDays(data[data.length - 1]);
+    this.props.store.app.setDays(data[data.length - 2]);
     this.props.store.app.setObservedData(quartileBounds(data));
   }
 

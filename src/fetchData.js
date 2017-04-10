@@ -3,7 +3,7 @@ import axios from "axios";
 // Fetch data -------------------------------------------------------------------------
 export const currentYearData = (protocol, station) => {
   const params = {
-    sid: station.id,
+    sid: station.sid,
     sdate: "1980-08-01",
     edate: "2017-08-01",
     elems: [

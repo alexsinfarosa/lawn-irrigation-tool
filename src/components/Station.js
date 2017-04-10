@@ -17,8 +17,10 @@ class Station extends Component {
       selectStation
     } = this.props.store.app;
 
+    console.log(stations.slice());
+
     const stationList = stations.map(station => (
-      <option key={`${station.id} ${station.network}`}>{station.name}</option>
+      <option key={station.sid}>{station.name}</option>
     ));
     return (
       <div className="field">

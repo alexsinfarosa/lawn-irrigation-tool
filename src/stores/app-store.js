@@ -23,22 +23,17 @@ export default class AppStore {
   };
 
   //Station---------------------------------------------------------------------------------
-  @observable stations = [];
-  @observable selStations = [
-    {
-      name: "NYC-Central Park",
-      sid: "nycthr",
-      lon: -73.96917,
-      lat: 40.77889
-    },
+  @observable stations = [
     {
       name: "Boston Logan",
+      state: "MA",
       sid: "bosthr",
       lon: -71.01056,
       lat: 42.36056
     },
     {
       name: "Hartford",
+      state: "CT",
       sid: "bdlthr",
       lon: -86.1403,
       lat: 42.2275
@@ -46,8 +41,29 @@ export default class AppStore {
     {
       name: "Isip",
       sid: "ispthr",
-      lon: -86.1403,
-      lat: 42.2275
+      lon: -73.10167,
+      lat: 40.79389
+    },
+    {
+      name: "NYC-Central Park",
+      state: "NY",
+      sid: "nycthr",
+      lon: -73.96917,
+      lat: 40.77889
+    },
+    {
+      name: "Philadelphia",
+      state: "PA",
+      sid: "phlthr",
+      lon: -75.02,
+      lat: 40.08
+    },
+    {
+      name: "Providence",
+      state: "RI",
+      sid: "pvdthr",
+      lon: -71.43333,
+      lat: 41.71667
     }
   ];
   @action setStations = d => this.stations = d;
@@ -57,10 +73,8 @@ export default class AppStore {
     );
   }
   @observable station = JSON.parse(localStorage.getItem("station")) || {};
-  @action setStation = stationName => {
-    this.station = this.stations.filter(
-      station => station.name === stationName
-    )[0];
+  @action setStation = d => {
+    this.station = d;
     localStorage.setItem("station", JSON.stringify(this.station));
   };
   @observable selectStation = this.station.name ? true : false;

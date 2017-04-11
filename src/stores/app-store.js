@@ -4,6 +4,10 @@ import { stations } from "../stations";
 export default class AppStore {
   // logic------------------------------------------------------------------------------------
   @observable protocol = window.location.protocol;
+  @observable isProjection1 = false;
+  @action setIsProjection1 = () => this.isProjection1 = !this.isProjection1;
+  @observable isProjection2 = false;
+  @action setIsProjection2 = () => this.isProjection2 = !this.isProjection2;
 
   // Stations ---------------------------------------------------------------------------------
   @action setStations = d => this.stations = d;

@@ -8,10 +8,12 @@ export default class Widget extends Component {
   render() {
     const {
       observedData,
-      days
+      days,
+      isProjection1,
+      isProjection2
     } = this.props.store.app;
     // console.log(observedData.slice());
-    // const obData = [3, 7, 20, 40, 60];
+  
     const p1Data = [9, 25, 35, 25, 7];
     const p2Data = [5, 10, 30, 40, 15];
     const margin = {
@@ -106,8 +108,8 @@ export default class Widget extends Component {
           {days}
         </text>
         <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
-          {p2}
-          {p1}
+          {isProjection2 && p2}
+          {isProjection1 && p1}
           {currentYear}
           <circle cx={0} cy={0} r={7} />
           <line
@@ -119,6 +121,7 @@ export default class Widget extends Component {
             y2={0}
             transform={`rotate(${percentToDeg(days)})`}
           />
+          <circle cx={0} cy={0} r={3} fill="#aaa" />
           <g>
             {innerTicks.map((e, i) => {
               return (

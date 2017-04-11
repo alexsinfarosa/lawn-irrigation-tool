@@ -15,6 +15,12 @@ class Station extends Component {
   };
 
   render() {
+    const {
+      isProjection1,
+      isProjection2,
+      setIsProjection1,
+      setIsProjection2
+    } = this.props.store.app;
     // console.log(toJS(this.props.store.app.station));
 
     const stationList = stations.map(station => (
@@ -31,6 +37,7 @@ class Station extends Component {
         </a>
       </li>
     ));
+
     return (
       <aside className="menu">
         <p className="menu-label">
@@ -38,6 +45,26 @@ class Station extends Component {
         </p>
         <ul className="menu-list">
           {stationList}
+        </ul>
+
+        <br />
+
+        <p className="menu-label">
+          Projection Graphs
+        </p>
+        <ul className="menu-list">
+
+          <li onClick={setIsProjection1} style={{ marginBottom: "2px" }}>
+            <a className={isProjection1 ? "is-active" : null}>
+              Projection 2040-2069
+            </a>
+          </li>
+          <li onClick={setIsProjection2}>
+            <a className={isProjection2 ? "is-active" : null}>
+              Projection 2070-2099
+            </a>
+          </li>
+
         </ul>
       </aside>
     );

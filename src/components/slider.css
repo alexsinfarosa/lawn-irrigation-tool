@@ -1,3 +1,7 @@
+/*input[type="range"] {
+   transform: rotateZ(270deg);
+}*/
+
 .temperature {
   margin-right: 10px;
 }
@@ -10,11 +14,11 @@ input[type=range] {
     border: 1px solid white;
 
     /*required for proper track sizing in FF*/
-    width: 280px;
+    width: 160px;
 }
 input[type=range]::-webkit-slider-runnable-track {
-    width: 280px;
-    height: 5px;
+    width: 160px;
+    height: 2px;
     background: #ddd;
     border: none;
     border-radius: 3px;
@@ -26,7 +30,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 16px;
     border-radius: 50%;
     background: #45DDC7;
-    margin-top: -4px;
+    margin-top: -7px;
 }
 input[type=range]:focus {
     outline: none;
@@ -36,8 +40,8 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-moz-range-track {
-    width: 280px;
-    height: 5px;
+    width: 160px;
+    height: 2px;
     background: #ddd;
     border: none;
     border-radius: 3px;
@@ -57,8 +61,8 @@ input[type=range]:-moz-focusring{
 }
 
 input[type=range]::-ms-track {
-    width: 280px;
-    height: 5px;
+    width: 160px;
+    height: 2px;
 
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
     background: transparent;

@@ -23,6 +23,18 @@ export default class AppStore {
   @observable observedData = [];
   @action setObservedData = d => this.observedData = d;
 
+  // @computed get observedDataValues() {
+  //   return this.observedData.map(year => Number(year[1]));
+  // }
+  // @computed get days() {
+  //   return this.observedDataValues[this.observedDataValues.length - 2];
+  // }
+  // @computed get bandsValues() {
+  //   const data = this.observedDataValues;
+  //   const min = Math.min(...data);
+  //   const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
+  //   return quantiles.unshift(min);
+  // }
   @observable days = 0;
   @action setDays = d => this.days = d;
 

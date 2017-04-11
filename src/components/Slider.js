@@ -8,16 +8,16 @@ import "./slider.css";
 class Slider extends Component {
   handleChange = e => {
     this.props.store.app.setTemperature(e.target.value);
-    if (typeof this.props.onChange === "function") {
-      this.props.onChange(e.target.name);
-    }
+    // if (typeof this.props.onChange === "function") {
+    //   this.props.onChange(e.target.name);
+    // }
   };
 
   render() {
     const { temperature } = this.props.store.app;
     return (
-      <div>
-        <label className="temperature">Temperature</label>
+      <div style={{ textAlign: "right" }}>
+        {/* <label className="temperature">T (˚F)</label> */}
         <input
           name="slider"
           type="range"
@@ -27,7 +27,12 @@ class Slider extends Component {
           step="1"
           onChange={this.handleChange}
         />
-        <output htmlFor="slider"> <strong>{temperature}</strong></output>
+        <output htmlFor="slider">
+          {" "}
+          <small>
+            <strong>{temperature}</strong>
+          </small>
+        </output>
       </div>
     );
   }

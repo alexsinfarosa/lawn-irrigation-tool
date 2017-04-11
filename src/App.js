@@ -4,22 +4,15 @@ import { inject, observer } from "mobx-react";
 import { jStat } from "jStat";
 
 // styled components
-import {
-  Page,
-  MyApp,
-  Top,
-  LeftContainer,
-  RightContainer,
-  Bottom
-} from "./styles";
+import { Page, MyApp, Top, LeftContainer, RightContainer } from "./styles";
 
 // utilities
 import { currentYearData } from "./fetchData";
 
 // components
-import Station from "./components/Station";
+import SelectionMenu from "./components/SelectionMenu";
 import Widget from "./components/Widget";
-import Slider from "./components/Slider";
+// import Slider from "./components/Slider";
 
 @inject("store")
 @observer
@@ -34,9 +27,10 @@ class App extends Component {
     const observedData = await currentYearData(protocol, station, temperature);
     const data = observedData.map(year => Number(year[1]));
     this.props.store.app.setDays(data[data.length - 2]);
-    this.props.store.app.setObservedData(
-      jStat.quantiles(data, [0.25, 0.5, 0.75, 1])
-    );
+    const min = Math.min(...data);
+    const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
+    const results = [min, ...quantiles];
+    this.props.store.app.setObservedData(results);
   }
 
   submitRequest = () => {
@@ -48,12 +42,12 @@ class App extends Component {
       temperature,
       days
     } = this.props.store.app;
-    console.log(this.props.store.app.observedData.slice());
+    // this.props.store.app.observedData.map(e => console.log(e));
     return (
       <Page>
         <MyApp>
           <LeftContainer>
-            <Station onChange={this.submitRequest} />
+            <SelectionMenu onChange={this.submitRequest} />
           </LeftContainer>
 
           <RightContainer>
@@ -69,9 +63,9 @@ class App extends Component {
               so far this year
             </Top>
             <Widget />
-            <Bottom>
-              <Slider onChange={this.submitRequest} />
-            </Bottom>
+            {/* <Bottom> */}
+            {/* <Slider onChange={this.submitRequest} /> */}
+            {/* </Bottom> */}
           </RightContainer>
         </MyApp>
       </Page>

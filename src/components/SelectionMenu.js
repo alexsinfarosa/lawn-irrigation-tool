@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import { stations } from "../stations";
+import Slider from "./Slider";
 
 @inject("store")
 @observer
-class Station extends Component {
+class SelectionMenu extends Component {
   handleChange = e => {
+    console.log(e.target);
     this.props.store.app.setSelectedStation(true);
     this.props.store.app.setStation(e.target.name);
     if (typeof this.props.onChange === "function") {
@@ -40,6 +42,7 @@ class Station extends Component {
 
     return (
       <aside className="menu">
+
         <p className="menu-label">
           Stations
         </p>
@@ -50,10 +53,18 @@ class Station extends Component {
         <br />
 
         <p className="menu-label">
+          Temperature (˚F)
+        </p>
+        <ul className="menu-list">
+          <Slider name="slider" onChange={this.handleChange} />
+        </ul>
+
+        <br />
+
+        <p className="menu-label">
           Projection Graphs
         </p>
         <ul className="menu-list">
-
           <li onClick={setIsProjection1} style={{ marginBottom: "2px" }}>
             <a className={isProjection1 ? "is-active" : null}>
               Projection 2040-2069
@@ -64,11 +75,11 @@ class Station extends Component {
               Projection 2070-2099
             </a>
           </li>
-
         </ul>
+
       </aside>
     );
   }
 }
 
-export default Station;
+export default SelectionMenu;

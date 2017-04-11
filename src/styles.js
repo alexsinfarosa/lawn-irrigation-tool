@@ -21,7 +21,7 @@ export const Top = styled.div`
 
 export const LeftContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 250px;
   padding: 10px;
   ${/* background-color: aqua; */ ""}

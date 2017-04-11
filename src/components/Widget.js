@@ -13,7 +13,7 @@ export default class Widget extends Component {
       isProjection2
     } = this.props.store.app;
     // console.log(observedData.slice());
-  
+
     const p1Data = [9, 25, 35, 25, 7];
     const p2Data = [5, 10, 30, 40, 15];
     const margin = {
@@ -25,7 +25,14 @@ export default class Widget extends Component {
     const width = 700 - margin.left - margin.right;
     const height = 400;
     const radius = Math.min(width, height) / 2;
-    const COLORS = ["#1E88E5", "#FDD835", "#FFB300", "#e53935", "#757575"];
+    const COLORS = [
+      "#757575",
+      "#1E88E5",
+      "#FDD835",
+      "#FFB300",
+      "#e53935",
+      "#757575"
+    ];
 
     const config = {
       minAngle: -90,

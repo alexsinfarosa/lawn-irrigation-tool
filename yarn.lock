@@ -3448,6 +3448,10 @@ istanbul-reports@^1.0.0:
   dependencies:
     handlebars "^4.0.3"
 
+jStat@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/jStat/-/jStat-1.5.3.tgz#470edc41f9ba93f99f8dfb4e665d7de6d7e47623"
+
 jest-changed-files@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-17.0.2.tgz#f5657758736996f590a51b87e5c9369d904ba7b7"
@@ -3635,10 +3639,6 @@ jodid25519@^1.0.0:
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
   dependencies:
     jsbn "~0.1.0"
-
-jquery@>=1.9.0:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -4971,12 +4971,6 @@ randomatic@^1.1.3:
 range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
-
-rangeslider.js@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/rangeslider.js/-/rangeslider.js-2.3.0.tgz#e61a72903f5c61def0cee9e88d504a3c60c7f59e"
-  dependencies:
-    jquery ">=1.9.0"
 
 rc@~1.1.6:
   version "1.1.7"

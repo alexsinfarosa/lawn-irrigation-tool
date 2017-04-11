@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import axios from "axios";
+import { jStat } from "jStat";
 
 // styled components
 import {
@@ -14,7 +15,6 @@ import {
 
 // utilities
 import { currentYearData } from "./fetchData";
-import { quartileBounds } from "./utils";
 
 // components
 import Station from "./components/Station";
@@ -34,7 +34,9 @@ class App extends Component {
     const observedData = await currentYearData(protocol, station, temperature);
     const data = observedData.map(year => Number(year[1]));
     this.props.store.app.setDays(data[data.length - 2]);
-    this.props.store.app.setObservedData(quartileBounds(data));
+    this.props.store.app.setObservedData(
+      jStat.quantiles(data, [0.25, 0.5, 0.75, 1])
+    );
   }
 
   submitRequest = () => {
@@ -46,6 +48,7 @@ class App extends Component {
       temperature,
       days
     } = this.props.store.app;
+    console.log(this.props.store.app.observedData.slice());
     return (
       <Page>
         <MyApp>

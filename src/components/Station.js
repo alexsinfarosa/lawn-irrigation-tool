@@ -16,16 +16,8 @@ class Station extends Component {
 
   render() {
     // console.log(toJS(this.props.store.app.station));
-    const {
-      station,
-      selectedStation
-    } = this.props.store.app;
 
     const stationList = stations.map(station => (
-      <option key={station.sid}>{station.name}</option>
-    ));
-
-    const stationList2 = stations.map(station => (
       <li key={station.sid} onClick={this.handleChange}>
         <a
           name={station.name}
@@ -40,31 +32,14 @@ class Station extends Component {
       </li>
     ));
     return (
-      // <div className="field">
-      //   <p className="control">
-      //     <span className="select is-small">
-      //       <select
-      //         name="station"
-      //         value={station.name}
-      //         onChange={this.handleChange}
-      //       >
-      //         {selectedStation ? null : <option>Select Station</option>}
-      //         {stationList}
-      //
-      //       </select>
-      //     </span>
-      //   </p>
-      // </div>
-      (
-        <aside className="menu">
-          <p className="menu-label">
-            Stations
-          </p>
-          <ul className="menu-list">
-            {stationList2}
-          </ul>
-        </aside>
-      )
+      <aside className="menu">
+        <p className="menu-label">
+          Stations
+        </p>
+        <ul className="menu-list">
+          {stationList}
+        </ul>
+      </aside>
     );
   }
 }

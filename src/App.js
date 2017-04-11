@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import axios from "axios";
+// import axios from "axios";
 
 // styled components
 import {
@@ -17,9 +17,8 @@ import { currentYearData } from "./fetchData";
 import { quartileBounds } from "./utils";
 
 // components
-// import State from "./components/State";
 import Station from "./components/Station";
-import WidgetTest from "./components/WidgetTest";
+import Widget from "./components/Widget";
 import Slider from "./components/Slider";
 
 @inject("store")
@@ -27,25 +26,31 @@ import Slider from "./components/Slider";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.getData();
+    this.fetchData();
   }
 
-  async getData() {
-    const { protocol, station } = this.props.store.app;
-    const observedData = await currentYearData(protocol, station);
-
-    const data = observedData.map(year => year[1]);
+  async fetchData() {
+    const { protocol, station, temperature } = this.props.store.app;
+    const observedData = await currentYearData(protocol, station, temperature);
+    const data = observedData.map(year => Number(year[1]));
     this.props.store.app.setDays(data[data.length - 2]);
     this.props.store.app.setObservedData(quartileBounds(data));
   }
 
+  submitRequest = () => {
+    this.fetchData();
+  };
+
   render() {
-    const { temperature, days } = this.props.store.app;
+    const {
+      temperature,
+      days
+    } = this.props.store.app;
     return (
       <Page>
         <MyApp>
           <LeftContainer>
-            <Station />
+            <Station onChange={this.submitRequest} />
           </LeftContainer>
 
           <RightContainer>
@@ -60,9 +65,9 @@ class App extends Component {
               {" "}
               so far this year
             </Top>
-            <WidgetTest />
+            <Widget />
             <Bottom>
-              <Slider />
+              <Slider onChange={this.submitRequest} />
             </Bottom>
           </RightContainer>
         </MyApp>

@@ -6,14 +6,14 @@ import * as d3 from "d3";
 @observer
 export default class Widget extends Component {
   render() {
-    const { temperature } = this.props.store.app;
-    // console.log(d3);
-    // const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-    const COLORS = d3
-      .scaleOrdinal()
-      .range(["#BBDEFB", "#FFF9C4", "#FFE0B2", "#ffcdd2", "#9E9E9E"]);
-
-    console.log(COLORS(4));
+    const {
+      observedData,
+      days
+    } = this.props.store.app;
+    // console.log(observedData.slice());
+    // const obData = [3, 7, 20, 40, 60];
+    const p1Data = [9, 25, 35, 25, 7];
+    const p2Data = [5, 10, 30, 40, 15];
     const margin = {
       top: 50,
       right: 10,
@@ -22,6 +22,8 @@ export default class Widget extends Component {
     };
     const width = 700 - margin.left - margin.right;
     const height = 400;
+    const radius = Math.min(width, height) / 2;
+    const COLORS = ["#1E88E5", "#FDD835", "#FFB300", "#e53935", "#757575"];
 
     const config = {
       minAngle: -90,
@@ -34,32 +36,8 @@ export default class Widget extends Component {
       outerTickBorderLength: 30
     };
 
-    const radius = Math.min(width, height) / 1.7;
     const percentToDeg = percent => percent * 180 / 60;
-
-    const currentYear = d3
-      .arc()
-      .innerRadius(radius)
-      .outerRadius(radius + 20)
-      .startAngle(-90 * (Math.PI / 180))
-      .endAngle(90 * (Math.PI / 180));
-
-    const p20402069 = d3
-      .arc()
-      .innerRadius(radius + 25)
-      .outerRadius(radius + 45)
-      .startAngle(-90 * (Math.PI / 180))
-      .endAngle(90 * (Math.PI / 180));
-
-    const p20692099 = d3
-      .arc()
-      .innerRadius(radius + 50)
-      .outerRadius(radius + 70)
-      .startAngle(-90 * (Math.PI / 180))
-      .endAngle(90 * (Math.PI / 180));
-
     const scale = d3.scaleLinear().domain([0, 60]).range([0, 1]);
-
     const innerTicks = scale.ticks(config.innerTickNumber).map(tick => ({
       value: tick,
       label: tick
@@ -71,29 +49,75 @@ export default class Widget extends Component {
       return `rotate(${newAngle}) translate(0, ${-(radius + config.innerTickRingOffset)})`;
     };
 
+    // Returns a path data string
+    const archCY = d3.arc().innerRadius(radius).outerRadius(radius + 20);
+    const archP1 = d3.arc().innerRadius(radius + 25).outerRadius(radius + 45);
+    const archP2 = d3.arc().innerRadius(radius + 50).outerRadius(radius + 70);
+    const pieChart = d3
+      .pie()
+      .sort(null)
+      .startAngle(-0.5 * Math.PI)
+      .endAngle(0.5 * Math.PI);
+
+    const currentYear = pieChart(observedData).map((e, i) => {
+      // const centroid = archCY.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archCY(e)} fill={COLORS[i]} />
+          {/* <text
+            d={i}
+            x={centroid[0]}
+            y={centroid[1]}
+            dy="0.33em"
+            fill="black"
+          /> */}
+        </g>
+      );
+    });
+
+    const p1 = pieChart(p1Data).map((e, i) => {
+      // const centroid = archP1.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archP1(e)} fill={COLORS[i]} />
+          {/* <text d={i} x={centroid[0]} y={centroid[1]} dy="0.33em" fill="red" /> */}
+        </g>
+      );
+    });
+
+    const p2 = pieChart(p2Data).map((e, i) => {
+      // const centroid = archP2.centroid(e);
+      return (
+        <g key={i}>
+          <path d={archP2(e)} fill={COLORS[i]} />
+          {/* <text d={i} x={centroid[0]} y={centroid[1]} dy="0.33em" fill="red" /> */}
+        </g>
+      );
+    });
+
     return (
       <svg width={width} height={height}>
         <text
           textAnchor="middle"
           x={width / 2}
-          y={radius}
+          y={radius + 50}
           style={{ fontSize: "1.5em" }}
         >
-          {temperature}
+          {days}
         </text>
         <g transform={`translate(${width / 2}, ${height - margin.bottom})`}>
-          <path d={currentYear()} fill={`url(#current)`} />
-          <path d={p20402069()} fill={`url(#p1)`} />
-          <path d={p20692099()} fill={`url(#p2)`} />
+          {p2}
+          {p1}
+          {currentYear}
           <circle cx={0} cy={0} r={7} />
           <line
             stroke="#aaa"
             strokeWidth={2}
             x1={0}
             y1={0}
-            x2={-205}
+            x2={-167}
             y2={0}
-            transform={`rotate(${percentToDeg(temperature)})`}
+            transform={`rotate(${percentToDeg(days)})`}
           />
           <g>
             {innerTicks.map((e, i) => {

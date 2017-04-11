@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Fetch data -------------------------------------------------------------------------
-export const currentYearData = (protocol, station) => {
+export const currentYearData = (protocol, station, temperature) => {
   const params = {
     sid: station.sid,
     sdate: "1980-08-01",
@@ -12,12 +12,12 @@ export const currentYearData = (protocol, station) => {
         interval: [1, 0, 0],
         duration: "std",
         season_start: "01-01",
-        reduce: "cnt_ge_90"
+        reduce: `cnt_ge_${temperature}`
       }
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//data.rcc-acis.org/StnData`, params)

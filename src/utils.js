@@ -1,13 +1,12 @@
 import math from "mathjs";
 
 export const quartileBounds = _sample => {
-  let sample = _sample.map(e => Number(e));
   // find the median as you did
-  var _median = math.median(sample);
+  var _median = math.median(_sample);
 
   // split the data by the median
-  var _firstHalf = sample.filter(f => f < _median);
-  var _secondHalf = sample.filter(f => f >= _median);
+  var _firstHalf = _sample.filter(f => f < _median);
+  var _secondHalf = _sample.filter(f => f >= _median);
 
   // find the medians for each split
   var _25percent = math.median(_firstHalf);

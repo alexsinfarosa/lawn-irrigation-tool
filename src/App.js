@@ -28,8 +28,13 @@ class App extends Component {
     const data = observedData.map(year => Number(year[1]));
     this.props.store.app.setDays(data[data.length - 2]);
     const min = Math.min(...data);
+    this.props.store.app.setMinVal(min);
+    const max = Math.max(...data);
+    this.props.store.app.setMaxVal(max);
     const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
-    const results = [min, ...quantiles];
+    // const remaining = quantiles.reduce((acc, val) => acc + val, 0);
+    let results = [min, ...quantiles];
+    results = results.map(e => Math.round(e));
     this.props.store.app.setObservedData(results);
   }
 

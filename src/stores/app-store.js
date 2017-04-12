@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { stations } from "../stations";
 
 export default class AppStore {
@@ -23,12 +23,18 @@ export default class AppStore {
   @observable observedData = [];
   @action setObservedData = d => this.observedData = d;
 
-  // @computed get observedDataValues() {
-  //   return this.observedData.map(year => Number(year[1]));
-  // }
-  // @computed get days() {
-  //   return this.observedDataValues[this.observedDataValues.length - 2];
-  // }
+  @computed get observedDataValues() {
+    return this.observedData.map(year => Number(year[1]));
+  }
+  @computed get days() {
+    return this.observedDataValues[this.observedDataValues.length - 2];
+  }
+  @observable minVal = 0;
+  @action setMinVal = d => this.minVal = d;
+
+  @observable maxVal = 100;
+  @action setMaxVal = d => this.maxVal = d;
+
   // @computed get bandsValues() {
   //   const data = this.observedDataValues;
   //   const min = Math.min(...data);

@@ -8,7 +8,6 @@ import Slider from "./Slider";
 @observer
 class SelectionMenu extends Component {
   handleChange = e => {
-    console.log(e.target);
     this.props.store.app.setSelectedStation(true);
     this.props.store.app.setStation(e.target.name);
     if (typeof this.props.onChange === "function") {

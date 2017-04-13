@@ -8,13 +8,15 @@ export default class Widget extends Component {
   render() {
     const {
       observedData,
+      projectedData1,
+      projectedData2,
       days,
       isProjection1,
       isProjection2,
-      minVal,
-      maxVal
+      maxValCY,
+      maxValP1,
+      maxValP2
     } = this.props.store.app;
-    console.log(observedData.slice());
 
     const margin = {
       top: 10,
@@ -26,17 +28,31 @@ export default class Widget extends Component {
     const width = 600 - margin.left - margin.right;
     const height = 500;
     const radius = Math.min(width, height) / 2;
-    const colorsCY = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+
+    // adjust to colorsCY array based on wheather the projection is displayed
+    let colorsCY;
+    if (observedData[observedData.length - 1] === 0) {
+      colorsCY = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+    }
+    colorsCY = [
+      "#757575",
+      "#1E88E5",
+      "#FDD835",
+      "#FFB300",
+      "#e53935",
+      "#757575"
+    ];
+
     const colorsPs = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
-    const colorsPss = ["#1E88E5", "#FDD835", "#e53935", "#FFB300", "#FDD835"];
 
     const pie = d3.pie().sort(null);
     const pathCY = d3.arc().outerRadius(radius - 100).innerRadius(radius - 60);
     const pathPs = d3.arc().outerRadius(radius - 50).innerRadius(radius - 10);
-    const label = d3.arc().outerRadius(radius - 20).innerRadius(radius - 20);
+    // const label = d3.arc().outerRadius(radius - 20).innerRadius(radius - 20);
 
     const diff = data => data.slice(1).map((n, i) => n - data[i]);
 
+    // console.log(`diff(observedData): ${diff([0, ...observedData])}`);
     const currentYear = pie(diff([0, ...observedData])).map((e, i) => {
       return (
         <g key={i}>
@@ -45,7 +61,7 @@ export default class Widget extends Component {
       );
     });
 
-    const projection1 = pie(diff([0, ...observedData])).map((e, i) => {
+    const projection1 = pie(diff([0, ...projectedData1])).map((e, i) => {
       return (
         <g key={i}>
           <path d={pathPs(e)} fill={colorsPs[i]} />
@@ -53,22 +69,29 @@ export default class Widget extends Component {
       );
     });
 
-    const projection2 = pie(diff([0, ...observedData])).map((e, i) => {
+    const projection2 = pie(diff([0, ...projectedData2])).map((e, i) => {
       return (
         <g key={i}>
-          <path d={pathPs(e)} fill={colorsPss[i]} />
+          <path d={pathPs(e)} fill={colorsPs[i]} />
         </g>
       );
     });
 
-    const percentToDeg = percent => percent * 360 / maxVal;
-    const scale = d3.scaleLinear().domain([0, maxVal]).range([0, 1]);
+    let max;
+    if (isProjection1) {
+      max = maxValP1;
+    } else if (isProjection2) {
+      max = maxValP2;
+    } else {
+      max = maxValCY;
+    }
+
+    const percentToDeg = percent => percent * 360 / max;
+    const scale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
     const innerTicks = scale
-      .ticks(19)
+      .ticks(25)
       .map(tick => ({ value: tick, label: tick }));
-
-    // console.log(innerTicks);
 
     const rotate = d => {
       const ratio = scale(d.value);
@@ -80,7 +103,9 @@ export default class Widget extends Component {
       <svg width={width} height={height}>
         <g transform={`translate(${width / 2}, ${height / 2})`}>
           {currentYear}
-          {isProjection1 ? projection1 : projection2}
+          {isProjection1 && projection1}
+          {isProjection2 && projection2}
+
           <circle cx={0} cy={0} r={9} />
           <line
             stroke="#aaa"
@@ -97,7 +122,7 @@ export default class Widget extends Component {
           </text>
           <g>
             {innerTicks.map((e, i) => {
-              if (i !== innerTicks.length - 1) {
+              if (i !== innerTicks.length - 1 && e.value % 1 === 0) {
                 return (
                   <text
                     style={{ fill: "#333", fontSize: "11px" }}
@@ -109,6 +134,7 @@ export default class Widget extends Component {
                   </text>
                 );
               }
+              return null;
             })}
           </g>
         </g>

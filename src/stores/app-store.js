@@ -6,14 +6,14 @@ export default class AppStore {
   @observable protocol = window.location.protocol;
   @observable isProjection1 = false;
   @action setIsProjection1 = () => {
-    this.isProjection1 = true;
-    this.isProjection2 = false
-  }
+    this.isProjection1 = !this.isProjection1;
+    this.isProjection2 = false;
+  };
   @observable isProjection2 = false;
   @action setIsProjection2 = () => {
-    this.isProjection2 = true
-    this.isProjection1 = false
-  }
+    this.isProjection2 = !this.isProjection2;
+    this.isProjection1 = false;
+  };
 
   // Stations ---------------------------------------------------------------------------------
   @action setStations = d => this.stations = d;
@@ -35,11 +35,23 @@ export default class AppStore {
   @computed get days() {
     return this.observedDataValues[this.observedDataValues.length - 2];
   }
-  @observable minVal = 0;
-  @action setMinVal = d => this.minVal = d;
+  @observable minValCY = 0;
+  @action setMinValCY = d => this.minValCY = d;
 
-  @observable maxVal = 100;
-  @action setMaxVal = d => this.maxVal = d;
+  @observable minValP1 = 0;
+  @action setMinValP1 = d => this.minValP1 = d;
+
+  @observable minValP2 = 0;
+  @action setMinValP2 = d => this.minValP2 = d;
+
+  @observable maxValCY = 40;
+  @action setMaxValCY = d => this.maxValCY = d;
+
+  @observable maxValP1 = 40;
+  @action setMaxValP1 = d => this.maxValP1 = d;
+
+  @observable maxValP2 = 40;
+  @action setMaxValP2 = d => this.maxValP2 = d;
 
   // @computed get bandsValues() {
   //   const data = this.observedDataValues;

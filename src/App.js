@@ -7,7 +7,7 @@ import { jStat } from "jStat";
 import { Page, MyApp, Top, LeftContainer, RightContainer } from "./styles";
 
 // utilities
-import { currentYearData } from "./fetchData";
+import { currentYearData, projection1, projection2 } from "./fetchData";
 
 // components
 import SelectionMenu from "./components/SelectionMenu";
@@ -22,20 +22,84 @@ class App extends Component {
     this.fetchData();
   }
 
-  async fetchData() {
-    const { protocol, station, temperature } = this.props.store.app;
-    const observedData = await currentYearData(protocol, station, temperature);
-    const data = observedData.map(year => Number(year[1]));
+  currentModel = (fetchedData, isProjection1, isProjection2) => {
+    const data = fetchedData.map(year => Number(year[1]));
+    console.log(`%cObserved: ${data}`, `color: red`);
     this.props.store.app.setDays(data[data.length - 2]);
-    const min = Math.min(...data);
-    this.props.store.app.setMinVal(min);
+
+    // Exclude current year from calculating min value
+    const min = Math.min(...data.slice(0, -1));
+    this.props.store.app.setMinValCY(min);
+
+    // Change scale
+    let aboveMax = 0;
+    if (isProjection1) {
+      aboveMax = this.props.store.app.maxValP1;
+    } else if (isProjection2) {
+      aboveMax = this.props.store.app.maxValP2;
+    }
+    console.log(`%caboveMax: ${aboveMax}`, `color: red`);
+    console.log(`%cmin: ${min}`, `color: red`);
+
     const max = Math.max(...data);
-    this.props.store.app.setMaxVal(max);
+    this.props.store.app.setMaxValCY(max);
+    console.log(`%cmax: ${max}`, `color: red`);
+
+    const quantiles = jStat.quantiles(data.slice(0, -1), [0.25, 0.5, 0.75, 1]);
+    let results = [min, ...quantiles, aboveMax];
+    results = results.map(e => Math.round(e));
+    console.log(`%cresults: ${results}`, `color: red`);
+    this.props.store.app.setObservedData(results);
+  };
+
+  projection1Model = projection2040 => {
+    const data = projection2040.map(year => Number(year[1]));
+    console.log(`%cProjection 2040-2069: ${data}`, `color: blue`);
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    console.log(`%cmax: ${max}`, `color: blue`);
+    this.props.store.app.setMaxValP1(max);
     const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
-    // const remaining = quantiles.reduce((acc, val) => acc + val, 0);
     let results = [min, ...quantiles];
     results = results.map(e => Math.round(e));
-    this.props.store.app.setObservedData(results);
+    console.log(`%cresults: ${results}`, `color: blue`);
+    this.props.store.app.setProjectedData1(results);
+  };
+
+  projection2Model = projection2070 => {
+    const data = projection2070.map(year => Number(year[1]));
+    console.log(`%cProjection 2070-2099: ${data}`, `color: green`);
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    console.log(`%cmax: ${max}`, `color: green`);
+    this.props.store.app.setMaxValP2(max);
+    const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
+    let results = [min, ...quantiles];
+    results = results.map(e => Math.round(e));
+    console.log(`%cresults: ${results}`, `color: green`);
+    this.props.store.app.setProjectedData2(results);
+  };
+
+  async fetchData() {
+    const {
+      protocol,
+      station,
+      temperature,
+      isProjection1,
+      isProjection2
+    } = this.props.store.app;
+
+    // current year
+    const observedData = await currentYearData(protocol, station, temperature);
+    this.currentModel(observedData, isProjection1, isProjection2);
+
+    // projections
+    const projection2040 = await projection1(protocol, station, temperature);
+    this.projection1Model(projection2040);
+
+    // projection 2
+    const projection2070 = await projection2(protocol, station, temperature);
+    this.projection2Model(projection2070);
   }
 
   submitRequest = () => {
@@ -66,7 +130,7 @@ class App extends Component {
                 {" "}
                 <strong>{temperature}˚F</strong>
                 {" "}
-                so far this year
+                so far <strong>LAST</strong> year
               </p>
               <p />
             </Top>

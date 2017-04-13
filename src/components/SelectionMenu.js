@@ -8,19 +8,23 @@ import Slider from "./Slider";
 @observer
 class SelectionMenu extends Component {
   handleChange = e => {
-    this.props.store.app.setSelectedStation(true);
-    this.props.store.app.setStation(e.target.name);
-    if (typeof this.props.onChange === "function") {
-      this.props.onChange(e.target.name);
+    if (e.target.name === "projection1") {
+      this.props.store.app.setIsProjection1();
+      this.props.onChange();
+    } else if (e.target.name === "projection2") {
+      this.props.store.app.setIsProjection2();
+      this.props.onChange();
+    } else {
+      this.props.store.app.setSelectedStation(true);
+      this.props.store.app.setStation(e.target.name);
+      this.props.onChange();
     }
   };
 
   render() {
     const {
       isProjection1,
-      isProjection2,
-      setIsProjection1,
-      setIsProjection2
+      isProjection2
     } = this.props.store.app;
     // console.log(toJS(this.props.store.app.station));
 
@@ -64,13 +68,19 @@ class SelectionMenu extends Component {
           Projection Graphs
         </p>
         <ul className="menu-list">
-          <li onClick={setIsProjection1} style={{ marginBottom: "2px" }}>
-            <a className={isProjection1 ? "is-active" : null}>
+          <li onClick={this.handleChange} style={{ marginBottom: "2px" }}>
+            <a
+              name="projection1"
+              className={isProjection1 ? "is-active" : null}
+            >
               Projection 2040-2069
             </a>
           </li>
-          <li onClick={setIsProjection2}>
-            <a className={isProjection2 ? "is-active" : null}>
+          <li onClick={this.handleChange}>
+            <a
+              name="projection2"
+              className={isProjection2 ? "is-active" : null}
+            >
               Projection 2070-2099
             </a>
           </li>

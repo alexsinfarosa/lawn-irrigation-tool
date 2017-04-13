@@ -23,36 +23,40 @@ export default class Widget extends Component {
       left: 10
     };
 
-    const width = 700 - margin.left - margin.right;
+    const width = 600 - margin.left - margin.right;
     const height = 500;
     const radius = Math.min(width, height) / 2;
-    const colors = d3
-      .scaleThreshold()
-      .domain(observedData)
-      .range([
-        "#757575",
-        "#1E88E5",
-        "#FDD835",
-        "#FFB300",
-        "#e53935",
-        "#757575"
-      ]);
+    const colorsCY = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+    const colorsPs = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+    const colorsPss = ["#1E88E5", "#FDD835", "#e53935", "#FFB300", "#FDD835"];
 
     const pie = d3.pie().sort(null);
-    const path = d3.arc().outerRadius(radius - 40).innerRadius(radius);
+    const pathCY = d3.arc().outerRadius(radius - 100).innerRadius(radius - 60);
+    const pathPs = d3.arc().outerRadius(radius - 50).innerRadius(radius - 10);
     const label = d3.arc().outerRadius(radius - 20).innerRadius(radius - 20);
 
-    const currentYear = pie(observedData).map((e, i) => {
+    const diff = data => data.slice(1).map((n, i) => n - data[i]);
+
+    const currentYear = pie(diff([0, ...observedData])).map((e, i) => {
       return (
         <g key={i}>
-          <path d={path(e)} fill={colors(e.data)} />
-          <text
-            transform={`translate(${label.centroid(e)})`}
-            dy="0.30em"
-            style={{ fill: "black", fontSize: ".9em" }}
-          >
-            {e.value}
-          </text>
+          <path d={pathCY(e)} fill={colorsCY[i]} />
+        </g>
+      );
+    });
+
+    const projection1 = pie(diff([0, ...observedData])).map((e, i) => {
+      return (
+        <g key={i}>
+          <path d={pathPs(e)} fill={colorsPs[i]} />
+        </g>
+      );
+    });
+
+    const projection2 = pie(diff([0, ...observedData])).map((e, i) => {
+      return (
+        <g key={i}>
+          <path d={pathPs(e)} fill={colorsPss[i]} />
         </g>
       );
     });
@@ -61,7 +65,7 @@ export default class Widget extends Component {
     const scale = d3.scaleLinear().domain([0, maxVal]).range([0, 1]);
 
     const innerTicks = scale
-      .ticks(29)
+      .ticks(19)
       .map(tick => ({ value: tick, label: tick }));
 
     // console.log(innerTicks);
@@ -69,16 +73,14 @@ export default class Widget extends Component {
     const rotate = d => {
       const ratio = scale(d.value);
       const newAngle = ratio * 360;
-      return `rotate(${newAngle}) translate(0, ${-(radius - 70)})`;
+      return `rotate(${newAngle}) translate(0, ${-(radius - 120)})`;
     };
 
     return (
       <svg width={width} height={height}>
         <g transform={`translate(${width / 2}, ${height / 2})`}>
-          <text textAnchor="middle" x={0} y={30} style={{ fontSize: "1em" }}>
-            {days}
-          </text>
           {currentYear}
+          {isProjection1 ? projection1 : projection2}
           <circle cx={0} cy={0} r={9} />
           <line
             stroke="#aaa"
@@ -86,10 +88,13 @@ export default class Widget extends Component {
             x1={0}
             y1={0}
             x2={0}
-            y2={-radius + 73}
+            y2={-radius + 123}
             transform={`rotate(${percentToDeg(days)})`}
           />
           <circle cx={0} cy={0} r={3} fill="#aaa" />
+          <text textAnchor="middle" x={0} y={30} style={{ fontSize: "1em" }}>
+            {days}
+          </text>
           <g>
             {innerTicks.map((e, i) => {
               if (i !== innerTicks.length - 1) {

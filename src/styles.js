@@ -17,6 +17,7 @@ export const Top = styled.div`
   ${/* background-color: pink; */ ""}
   text-align: center;
   font-size: 1.1em;
+  margin-bottom: 20px;
 `;
 
 export const LeftContainer = styled.div`

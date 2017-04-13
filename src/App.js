@@ -57,15 +57,18 @@ class App extends Component {
 
           <RightContainer>
             <Top>
-              There have been
-              {" "}
-              <strong>{days}</strong>
-              {" "}
-              days above
-              {" "}
-              <strong>{temperature}˚F</strong>
-              {" "}
-              so far this year
+              <p>
+                There have been
+                {" "}
+                <strong>{days}</strong>
+                {" "}
+                days above
+                {" "}
+                <strong>{temperature}˚F</strong>
+                {" "}
+                so far this year
+              </p>
+              <p />
             </Top>
             <Widget />
             {/* <Bottom> */}

@@ -2,7 +2,7 @@ import axios from "axios";
 import format from "date-fns/format";
 
 // Fetch data -------------------------------------------------------------------------
-export const currentYearData = (protocol, station, temperature) => {
+export const fetchObservedData = (protocol, station, temperature) => {
   const params = {
     sid: station.sid,
     sdate: "1980-08-01",
@@ -18,7 +18,7 @@ export const currentYearData = (protocol, station, temperature) => {
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//data.rcc-acis.org/StnData`, params)
@@ -34,7 +34,7 @@ export const currentYearData = (protocol, station, temperature) => {
 };
 
 // Projection 2040-2069 ---------------------------------------------------------------------
-export const projection1 = (protocol, station, temperature) => {
+export const fetchProjection2040 = (protocol, station, temperature) => {
   const params = {
     loc: `${station.lon}, ${station.lat}`,
     sdate: "2040-08-01",
@@ -67,7 +67,7 @@ export const projection1 = (protocol, station, temperature) => {
 };
 
 // Projection 2070-2099 ----------------------------------------------------------------------
-export const projection2 = (protocol, station, temperature) => {
+export const fetchProjection2070 = (protocol, station, temperature) => {
   const params = {
     loc: `${station.lon}, ${station.lat}`,
     sdate: "2070-08-01",
@@ -93,6 +93,22 @@ export const projection2 = (protocol, station, temperature) => {
         return res.data.data;
       }
       console.log(res.data.error);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const fetchProjections = (protocol, station, temperature) => {
+  return axios
+    .all([
+      fetchProjection2040(protocol, station, temperature),
+      fetchProjection2070(protocol, station, temperature)
+    ])
+    .then(res => {
+      if (!res.hasOwnProperty("error")) {
+        return res;
+      }
     })
     .catch(err => {
       console.log(err);

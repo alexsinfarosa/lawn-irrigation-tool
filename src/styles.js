@@ -10,7 +10,8 @@ export const Page = styled.div`
 
 export const MyApp = styled.div`
   display: flex;
-  ${/* background-color: pink; */ ""}
+  height: 520px;
+  width: 820px;
 `;
 
 export const Top = styled.div`
@@ -23,7 +24,7 @@ export const Top = styled.div`
 export const LeftContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 250px;
+  width: 220px;
   padding: 10px;
   ${/* background-color: aqua; */ ""}
 `;

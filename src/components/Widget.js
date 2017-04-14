@@ -2,21 +2,34 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import * as d3 from "d3";
 
+// import Projection1 from "./Projection1";
+
 @inject("store")
 @observer
 export default class Widget extends Component {
   render() {
     const {
-      observedData,
-      projectedData1,
-      projectedData2,
+      observedDataToGraph,
+      projectedData2040ToGraph,
+      projectedData2070ToGraph,
       days,
       isProjection1,
       isProjection2,
-      maxValCY,
-      maxValP1,
-      maxValP2
+      observedDataMax,
+      projectedData2040Max,
+      projectedData2070Max,
+      isProjectionDataLoaded,
+      temperature
     } = this.props.store.app;
+    console.log(`%cobservedDataToGraph: ${observedDataToGraph}`, `color: red`);
+    console.log(
+      `%cprojectedData2040ToGraph: ${projectedData2040ToGraph}`,
+      `color: blue`
+    );
+    console.log(
+      `%cprojectedData2070ToGraph: ${projectedData2070ToGraph}`,
+      `color: green`
+    );
 
     const margin = {
       top: 10,
@@ -31,7 +44,7 @@ export default class Widget extends Component {
 
     // adjust to colorsCY array based on wheather the projection is displayed
     let colorsCY;
-    if (observedData[observedData.length - 1] === 0) {
+    if (observedDataToGraph[observedDataToGraph.length - 1] === 0) {
       colorsCY = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
     }
     colorsCY = [
@@ -42,18 +55,18 @@ export default class Widget extends Component {
       "#e53935",
       "#757575"
     ];
-
     const colorsPs = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
 
+    // Creating pie chart and path
     const pie = d3.pie().sort(null);
     const pathCY = d3.arc().outerRadius(radius - 100).innerRadius(radius - 60);
     const pathPs = d3.arc().outerRadius(radius - 50).innerRadius(radius - 10);
-    // const label = d3.arc().outerRadius(radius - 20).innerRadius(radius - 20);
 
+    // Converts percentage of the pie to numbers. These numbers are the quantiles.
     const diff = data => data.slice(1).map((n, i) => n - data[i]);
 
-    // console.log(`diff(observedData): ${diff([0, ...observedData])}`);
-    const currentYear = pie(diff([0, ...observedData])).map((e, i) => {
+    // Observed Data
+    const currentYear = pie(diff([0, ...observedDataToGraph])).map((e, i) => {
       return (
         <g key={i}>
           <path d={pathCY(e)} fill={colorsCY[i]} />
@@ -61,7 +74,10 @@ export default class Widget extends Component {
       );
     });
 
-    const projection1 = pie(diff([0, ...projectedData1])).map((e, i) => {
+    // Projection 2040-2069
+    const projection1 = pie(
+      diff([0, ...projectedData2040ToGraph])
+    ).map((e, i) => {
       return (
         <g key={i}>
           <path d={pathPs(e)} fill={colorsPs[i]} />
@@ -69,7 +85,10 @@ export default class Widget extends Component {
       );
     });
 
-    const projection2 = pie(diff([0, ...projectedData2])).map((e, i) => {
+    // Projection 2070-2099
+    const projection2 = pie(
+      diff([0, ...projectedData2070ToGraph])
+    ).map((e, i) => {
       return (
         <g key={i}>
           <path d={pathPs(e)} fill={colorsPs[i]} />
@@ -77,15 +96,17 @@ export default class Widget extends Component {
       );
     });
 
-    let max;
+    // max sets the scale of the graph
+    let max = 0;
     if (isProjection1) {
-      max = maxValP1;
+      max = projectedData2040Max;
     } else if (isProjection2) {
-      max = maxValP2;
+      max = projectedData2070Max;
     } else {
-      max = maxValCY;
+      max = observedDataMax;
     }
 
+    // The block below creates the first circle with numbers
     const percentToDeg = percent => percent * 360 / max;
     const scale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
@@ -103,13 +124,13 @@ export default class Widget extends Component {
       <svg width={width} height={height}>
         <g transform={`translate(${width / 2}, ${height / 2})`}>
           {currentYear}
-          {isProjection1 && projection1}
-          {isProjection2 && projection2}
+          {isProjection1 && isProjectionDataLoaded ? projection1 : null}
+          {isProjection2 && isProjectionDataLoaded ? projection2 : null}
 
           <circle cx={0} cy={0} r={9} />
           <line
             stroke="#aaa"
-            strokeWidth={2}
+            strokeWidth={1}
             x1={0}
             y1={0}
             x2={0}
@@ -117,9 +138,16 @@ export default class Widget extends Component {
             transform={`rotate(${percentToDeg(days)})`}
           />
           <circle cx={0} cy={0} r={3} fill="#aaa" />
-          <text textAnchor="middle" x={0} y={30} style={{ fontSize: "1em" }}>
-            {days}
+          <text
+            textAnchor="middle"
+            x={0}
+            y={-20}
+            style={{ fontSize: ".7em", fill: "red" }}
+          >
+            {`${days} days above ${temperature}`}
+
           </text>
+
           <g>
             {innerTicks.map((e, i) => {
               if (i !== innerTicks.length - 1 && e.value % 1 === 0) {

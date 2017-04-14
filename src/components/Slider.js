@@ -16,13 +16,13 @@ class Slider extends Component {
   render() {
     const { temperature } = this.props.store.app;
     return (
-      <div style={{ textAlign: "right" }}>
+      <div>
         {/* <label className="temperature">T (˚F)</label> */}
         <input
           name="slider"
           type="range"
           min="85"
-          max="100"
+          max="99"
           value={temperature}
           step="1"
           onChange={this.handleChange}

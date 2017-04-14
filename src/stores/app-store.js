@@ -1,5 +1,6 @@
 import { observable, action, computed } from "mobx";
 import { stations } from "../stations";
+import { jStat } from "jStat";
 
 export default class AppStore {
   // logic------------------------------------------------------------------------------------
@@ -14,16 +15,22 @@ export default class AppStore {
     this.isProjection2 = !this.isProjection2;
     this.isProjection1 = false;
   };
+  @observable isObservedDataLoaded = false;
+  @action setIsObservedDataLoaded = d => this.isObservedDataLoaded = d;
+
+  @observable isProjectionDataLoaded = false;
+  @action setIsProjectionDataLoaded = d => this.isProjectionDataLoaded = d;
 
   // Stations ---------------------------------------------------------------------------------
-  @action setStations = d => this.stations = d;
-  @observable station = JSON.parse(localStorage.getItem("station")) || {};
+  // @action setStations = d => this.stations = d;
+  @observable station = JSON.parse(localStorage.getItem("station")) ||
+    stations[0];
   @action setStation = d => {
     this.station = stations.find(s => s.name === d);
     localStorage.setItem("station", JSON.stringify(this.station));
   };
-  @observable selectedStation = this.station ? true : false;
-  @action setSelectedStation = d => this.selectedStation = d;
+  // @observable selectedStation = this.station ? true : false;
+  // @action setSelectedStation = d => this.selectedStation = d;
 
   // Data -----------------------------------------------------------------------------------
   @observable observedData = [];
@@ -35,42 +42,84 @@ export default class AppStore {
   @computed get days() {
     return this.observedDataValues[this.observedDataValues.length - 2];
   }
-  @observable minValCY = 0;
-  @action setMinValCY = d => this.minValCY = d;
+  @computed get observedDataMin() {
+    // removed this.observedDataValues.slice(0,-1)
+    return Math.min(...this.observedDataValues);
+  }
+  @computed get observedDataMax() {
+    return Math.max(...this.observedDataValues);
+  }
+  @computed get observedDataQuantile() {
+    return jStat.quantiles(this.observedDataValues, [0.25, 0.5, 0.75, 1]);
+  }
+  @computed get observedDataToGraph() {
+    // Change scale
+    let aboveMax = 0;
+    if (this.isProjection1) {
+      aboveMax = this.projectedData2040Max;
+    } else if (this.isProjection2) {
+      aboveMax = this.projectedData2070Max;
+    }
 
-  @observable minValP1 = 0;
-  @action setMinValP1 = d => this.minValP1 = d;
+    let results = [
+      this.observedDataMin,
+      ...this.observedDataQuantile,
+      aboveMax
+    ];
+    return results.map(e => Math.round(e));
+  }
 
-  @observable minValP2 = 0;
-  @action setMinValP2 = d => this.minValP2 = d;
+  // Projection 2040-2069 ----------------------------------------------------------
+  @observable projectedData2040 = [];
+  @action setProjectedData2040 = d => this.projectedData2040 = d;
 
-  @observable maxValCY = 40;
-  @action setMaxValCY = d => this.maxValCY = d;
+  @computed get projectedData2040Values() {
+    return this.projectedData2040.map(year => Number(year[1]));
+  }
+  @computed get projectedData2040Min() {
+    return Math.min(...this.projectedData2040Values);
+  }
+  @computed get projectedData2040Max() {
+    return Math.max(...this.projectedData2040Values);
+  }
+  @computed get projectedData2040Quantile() {
+    return jStat.quantiles(this.projectedData2040Values, [0.25, 0.5, 0.75, 1]);
+  }
+  @computed get projectedData2040ToGraph() {
+    const results = [
+      this.projectedData2040Min,
+      ...this.projectedData2040Quantile
+    ];
+    return results.map(e => Math.round(e));
+  }
 
-  @observable maxValP1 = 40;
-  @action setMaxValP1 = d => this.maxValP1 = d;
+  // Projection 2070-2099 ----------------------------------------------------------
+  @observable projectedData2070 = [];
+  @action setProjectedData2070 = d => this.projectedData2070 = d;
 
-  @observable maxValP2 = 40;
-  @action setMaxValP2 = d => this.maxValP2 = d;
+  @computed get projectedData2070Values() {
+    return this.projectedData2070.map(year => Number(year[1]));
+  }
+  @computed get projectedData2070Min() {
+    return Math.min(...this.projectedData2070Values);
+  }
+  @computed get projectedData2070Max() {
+    return Math.max(...this.projectedData2070Values);
+  }
+  @computed get projectedData2070Quantile() {
+    return jStat.quantiles(this.projectedData2070Values, [0.25, 0.5, 0.75, 1]);
+  }
+  @computed get projectedData2070ToGraph() {
+    let results = [
+      this.projectedData2070Min,
+      ...this.projectedData2070Quantile
+    ];
+    return results.map(e => Math.round(e));
+  }
 
-  // @computed get bandsValues() {
-  //   const data = this.observedDataValues;
-  //   const min = Math.min(...data);
-  //   const quantiles = jStat.quantiles(data, [0.25, 0.5, 0.75, 1]);
-  //   return quantiles.unshift(min);
-  // }
-  @observable days = 0;
-  @action setDays = d => this.days = d;
-
-  @observable projectedData1 = [];
-  @action setProjectedData1 = d => this.projectedData1 = d;
-
-  @observable projectedData2 = [];
-  @action setProjectedData2 = d => this.projectedData2 = d;
-
-  // Slider -------------------------------------------------------------------------------------
+  // Slider ---------------------------------------------------------------------------
   @observable temperature = JSON.parse(localStorage.getItem("temperature")) ||
-    null;
+    87;
   @action setTemperature = d => {
     this.temperature = d;
     localStorage.setItem("temperature", JSON.stringify(this.temperature));

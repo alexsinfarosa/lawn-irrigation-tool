@@ -144,8 +144,8 @@ export default class Widget extends Component {
             transform={`rotate(${percentToDeg(days)})`}
           />
           <circle cx={0} cy={0} r={3} fill="#aaa" />
-          {(percentToDeg(days) > 0 && percentToDeg(days) < 45) ||
-            (percentToDeg(days) > 270 && percentToDeg(days) < 360)
+          {(percentToDeg(days) >= 0 && percentToDeg(days) <= 90) ||
+            (percentToDeg(days) >= 270 && percentToDeg(days) <= 360)
             ? <text
                 textAnchor="middle"
                 x={0}

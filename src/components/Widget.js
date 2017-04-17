@@ -36,7 +36,7 @@ export default class Widget extends Component {
       left: 10
     };
 
-    const width = 600 - margin.left - margin.right;
+    const width = 500 - margin.left - margin.right;
     const height = 460;
     const radius = Math.min(width, height) / 2;
 
@@ -57,8 +57,16 @@ export default class Widget extends Component {
 
     // Creating pie chart and path
     const pie = d3.pie().sort(null);
-    const pathCY = d3.arc().outerRadius(radius - 100).innerRadius(radius - 60);
-    const pathPs = d3.arc().outerRadius(radius - 50).innerRadius(radius - 10);
+    const pathCY = d3
+      .arc()
+      .outerRadius(radius - 100)
+      .innerRadius(radius - 60)
+      .padAngle(0.005);
+    const pathPs = d3
+      .arc()
+      .outerRadius(radius - 50)
+      .innerRadius(radius - 10)
+      .padAngle(0.005);
 
     // Converts percentage of the pie to numbers. These numbers are the quantiles.
     const diff = data => data.slice(1).map((n, i) => n - data[i]);
@@ -136,15 +144,34 @@ export default class Widget extends Component {
             transform={`rotate(${percentToDeg(days)})`}
           />
           <circle cx={0} cy={0} r={3} fill="#aaa" />
-          <text
-            textAnchor="middle"
-            x={0}
-            y={-20}
-            style={{ fontSize: ".7em", fill: "red" }}
-          >
-            {`${days} days above ${temperature}`}
+          {(percentToDeg(days) > 0 && percentToDeg(days) < 45) ||
+            (percentToDeg(days) > 270 && percentToDeg(days) < 360)
+            ? <text
+                textAnchor="middle"
+                x={0}
+                y={25}
+                style={{
+                  fontSize: ".7em",
+                  fill: "#00D1B2",
+                  fontWeight: "bold"
+                }}
+              >
+                {`${days} days above ${temperature}`}
 
-          </text>
+              </text>
+            : <text
+                textAnchor="middle"
+                x={0}
+                y={-20}
+                style={{
+                  fontSize: ".7em",
+                  fill: "#00D1B2",
+                  fontWeight: "bold"
+                }}
+              >
+                {`${days} days above ${temperature}`}
+
+              </text>}
 
           <g>
             {innerTicks.map((e, i) => {

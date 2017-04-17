@@ -23,7 +23,7 @@ export default class AppStore {
   @observable isProjectionDataLoaded = false;
   @action setIsProjectionDataLoaded = d => this.isProjectionDataLoaded = d;
 
-  @observable isLegend = true;
+  @observable isLegend = false;
   @action setIsLegend = () => this.isLegend = !this.isLegend;
 
   // Stations ---------------------------------------------------------------------------------

@@ -41,42 +41,56 @@ export const Bottom = styled.div`
   ${/* background-color: lightgreen; */ ""}
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  ${/* justify-content: space-between; */ ""}
   align-items: flex-end;
+  width: 480px;
+  margin-top: 10px;
 `;
 
 export const Below = styled.div`
   background-color: #1E88E5;
   padding: .5em;
-  border-radius: 5px;
-  color: #111;
-  font-size: .8em;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: white;
+  font-size: .6em;
+  flex: 1;
+  font-weight: bold;
 `;
 export const SlightlyBelow = styled.div`
   background-color: #FDD835;
   padding: .5em;
-  border-radius: 5px;
-  color: #111;
-  font-size: .8em;
+  border-radius: 0px;
+  color: white;
+  font-size: .6em;
+  flex: 1;
+  font-weight: bold;
 `;
 export const SlightlyAbove = styled.div`
   background-color: #FFB300;
   padding: .5em;
-  border-radius: 5px;
-  color: #111;
-  font-size: .8em;
+  border-radius: 0px;
+  color: white;
+  font-size: .6em;
+  flex: 1;
+  font-weight: bold;
 `;
 export const Above = styled.div`
   background-color: #E53935;
   padding: .5em;
-  border-radius: 5px;
-  color: #111;
-  font-size: .8em;
+  border-radius: 0px;
+  color: white;
+  font-size: .6em;
+  flex: 1;
+  font-weight: bold;
 `;
 export const NotObserved = styled.div`
   background-color: #757575;
   padding: .5em;
-  border-radius: 5px;
-  color: #111;
-  font-size: .8em;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: white;
+  font-size: .6em;
+  flex: 1;
+  font-weight: bold;
 `;

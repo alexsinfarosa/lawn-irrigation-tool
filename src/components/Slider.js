@@ -32,7 +32,7 @@ class Slider extends Component {
         <output htmlFor="slider">
           {" "}
           <small>
-            <strong>{temperature}</strong>
+            <strong style={{ color: "#00D1B2" }}>{temperature}</strong>
           </small>
         </output>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 import { stations } from "../stations";
 import Slider from "./Slider";
 import Loader from "react-loaders";
@@ -54,7 +54,7 @@ class SelectionMenu extends Component {
       <aside className="menu">
 
         <p className="menu-label">
-          Stations
+          Weather Stations
         </p>
         <ul className="menu-list">
           {stationList}

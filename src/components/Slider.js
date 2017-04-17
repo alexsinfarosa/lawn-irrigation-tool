@@ -7,7 +7,9 @@ import "./slider.css";
 @observer
 class Slider extends Component {
   handleChange = e => {
+    console.log(e.target);
     this.props.store.app.setTemperature(e.target.value);
+    this.props.onChange();
     // if (typeof this.props.onChange === "function") {
     //   this.props.onChange(e.target.name);
     // }
@@ -22,9 +24,9 @@ class Slider extends Component {
           name="slider"
           type="range"
           min="85"
-          max="99"
+          max="100"
           value={temperature}
-          step="1"
+          step="5"
           onChange={this.handleChange}
         />
         <output htmlFor="slider">

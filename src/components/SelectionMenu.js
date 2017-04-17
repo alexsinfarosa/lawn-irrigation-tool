@@ -11,7 +11,15 @@ import "./slider.css";
 @observer
 class SelectionMenu extends Component {
   handleChange = e => {
+    this.props.store.app.resetIsProjection1(false);
+    this.props.store.app.resetIsProjection2(false);
     this.props.store.app.setStation(e.target.name);
+    this.props.onChange();
+  };
+
+  handleSlider = e => {
+    this.props.store.app.resetIsProjection1(false);
+    this.props.store.app.resetIsProjection2(false);
     this.props.onChange();
   };
 
@@ -58,7 +66,7 @@ class SelectionMenu extends Component {
           Temperature (˚F)
         </p>
         <ul className="menu-list">
-          <Slider name="slider" onChange={this.handleChange} />
+          <Slider name="slider" onChange={this.handleSlider} />
         </ul>
 
         <br />

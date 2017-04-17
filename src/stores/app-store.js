@@ -6,11 +6,13 @@ export default class AppStore {
   // logic------------------------------------------------------------------------------------
   @observable protocol = window.location.protocol;
   @observable isProjection1 = false;
+  @action resetIsProjection1 = d => this.isProjection1 = d
   @action setIsProjection1 = () => {
     this.isProjection1 = !this.isProjection1;
     this.isProjection2 = false;
   };
   @observable isProjection2 = false;
+  @action resetIsProjection2 = d => this.isProjection2 = d
   @action setIsProjection2 = () => {
     this.isProjection2 = !this.isProjection2;
     this.isProjection1 = false;

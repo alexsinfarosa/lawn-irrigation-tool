@@ -129,7 +129,7 @@ export default class Widget extends Component {
 
           <circle cx={0} cy={0} r={9} />
           <line
-            stroke="#aaa"
+            stroke="black"
             strokeWidth={1}
             x1={0}
             y1={0}

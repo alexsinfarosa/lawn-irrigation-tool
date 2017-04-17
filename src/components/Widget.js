@@ -56,17 +56,17 @@ export default class Widget extends Component {
     const colorsPs = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
 
     // Creating pie chart and path
-    const pie = d3.pie().sort(null);
+    const pie = d3.pie().sort(null).startAngle(-Math.PI);
     const pathCY = d3
       .arc()
       .outerRadius(radius - 100)
       .innerRadius(radius - 60)
-      .padAngle(0.005);
+      .padAngle(0.008);
     const pathPs = d3
       .arc()
       .outerRadius(radius - 50)
       .innerRadius(radius - 10)
-      .padAngle(0.005);
+      .padAngle(0.008);
 
     // Converts percentage of the pie to numbers. These numbers are the quantiles.
     const diff = data => data.slice(1).map((n, i) => n - data[i]);
@@ -113,7 +113,7 @@ export default class Widget extends Component {
     }
 
     // The block below creates the first circle with numbers
-    const percentToDeg = percent => percent * 360 / max;
+    const percentToDeg = percent => -180 + percent * 360 / max;
     const scale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
     const innerTicks = scale
@@ -122,7 +122,7 @@ export default class Widget extends Component {
 
     const rotate = d => {
       const ratio = scale(d.value);
-      const newAngle = ratio * 360;
+      const newAngle = -180 + ratio * 360;
       return `rotate(${newAngle}) translate(0, ${-(radius - 120)})`;
     };
 

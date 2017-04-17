@@ -40,4 +40,43 @@ export const RightContainer = styled.div`
 export const Bottom = styled.div`
   ${/* background-color: lightgreen; */ ""}
   text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+export const Below = styled.div`
+  background-color: #1E88E5;
+  padding: .5em;
+  border-radius: 5px;
+  color: #111;
+  font-size: .8em;
+`;
+export const SlightlyBelow = styled.div`
+  background-color: #FDD835;
+  padding: .5em;
+  border-radius: 5px;
+  color: #111;
+  font-size: .8em;
+`;
+export const SlightlyAbove = styled.div`
+  background-color: #FFB300;
+  padding: .5em;
+  border-radius: 5px;
+  color: #111;
+  font-size: .8em;
+`;
+export const Above = styled.div`
+  background-color: #E53935;
+  padding: .5em;
+  border-radius: 5px;
+  color: #111;
+  font-size: .8em;
+`;
+export const NotObserved = styled.div`
+  background-color: #757575;
+  padding: .5em;
+  border-radius: 5px;
+  color: #111;
+  font-size: .8em;
 `;

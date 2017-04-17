@@ -2,7 +2,18 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // styled components
-import { Page, MyApp, LeftContainer, RightContainer } from "./styles";
+import {
+  Page,
+  MyApp,
+  LeftContainer,
+  Bottom,
+  RightContainer,
+  Below,
+  SlightlyBelow,
+  SlightlyAbove,
+  Above,
+  NotObserved
+} from "./styles";
 
 // utilities
 import { fetchObservedData, fetchProjections } from "./fetchData";
@@ -67,7 +78,7 @@ class App extends Component {
   };
 
   render() {
-    const { isObservedDataLoaded } = this.props.store.app;
+    const { isObservedDataLoaded, isLegend } = this.props.store.app;
     return (
       <Page>
         <MyApp>
@@ -91,6 +102,14 @@ class App extends Component {
               <p />
             </Top> */}
             {isObservedDataLoaded && <Widget />}
+            {isLegend &&
+              <Bottom>
+                <Below>Below</Below>
+                <SlightlyBelow>Slightly Below</SlightlyBelow>
+                <SlightlyAbove>Slightly Above</SlightlyAbove>
+                <Above>Above</Above>
+                <NotObserved>Not Observed</NotObserved>
+              </Bottom>}
           </RightContainer>
         </MyApp>
       </Page>

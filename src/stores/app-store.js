@@ -6,13 +6,13 @@ export default class AppStore {
   // logic------------------------------------------------------------------------------------
   @observable protocol = window.location.protocol;
   @observable isProjection1 = false;
-  @action resetIsProjection1 = d => this.isProjection1 = d
+  @action resetIsProjection1 = d => this.isProjection1 = d;
   @action setIsProjection1 = () => {
     this.isProjection1 = !this.isProjection1;
     this.isProjection2 = false;
   };
   @observable isProjection2 = false;
-  @action resetIsProjection2 = d => this.isProjection2 = d
+  @action resetIsProjection2 = d => this.isProjection2 = d;
   @action setIsProjection2 = () => {
     this.isProjection2 = !this.isProjection2;
     this.isProjection1 = false;
@@ -22,6 +22,9 @@ export default class AppStore {
 
   @observable isProjectionDataLoaded = false;
   @action setIsProjectionDataLoaded = d => this.isProjectionDataLoaded = d;
+
+  @observable isLegend = true;
+  @action setIsLegend = () => this.isLegend = !this.isLegend;
 
   // Stations ---------------------------------------------------------------------------------
   // @action setStations = d => this.stations = d;

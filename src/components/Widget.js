@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import * as d3 from "d3";
 
-// import Projection1 from "./Projection1";
-
 @inject("store")
 @observer
 export default class Widget extends Component {
@@ -39,7 +37,7 @@ export default class Widget extends Component {
     };
 
     const width = 600 - margin.left - margin.right;
-    const height = 500;
+    const height = 460;
     const radius = Math.min(width, height) / 2;
 
     // adjust to colorsCY array based on wheather the projection is displayed
@@ -111,7 +109,7 @@ export default class Widget extends Component {
     const scale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
     const innerTicks = scale
-      .ticks(25)
+      .ticks(20)
       .map(tick => ({ value: tick, label: tick }));
 
     const rotate = d => {

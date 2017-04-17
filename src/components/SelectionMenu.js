@@ -29,7 +29,7 @@ class SelectionMenu extends Component {
       isProjection2,
       isProjectionDataLoaded
     } = this.props.store.app;
-    console.log(toJS(this.props.store.app.station));
+    // console.log(toJS(this.props.store.app.station));
 
     const stationList = stations.map(station => (
       <li key={station.sid} onClick={this.handleChange}>
@@ -111,6 +111,22 @@ class SelectionMenu extends Component {
                 </a>
               </li>}
 
+        </ul>
+        <br />
+        <ul className="menu-list">
+          <div className="field">
+            <p className="control">
+              <label className="checkbox">
+                <input
+                  onChange={this.props.store.app.setIsLegend}
+                  checked={this.props.store.app.isLegend}
+                  type="checkbox"
+                  style={{ marginRight: "10px" }}
+                />
+                Legend
+              </label>
+            </p>
+          </div>
         </ul>
 
       </aside>

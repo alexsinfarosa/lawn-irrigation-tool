@@ -5,7 +5,8 @@ import format from "date-fns/format";
 export const fetchObservedData = (protocol, station, temperature) => {
   const params = {
     sid: station.sid,
-    sdate: "1980-08-01",
+    // you can change back this to 1980-08-01
+    sdate: `1980-${format(new Date(), "MM-DD")}`,
     edate: format(new Date(), "YYYY-MM-DD"),
     elems: [
       {
@@ -18,12 +19,13 @@ export const fetchObservedData = (protocol, station, temperature) => {
     ]
   };
 
-  // console.log(params);
+  console.log(params);
 
   return axios
     .post(`${protocol}//data.rcc-acis.org/StnData`, params)
     .then(res => {
       if (!res.data.hasOwnProperty("error")) {
+        // res.data.data.map(e => console.log(e));
         return res.data.data;
       }
       console.log(res.data.error);
@@ -37,8 +39,8 @@ export const fetchObservedData = (protocol, station, temperature) => {
 export const fetchProjection2040 = (protocol, station, temperature) => {
   const params = {
     loc: `${station.lon}, ${station.lat}`,
-    sdate: "2040-08-01",
-    edate: "2069-08-01",
+    sdate: `2040-${format(new Date(), "MM-DD")}`,
+    edate: `2069-${format(new Date(), "MM-DD")}`,
     grid: 23,
     elems: [
       {
@@ -51,7 +53,7 @@ export const fetchProjection2040 = (protocol, station, temperature) => {
     ]
   };
 
-  // console.log(params);
+  console.log(params);
 
   return axios
     .post(`${protocol}//grid.rcc-acis.org/GridData`, params)
@@ -70,8 +72,8 @@ export const fetchProjection2040 = (protocol, station, temperature) => {
 export const fetchProjection2070 = (protocol, station, temperature) => {
   const params = {
     loc: `${station.lon}, ${station.lat}`,
-    sdate: "2070-08-01",
-    edate: "2099-08-01",
+    sdate: `2070-${format(new Date(), "MM-DD")}`,
+    edate: `2099-${format(new Date(), "MM-DD")}`,
     grid: 23,
     elems: [
       {
@@ -84,7 +86,7 @@ export const fetchProjection2070 = (protocol, station, temperature) => {
     ]
   };
 
-  // console.log(params);
+  console.log(params);
 
   return axios
     .post(`${protocol}//grid.rcc-acis.org/GridData`, params)

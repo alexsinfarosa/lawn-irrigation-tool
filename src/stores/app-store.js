@@ -6,40 +6,41 @@ export default class AppStore {
   // logic------------------------------------------------------------------------------------
   @observable protocol = window.location.protocol;
   @observable isProjection1 = false;
-  @action resetIsProjection1 = d => this.isProjection1 = d;
+  @action resetIsProjection1 = d => (this.isProjection1 = d);
   @action setIsProjection1 = () => {
     this.isProjection1 = !this.isProjection1;
     this.isProjection2 = false;
   };
   @observable isProjection2 = false;
-  @action resetIsProjection2 = d => this.isProjection2 = d;
+  @action resetIsProjection2 = d => (this.isProjection2 = d);
   @action setIsProjection2 = () => {
     this.isProjection2 = !this.isProjection2;
     this.isProjection1 = false;
   };
   @observable isObservedDataLoaded = false;
-  @action setIsObservedDataLoaded = d => this.isObservedDataLoaded = d;
+  @action setIsObservedDataLoaded = d => (this.isObservedDataLoaded = d);
 
   @observable isProjectionDataLoaded = false;
-  @action setIsProjectionDataLoaded = d => this.isProjectionDataLoaded = d;
+  @action setIsProjectionDataLoaded = d => (this.isProjectionDataLoaded = d);
 
   @observable isLegend = false;
-  @action setIsLegend = () => this.isLegend = !this.isLegend;
+  @action setIsLegend = () => (this.isLegend = !this.isLegend);
 
   // Stations ---------------------------------------------------------------------------------
   // @action setStations = d => this.stations = d;
-  @observable station = JSON.parse(localStorage.getItem("station")) ||
+  @observable station = JSON.parse(localStorage.getItem("gauge-stations")) ||
     stations[0];
   @action setStation = d => {
+    localStorage.removeItem("gauge-stations");
     this.station = stations.find(s => s.name === d);
-    localStorage.setItem("station", JSON.stringify(this.station));
+    localStorage.setItem("gauge-stations", JSON.stringify(this.station));
   };
   // @observable selectedStation = this.station ? true : false;
   // @action setSelectedStation = d => this.selectedStation = d;
 
   // Data -----------------------------------------------------------------------------------
   @observable observedData = [];
-  @action setObservedData = d => this.observedData = d;
+  @action setObservedData = d => (this.observedData = d);
 
   @computed get observedDataValues() {
     return this.observedData.map(year => Number(year[1]));
@@ -72,11 +73,24 @@ export default class AppStore {
       aboveMax
     ];
     return results.map(e => Math.round(e));
+    // return results;
   }
+
+  // @computed get observedDataToGraph() {
+  //   let aboveMax = this.observedDataMax;
+  //   const quantiles = this.observedDataQuantile;
+  //   if (this.observedDataMin === quantiles[0]) {
+  //     quantiles[0] += 0.1;
+  //   }
+  //   if (this.observedDataMax === quantiles[3]) {
+  //     aboveMax += 0.1;
+  //   }
+  //   return [this.observedDataMin, quantiles, aboveMax];
+  // }
 
   // Projection 2040-2069 ----------------------------------------------------------
   @observable projectedData2040 = [];
-  @action setProjectedData2040 = d => this.projectedData2040 = d;
+  @action setProjectedData2040 = d => (this.projectedData2040 = d);
 
   @computed get projectedData2040Values() {
     return this.projectedData2040.map(year => Number(year[1]));
@@ -100,7 +114,7 @@ export default class AppStore {
 
   // Projection 2070-2099 ----------------------------------------------------------
   @observable projectedData2070 = [];
-  @action setProjectedData2070 = d => this.projectedData2070 = d;
+  @action setProjectedData2070 = d => (this.projectedData2070 = d);
 
   @computed get projectedData2070Values() {
     return this.projectedData2070.map(year => Number(year[1]));

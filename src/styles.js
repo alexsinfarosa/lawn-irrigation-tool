@@ -48,49 +48,49 @@ export const Bottom = styled.div`
 `;
 
 export const Below = styled.div`
-  background-color: #1E88E5;
+  background-color: #108EE9;
   padding: .5em;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   color: white;
-  font-size: .6em;
+  font-size: .7em;
   flex: 1;
   font-weight: bold;
 `;
 export const SlightlyBelow = styled.div`
-  background-color: #FDD835;
+  background-color: #00A854;
   padding: .5em;
   border-radius: 0px;
   color: white;
-  font-size: .6em;
+  font-size: .7em;
   flex: 1;
   font-weight: bold;
 `;
 export const SlightlyAbove = styled.div`
-  background-color: #FFB300;
+  background-color: #FFBF00;
   padding: .5em;
   border-radius: 0px;
   color: white;
-  font-size: .6em;
+  font-size: .7em;
   flex: 1;
   font-weight: bold;
 `;
 export const Above = styled.div`
-  background-color: #E53935;
+  background-color: #F04134;
   padding: .5em;
   border-radius: 0px;
   color: white;
-  font-size: .6em;
+  font-size: .7em;
   flex: 1;
   font-weight: bold;
 `;
 export const NotObserved = styled.div`
-  background-color: #757575;
+  background-color: #9E9E9E;
   padding: .5em;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: white;
-  font-size: .6em;
+  font-size: .7em;
   flex: 1;
   font-weight: bold;
 `;

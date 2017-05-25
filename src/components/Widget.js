@@ -43,17 +43,17 @@ export default class Widget extends Component {
     // adjust to colorsCY array based on wheather the projection is displayed
     let colorsCY;
     if (observedDataToGraph[observedDataToGraph.length - 1] === 0) {
-      colorsCY = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+      colorsCY = ["#9E9E9E", "#108EE9", "#00A854", "#FFBF00", "#F04134"];
     }
     colorsCY = [
-      "#757575",
-      "#1E88E5",
-      "#FDD835",
-      "#FFB300",
-      "#e53935",
-      "#757575"
+      "#9E9E9E",
+      "#108EE9",
+      "#00A854",
+      "#FFBF00",
+      "#F04134",
+      "#9E9E9E"
     ];
-    const colorsPs = ["#757575", "#1E88E5", "#FDD835", "#FFB300", "#e53935"];
+    const colorsPs = ["#9E9E9E", "#108EE9", "#00A854", "#FFBF00", "#F04134"];
 
     // Creating pie chart and path
     const pie = d3
@@ -108,7 +108,7 @@ export default class Widget extends Component {
     });
 
     // max sets the scale of the graph
-    let max = 0;
+    let max;
     if (isProjection1) {
       max = projectedData2040Max;
     } else if (isProjection2) {
@@ -132,7 +132,7 @@ export default class Widget extends Component {
     };
 
     return (
-      <svg width={width} height={height} style={{ border: "1px solid #eee" }}>
+      <svg width={width} height={height}>
         <g transform={`translate(${width / 2}, ${height / 1.5})`}>
           {currentYear}
           {isProjection1 && isProjectionDataLoaded ? projection1 : null}
@@ -160,7 +160,10 @@ export default class Widget extends Component {
               fontWeight: "bold"
             }}
           >
-            {`${days} days above ${temperature}`}
+            {" "}
+            {days > 1
+              ? `${days} days above ${temperature}`
+              : `${days} day above ${temperature}`}
 
           </text>
 
@@ -181,6 +184,51 @@ export default class Widget extends Component {
               return null;
             })}
           </g>
+
+          {(isProjection1 || isProjection2) && isProjectionDataLoaded
+            ? <g>
+                <path
+                  d=" M -223 5
+            L -223 95
+            L -180 95"
+                  stroke="#7F7F7F"
+                  strokeWidth="1"
+                  fill="none"
+                />
+                <text
+                  textAnchor="middle"
+                  x={-130}
+                  y={98}
+                  style={{ fontSize: ".8rem" }}
+                >
+                  Observed Data
+                </text>
+
+                <path
+                  d=" M -253 5
+            L -253 125
+            L -180 125"
+                  stroke="#7F7F7F"
+                  strokeWidth="1"
+                  fill="none"
+                />
+                <text
+                  textAnchor="middle"
+                  x={-144}
+                  y={128}
+                  style={{ fontSize: ".8rem" }}
+                >
+                  Projection
+                </text>
+              </g>
+            : <text
+                textAnchor="middle"
+                x={0}
+                y={-260}
+                style={{ fontSize: "1rem" }}
+              >
+                Observed Data (1980-present)
+              </text>}
         </g>
       </svg>
     );

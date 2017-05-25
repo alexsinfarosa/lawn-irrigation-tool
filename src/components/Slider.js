@@ -23,10 +23,10 @@ class Slider extends Component {
         <input
           name="slider"
           type="range"
-          min="85"
-          max="100"
+          min="74"
+          max="96"
           value={temperature}
-          step="5"
+          step="2"
           onChange={this.handleChange}
         />
         <output htmlFor="slider">

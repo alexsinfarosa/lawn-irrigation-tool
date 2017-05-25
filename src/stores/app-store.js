@@ -23,7 +23,7 @@ export default class AppStore {
   @observable isProjectionDataLoaded = false;
   @action setIsProjectionDataLoaded = d => (this.isProjectionDataLoaded = d);
 
-  @observable isLegend = false;
+  @observable isLegend = true;
   @action setIsLegend = () => (this.isLegend = !this.isLegend);
 
   // Stations ---------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ export default class AppStore {
 
   // Slider ---------------------------------------------------------------------------
   @observable temperature = JSON.parse(localStorage.getItem("temperature")) ||
-    87;
+    85;
   @action setTemperature = d => {
     this.temperature = d;
     localStorage.setItem("temperature", JSON.stringify(this.temperature));

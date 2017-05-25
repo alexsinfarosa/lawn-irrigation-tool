@@ -1,6 +1,6 @@
 {
   "name": "beet",
-  "homepage": "http://newadata.nrcc.cornell.edu/gauge/",
+  "homepage": "http://newadata.nrcc.cornell.edu/gauge-widget/",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {

@@ -86,7 +86,7 @@ class App extends Component {
             <SelectionMenu onChange={this.getData} />
           </LeftContainer>
 
-          <RightContainer>
+          <RightContainer style={{ margin: "0 auto" }}>
             {/* <Top>
               <p>
                 There have been
@@ -103,7 +103,7 @@ class App extends Component {
             </Top> */}
             {isObservedDataLoaded && <Widget />}
             {isLegend &&
-              <Bottom>
+              <Bottom style={{ margin: "0 auto" }}>
                 <Below>Below</Below>
                 <SlightlyBelow>Slightly Below</SlightlyBelow>
                 <SlightlyAbove>Slightly Above</SlightlyAbove>

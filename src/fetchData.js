@@ -19,7 +19,7 @@ export const fetchObservedData = (protocol, station, temperature) => {
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//data.rcc-acis.org/StnData`, params)
@@ -53,7 +53,7 @@ export const fetchProjection2040 = (protocol, station, temperature) => {
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//grid.rcc-acis.org/GridData`, params)
@@ -86,7 +86,7 @@ export const fetchProjection2070 = (protocol, station, temperature) => {
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//grid.rcc-acis.org/GridData`, params)

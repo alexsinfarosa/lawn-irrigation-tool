@@ -46,7 +46,7 @@ export default class AppStore {
     return this.observedData.map(year => Number(year[1]));
   }
   @computed get days() {
-    return this.observedDataValues[this.observedDataValues.length - 2];
+    return this.observedDataValues[this.observedDataValues.length - 1];
   }
   @computed get observedDataMin() {
     // removed this.observedDataValues.slice(0,-1)

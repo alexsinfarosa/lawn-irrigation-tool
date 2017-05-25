@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+import format from "date-fns/format";
+import subYears from "date-fns/sub_years";
 import * as d3 from "d3";
 
 @inject("store")
@@ -153,17 +155,14 @@ export default class Widget extends Component {
           <text
             textAnchor="middle"
             x={0}
-            y={50}
+            y={-60}
             style={{
-              fontSize: ".9em",
+              fontSize: "1.4em",
               fill: "#00D1B2",
               fontWeight: "bold"
             }}
           >
-            {" "}
-            {days > 1
-              ? `${days} days above ${temperature}`
-              : `${days} day above ${temperature}`}
+            {days}
 
           </text>
 
@@ -189,25 +188,25 @@ export default class Widget extends Component {
             ? <g>
                 <path
                   d=" M -223 5
-            L -223 95
-            L -180 95"
+            L -223 70
+            L -180 70"
                   stroke="#7F7F7F"
                   strokeWidth="1"
                   fill="none"
                 />
                 <text
                   textAnchor="middle"
-                  x={-130}
-                  y={98}
+                  x={-145}
+                  y={73}
                   style={{ fontSize: ".8rem" }}
                 >
-                  Observed Data
+                  Observed
                 </text>
 
                 <path
                   d=" M -253 5
-            L -253 125
-            L -180 125"
+            L -253 100
+            L -180 100"
                   stroke="#7F7F7F"
                   strokeWidth="1"
                   fill="none"
@@ -215,7 +214,7 @@ export default class Widget extends Component {
                 <text
                   textAnchor="middle"
                   x={-144}
-                  y={128}
+                  y={103}
                   style={{ fontSize: ".8rem" }}
                 >
                   Projection
@@ -227,7 +226,17 @@ export default class Widget extends Component {
                 y={-260}
                 style={{ fontSize: "1rem" }}
               >
-                Observed Data (1980-present)
+                From
+                {" "}
+                {format(subYears(new Date(), 1), "YYYY-MM-DD")}
+                {" "}
+                to
+                {" "}
+                {format(new Date(), "YYYY-MM-DD")}
+                {" "}
+                {days > 1
+                  ? `there have been ${days} days above ${temperature}`
+                  : `there has been ${days} day above ${temperature}`}
               </text>}
         </g>
       </svg>

@@ -1868,7 +1868,7 @@ d3-hierarchy@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.4.tgz#96c3942f3f21cf997a11b4edf00dde2a77b4c6d0"
 
-d3-interpolate@1, d3-interpolate@1.1.4, d3-interpolate@^1.1.4:
+d3-interpolate@1, d3-interpolate@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.4.tgz#a43ec5b3bee350d8516efdf819a4c08c053db302"
   dependencies:
@@ -5097,13 +5097,12 @@ recharts-scale@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/recharts-scale/-/recharts-scale-0.3.0.tgz#d17e8c4055dbbeb0d65435c9142ee0fb9054758a"
 
-recharts@^1.0.0-alpha.0:
-  version "1.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.0.0-alpha.0.tgz#f435b81d7bf6c5820a06c2f5d069b5814eb94113"
+recharts@0.22.4:
+  version "0.22.4"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-0.22.4.tgz#dfcb7a95fa6d99e77a913b2265b68ec8ad2b84ed"
   dependencies:
     classnames "2.2.5"
     core-js "2.4.1"
-    d3-interpolate "^1.1.4"
     d3-scale "1.0.4"
     d3-shape "1.0.4"
     lodash "~4.17.4"

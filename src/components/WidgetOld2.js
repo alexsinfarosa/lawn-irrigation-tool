@@ -41,13 +41,7 @@ export default class Widget extends Component {
     const width = 600 - margin.left - margin.right;
     const height = 460;
     const radius = Math.min(width, height) / 1.6;
-
-    // adjust to colorsCY array based on wheather the projection is displayed
-    let colorsCY;
-    if (observedDataToGraph[observedDataToGraph.length - 1] === 0) {
-      colorsCY = ["#9E9E9E", "#108EE9", "#00A854", "#FFBF00", "#F04134"];
-    }
-    colorsCY = [
+    const colors = [
       "#9E9E9E",
       "#108EE9",
       "#00A854",
@@ -55,7 +49,6 @@ export default class Widget extends Component {
       "#F04134",
       "#9E9E9E"
     ];
-    const colorsPs = ["#9E9E9E", "#108EE9", "#00A854", "#FFBF00", "#F04134"];
 
     // Creating pie chart and path
     const pie = d3
@@ -75,36 +68,29 @@ export default class Widget extends Component {
       .innerRadius(radius - 20)
       .padAngle(0.000);
 
-    // Converts percentage of the pie to numbers. These numbers are the quantiles.
-    const diff = data => data.slice(1).map((n, i) => n - data[i]);
-
     // Observed Data
-    const currentYear = pie(diff([0, ...observedDataToGraph])).map((e, i) => {
+    const currentYear = pie([1, 1, 1, 1, 1, 1]).map((e, i) => {
       return (
         <g key={i}>
-          <path d={pathCY(e)} fill={colorsCY[i]} />
+          <path d={pathCY(e)} fill={colors[i]} />
         </g>
       );
     });
 
     // Projection 2040-2069
-    const projection1 = pie(
-      diff([0, ...projectedData2040ToGraph])
-    ).map((e, i) => {
+    const projection1 = pie([1, 1, 1, 1, 1, 1]).map((e, i) => {
       return (
         <g key={i}>
-          <path d={pathPs(e)} fill={colorsPs[i]} />
+          <path d={pathPs(e)} fill={colors[i]} />
         </g>
       );
     });
 
     // Projection 2070-2099
-    const projection2 = pie(
-      diff([0, ...projectedData2070ToGraph])
-    ).map((e, i) => {
+    const projection2 = pie([1, 1, 1, 1, 1, 1]).map((e, i) => {
       return (
         <g key={i}>
-          <path d={pathPs(e)} fill={colorsPs[i]} />
+          <path d={pathPs(e)} fill={colors[i]} />
         </g>
       );
     });

@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import { stations } from "../stations";
 import { jStat } from "jStat";
+import Uniq from "lodash/uniq";
 
 export default class AppStore {
   // logic------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ export default class AppStore {
   @observable isProjectionDataLoaded = false;
   @action setIsProjectionDataLoaded = d => (this.isProjectionDataLoaded = d);
 
-  @observable isLegend = true;
+  @observable isLegend = false;
   @action setIsLegend = () => (this.isLegend = !this.isLegend);
 
   // Stations ---------------------------------------------------------------------------------
@@ -60,19 +61,26 @@ export default class AppStore {
   }
   @computed get observedDataToGraph() {
     // Change scale
-    let aboveMax = 0;
-    if (this.isProjection1) {
-      aboveMax = this.projectedData2040Max;
-    } else if (this.isProjection2) {
-      aboveMax = this.projectedData2070Max;
-    }
+    // let aboveMax = 0;
+    // if (this.isProjection1) {
+    //   aboveMax = this.projectedData2040Max;
+    // } else if (this.isProjection2) {
+    //   aboveMax = this.projectedData2070Max;
+    // }
 
-    let results = [
-      this.observedDataMin,
-      ...this.observedDataQuantile,
-      aboveMax
-    ];
-    return results.map(e => Math.round(e));
+    const rounded = this.observedDataQuantile.map(e => Math.round(e));
+    // console.log(rounded);
+
+    // const roundedPlus = rounded.map((e, i) => {
+    //   if (i === 0) return e + 0.1;
+    //   if (i > 0) return e + i / 10;
+    // });
+    // console.log(roundedPlus);
+
+    let results = [this.observedDataMin, ...rounded];
+
+    console.log(results);
+    return results;
     // return results;
   }
 

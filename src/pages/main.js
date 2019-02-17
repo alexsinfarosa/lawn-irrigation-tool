@@ -10,7 +10,6 @@ import Fields from "../components/fields";
 
 const MainPage = () => {
   console.log("MainPage");
-  // const [index, setIndex] = React.useState(1);
   return (
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />

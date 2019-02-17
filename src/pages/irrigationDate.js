@@ -1,22 +1,34 @@
 import React from "react";
-import { Link } from "gatsby";
+
+import Link from "../components/Link";
+import Typography from "@material-ui/core/Typography";
+
+import ButtonGLink from "../components/ButtonGLink";
 
 function FieldIrrigationDatePage() {
   console.log("FieldIrrigationDatePage");
 
   return (
     <div>
-      <h2>Field Irrigation Date</h2>
-      <Link to="/location">GO BACK</Link>
-      <br />
-      <p>
+      <Typography component="h1" variant="h5" align="center" gutterBottom>
+        Irrigation Date
+      </Typography>
+
+      <Link to="/location" variant="button">
+        GO BACK
+      </Link>
+
+      <Typography variant="body2">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex sed porro
         minus ullam quibusdam reiciendis minima laudantium quisquam dolorem
         molestiae! Cupiditate praesentium ducimus sapiente. Dolorum quaerat
         impedit tempore cupiditate pariatur.
-      </p>
+      </Typography>
 
-      <Link to="/sprinkler">Continue</Link>
+      <br />
+      <ButtonGLink to="/sprinkler" variant="outlined" color="primary">
+        Continue
+      </ButtonGLink>
     </div>
   );
 }

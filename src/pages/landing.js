@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "gatsby";
+
+import Typography from "@material-ui/core/Typography";
+import ButtonGLink from "../components/ButtonGLink";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -10,16 +12,21 @@ const LandingPage = () => {
     <Layout>
       <SEO title="Landing Page" keywords={[`landing`]} />
 
-      <h1>Landing Page</h1>
+      <Typography component="h1" variant="h5" align="center" gutterBottom>
+        Welcome!
+      </Typography>
 
-      <p>
+      <Typography variant="body2">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore quia
         aperiam iure corporis mollitia ab quae eos possimus asperiores ullam
         cumque doloribus assumenda labore reiciendis exercitationem animi nisi,
         delectus et?
-      </p>
+      </Typography>
 
-      <Link to="/location">START</Link>
+      <br />
+      <ButtonGLink to="/location" variant="outlined" color="primary">
+        Let's begin!
+      </ButtonGLink>
     </Layout>
   );
 };

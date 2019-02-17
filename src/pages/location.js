@@ -1,28 +1,34 @@
 import React from "react";
-import { Link } from "gatsby";
 
-function FieldLocationPage({ location }) {
+import Link from "../components/Link";
+import Typography from "@material-ui/core/Typography";
+
+import ButtonGLink from "../components/ButtonGLink";
+
+function FieldLocationPage() {
   console.log("FieldLocationPage");
-
-  // Go Button need to be dynamic
-  let previous = "/";
-  if (location.state.fromFields) {
-    previous = "/main";
-  }
 
   return (
     <div>
-      <h2>Field location</h2>
-      <Link to={previous}>GO BACK</Link>
-      <br />
-      <p>
+      <Typography component="h1" variant="h5" align="center" gutterBottom>
+        Location
+      </Typography>
+
+      <Link to="/" variant="button">
+        GO BACK
+      </Link>
+
+      <Typography variant="body2">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex sed porro
         minus ullam quibusdam reiciendis minima laudantium quisquam dolorem
         molestiae! Cupiditate praesentium ducimus sapiente. Dolorum quaerat
         impedit tempore cupiditate pariatur.
-      </p>
+      </Typography>
 
-      <Link to="/irrigationDate">Continue</Link>
+      <br />
+      <ButtonGLink to="/irrigationDate" variant="outlined" color="primary">
+        Continue
+      </ButtonGLink>
     </div>
   );
 }

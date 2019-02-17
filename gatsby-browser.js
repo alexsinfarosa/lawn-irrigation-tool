@@ -1,7 +1,22 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+/* eslint-disable react/prop-types */
 
-// You can delete this file if you're not using it
+import React from "react";
+import { install } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import theme from "./.cache/theme";
+
+install();
+
+export const onInitialClientRender = () => {
+  if (process.env.BUILD_STAGE === `develop`) {
+    return;
+  }
+
+  // Remove the server-side injected CSS.
+  const jssStyles = document.querySelector("#jss-server-side");
+  jssStyles.parentNode.removeChild(jssStyles);
+};
+
+export const wrapRootElement = ({ element }) => {
+  return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
+};

@@ -32,6 +32,12 @@ module.exports = {
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
-    "gatsby-plugin-offline"
+    "gatsby-plugin-offline",
+    {
+      resolve: `gatsby-plugin-material-ui`,
+      options: {
+        pathToTheme: "src/utils/theme.js"
+      }
+    }
   ]
 };

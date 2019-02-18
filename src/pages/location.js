@@ -43,19 +43,29 @@ function FieldLocationPage() {
 
         <Typography
           component="h1"
-          variant="h5"
+          variant="subtitle1"
           align="center"
           style={{ marginLeft: -31 }}
         >
-          Location
+          Create Location - step(1/3)
         </Typography>
       </header>
 
       <main className={classes.main}>
+        <Typography
+          component="h1"
+          variant="h6"
+          align="center"
+          gutterBottom
+          style={{ marginLeft: -31 }}
+        >
+          Enter Your Location
+        </Typography>
+
+        <br />
         <Typography variant="caption" align="justify" gutterBottom>
-          To access weather information in your area please enter your location.
-          We also consider the Nassau County odd/even irrigation ordinance if an
-          address number is provided.
+          Note: We also consider the Nassau County odd/even irrigation ordinance
+          if an address number is provided.
         </Typography>
 
         <br />

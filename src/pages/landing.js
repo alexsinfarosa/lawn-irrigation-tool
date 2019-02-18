@@ -1,32 +1,79 @@
 import React from "react";
 
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
-import ButtonGLink from "../components/ButtonGLink";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 
+import ButtonGLink from "../components/ButtonGLink";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    width: "100vw",
+    padding: theme.spacing(2)
+  },
+  titleText: {
+    color: theme.palette.text.secondary,
+    fontWeight: "700",
+    marginBottom: theme.spacing(6)
+  }
+}));
+
 const LandingPage = () => {
   console.log("LandingPage");
+  const classes = useStyles();
+
   return (
     <Layout>
       <SEO title="Landing Page" keywords={[`landing`]} />
 
-      <Typography component="h1" variant="h5" align="center" gutterBottom>
-        Welcome!
-      </Typography>
+      <div className={classes.root}>
+        <div className={classes.titleText}>
+          <Typography
+            color="inherit"
+            component="h1"
+            variant="h4"
+            align="left"
+            gutterBottom
+          >
+            Lawn
+          </Typography>
+          <Typography
+            color="inherit"
+            component="h1"
+            variant="h4"
+            align="left"
+            gutterBottom
+          >
+            Irrigation
+          </Typography>
 
-      <Typography variant="body2">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore quia
-        aperiam iure corporis mollitia ab quae eos possimus asperiores ullam
-        cumque doloribus assumenda labore reiciendis exercitationem animi nisi,
-        delectus et?
-      </Typography>
+          <Typography
+            color="inherit"
+            component="h1"
+            variant="h4"
+            align="left"
+            gutterBottom
+          >
+            Calculator
+          </Typography>
+        </div>
 
-      <br />
-      <ButtonGLink to="/location" variant="outlined" color="primary">
-        Let's begin!
-      </ButtonGLink>
+        <ButtonGLink
+          to="/location"
+          variant="outlined"
+          color="secondary"
+          size="large"
+        >
+          Get Started
+        </ButtonGLink>
+      </div>
     </Layout>
   );
 };

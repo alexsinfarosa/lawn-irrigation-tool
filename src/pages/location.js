@@ -3,6 +3,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 
 import ButtonGLink from "../components/ButtonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,8 +23,10 @@ const useStyles = makeStyles(theme => ({
   main: {
     padding: theme.spacing(2)
   },
+  label: { color: "red" },
   footer: {
     padding: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
     textAlign: "center"
   }
 }));
@@ -31,7 +34,6 @@ const useStyles = makeStyles(theme => ({
 function FieldLocationPage() {
   console.log("FieldLocationPage");
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -50,12 +52,22 @@ function FieldLocationPage() {
       </header>
 
       <main className={classes.main}>
-        <Typography variant="body2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex sed porro
-          minus ullam quibusdam reiciendis minima laudantium quisquam dolorem
-          molestiae! Cupiditate praesentium ducimus sapiente. Dolorum quaerat
-          impedit tempore cupiditate pariatur.
+        <Typography variant="caption" align="justify" gutterBottom>
+          To access weather information in your area please enter your location.
+          We also consider the Nassau County odd/even irrigation ordinance if an
+          address number is provided.
         </Typography>
+
+        <br />
+        <TextField
+          id="outlined-full-width"
+          label="Address"
+          placeholder="Type your address"
+          // helperText=""
+          fullWidth
+          margin="normal"
+          variant="outlined"
+        />
       </main>
 
       <footer className={classes.footer}>

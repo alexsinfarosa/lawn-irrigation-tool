@@ -15,13 +15,29 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    width: "100vw",
-    padding: theme.spacing(2)
+    width: "100vw"
+    // padding: theme.spacing(2)
   },
   titleText: {
     color: theme.palette.text.secondary,
     fontWeight: "700",
     marginBottom: theme.spacing(6)
+  },
+  smallTextTop: {
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+    background: theme.palette.primary.light,
+    marginBottom: theme.spacing(8),
+    color: "white"
+  },
+  smallTextBottom: {
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+    // background: theme.palette.primary.light,
+    marginBottom: theme.spacing(8)
+    // color: "white"
   }
 }));
 
@@ -65,10 +81,29 @@ const LandingPage = () => {
           </Typography>
         </div>
 
+        <Typography
+          color="inherit"
+          variant="caption"
+          align="center"
+          className={classes.smallTextTop}
+        >
+          You can find out your watering needs for today and the next two days
+        </Typography>
+
+        <Typography
+          color="inherit"
+          variant="caption"
+          align="justify"
+          className={classes.smallTextBottom}
+        >
+          To ensure a healthy lawn, use less water and save money please follow
+          the simple but scientific guidance
+        </Typography>
+
         <ButtonGLink
           to="/location"
           variant="outlined"
-          color="secondary"
+          color="primary"
           size="large"
         >
           Get Started

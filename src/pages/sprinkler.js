@@ -70,7 +70,9 @@ const useStyles = makeStyles(theme => ({
   },
   btnBig: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
+    background: theme.palette.primary.light,
+    color: "#fff"
   },
   leftRightPadding: {
     paddingLeft: theme.spacing(4),
@@ -173,7 +175,6 @@ function SprinklerTypePage() {
         <ButtonGLink
           to="/main"
           variant="contained"
-          color="primary"
           fullWidth
           classes={{ root: classes.btnBig }}
         >

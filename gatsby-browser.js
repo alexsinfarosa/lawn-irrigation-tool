@@ -17,7 +17,8 @@ import {
   faSun,
   faSnowflake,
   faCloudRain,
-  faWater
+  faWater,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
 library.add(
@@ -30,7 +31,8 @@ library.add(
   faSun,
   faSnowflake,
   faCloudRain,
-  faWater
+  faWater,
+  faTrash
 );
 
 install();

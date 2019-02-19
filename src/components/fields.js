@@ -1,7 +1,14 @@
 import React from "react";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+// import Typography from "@material-ui/core/Typography";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "../components/Link";
@@ -29,8 +36,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: theme.spacing(4),
-    paddingTop: theme.spacing(12)
+    padding: theme.spacing(2),
+    paddingTop: theme.spacing(10)
   }
 }));
 
@@ -58,33 +65,28 @@ const Fields = ({ handleMainPageIdx }) => {
       </header>
 
       <main className={classes.main}>
-        <Typography variant="body2">
-          Ciccio... Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Hic assumenda corporis doloremque accusamus aliquam reiciendis
-          repellat. Eaque quasi minima animi, quas tempora neque modi, magnam
-          facilis cum quos suscipit? Amet.
-        </Typography>
+        <Paper style={{ marginLeft: 10 }} elevation={1}>
+          <List component="nav" style={{ paddingTop: 22 }}>
+            <ListItem button>
+              <div style={{ marginLeft: -24 }}>
+                <Button variant="contained" color="secondary" size="small">
+                  45
+                </Button>
+              </div>
 
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
+              <ListItemText
+                primary={"114 Cayuga St."}
+                secondary={"2018-08-09"}
+              />
 
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
-
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
+              <ListItemSecondaryAction>
+                <IconButton aria-label="Delete">
+                  <FontAwesomeIcon icon="trash" size="xs" />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+        </Paper>
       </main>
     </div>
   );

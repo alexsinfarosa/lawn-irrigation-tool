@@ -10,7 +10,7 @@ import Fields from "../components/fields";
 
 const MainPage = () => {
   console.log("MainPage");
-  const [mainPageIdx, setMainPageIdx] = React.useState(1);
+  const [mainPageIdx, setMainPageIdx] = React.useState(0);
   const handleMainPageIdx = i => setMainPageIdx(i);
   return (
     <Layout>

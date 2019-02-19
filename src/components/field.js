@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     display: "grid",
     gridTemplateRows: "auto 1fr 1fr",
     padding: theme.spacing(2),
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(10),
     height: "100vh"
   },
   top: {

@@ -15,7 +15,7 @@ function UpdateTodayDeficit() {
 
   return (
     <div className={classes.root}>
-      <Typography variant="subtitle">Update Water Deficit</Typography>
+      <Typography variant="subtitle1">Update Water Deficit</Typography>
     </div>
   );
 }

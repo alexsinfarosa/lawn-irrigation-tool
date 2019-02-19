@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: theme.spacing(4),
-    paddingTop: theme.spacing(12)
+    padding: theme.spacing(2),
+    paddingTop: theme.spacing(10)
   }
 }));
 
@@ -55,33 +55,45 @@ const Forecast = ({ handleMainPageIdx }) => {
       </header>
 
       <main className={classes.main}>
-        <Typography variant="body2">
-          Ciccio... Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Hic assumenda corporis doloremque accusamus aliquam reiciendis
-          repellat. Eaque quasi minima animi, quas tempora neque modi, magnam
-          facilis cum quos suscipit? Amet.
+        <Typography
+          variant="subtitle1"
+          align="center"
+          style={{ marginBottom: theme.spacing(2) }}
+        >
+          114 Cayuga St.
         </Typography>
 
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: theme.spacing(2),
+            paddingBottom: theme.spacing(4)
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <FontAwesomeIcon icon="sun" size="2x" style={{ marginRight: 4 }} />
+            <Typography variant="h4">20˚</Typography>
+          </div>
+          <Typography variant="caption">Mostly Cloudly</Typography>
+        </div>
 
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
+        <div style={{ marginBottom: theme.spacing(4) }}>
+          <Typography variant="button">Next 7 Days</Typography>
+          <Typography variant="caption">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora
+            dignissimos voluptate, eveniet perspiciati.
+          </Typography>
+        </div>
 
-        <Typography variant="body2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-          assumenda corporis doloremque accusamus aliquam reiciendis repellat.
-          Eaque quasi minima animi, quas tempora neque modi, magnam facilis cum
-          quos suscipit? Amet.
-        </Typography>
+        <div>Forecast Table</div>
       </main>
     </div>
   );

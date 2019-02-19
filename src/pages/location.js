@@ -36,7 +36,9 @@ const useStyles = makeStyles(theme => ({
   },
   btnBig: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
+    background: theme.palette.primary.light,
+    color: "#fff"
   }
 }));
 
@@ -87,7 +89,6 @@ function FieldLocationPage() {
         <ButtonGLink
           to="/irrigationDate"
           variant="contained"
-          color="primary"
           fullWidth
           classes={{ root: classes.btnBig }}
         >

@@ -15,7 +15,7 @@ function BarChart() {
 
   return (
     <div className={classes.root}>
-      <Typography variant="subtitle">BarChart</Typography>
+      <Typography variant="subtitle1">BarChart</Typography>
     </div>
   );
 }

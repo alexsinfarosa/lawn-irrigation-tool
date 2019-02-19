@@ -10,7 +10,7 @@ import Main from "./main";
 const IndexPage = () => {
   return (
     <Layout>
-      <SEO title="Landing" keywords={[`gatsby`]} />
+      <SEO title="IrriTool" keywords={[`app`]} />
       <Router>
         <LandingPage path="/" />
         <Main path="/main" />

@@ -21,13 +21,22 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2)
   },
   main: {
-    padding: theme.spacing(2)
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4)
   },
   label: { color: "red" },
   footer: {
     padding: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
-    textAlign: "center"
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(7)
+  },
+  btnBig: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   }
 }));
 
@@ -52,13 +61,7 @@ function FieldLocationPage() {
       </header>
 
       <main className={classes.main}>
-        <Typography
-          component="h1"
-          variant="h6"
-          align="center"
-          gutterBottom
-          style={{ marginLeft: -31 }}
-        >
+        <Typography component="h1" variant="h6" align="center" gutterBottom>
           Enter Your Location
         </Typography>
 
@@ -81,7 +84,13 @@ function FieldLocationPage() {
       </main>
 
       <footer className={classes.footer}>
-        <ButtonGLink to="/irrigationDate" variant="outlined" color="primary">
+        <ButtonGLink
+          to="/irrigationDate"
+          variant="contained"
+          color="primary"
+          fullWidth
+          classes={{ root: classes.btnBig }}
+        >
           Continue
         </ButtonGLink>
       </footer>

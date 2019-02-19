@@ -38,6 +38,10 @@ const useStyles = makeStyles(theme => ({
     // background: theme.palette.primary.light,
     marginBottom: theme.spacing(8)
     // color: "white"
+  },
+  btnBig: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   }
 }));
 
@@ -105,6 +109,7 @@ const LandingPage = () => {
           variant="outlined"
           color="primary"
           size="large"
+          classes={{ root: classes.btnBig }}
         >
           Get Started
         </ButtonGLink>

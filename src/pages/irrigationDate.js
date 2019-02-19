@@ -3,9 +3,11 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 
 import ButtonGLink from "../components/ButtonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import format from "date-fns/format";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,12 +22,25 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2)
   },
   main: {
-    padding: theme.spacing(2)
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4)
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
   },
   footer: {
     padding: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
-    textAlign: "center"
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(7)
+  },
+  btnBig: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   }
 }));
 
@@ -42,25 +57,50 @@ function IrrigationDatePage() {
 
         <Typography
           component="h1"
-          variant="h5"
+          variant="subtitle1"
           align="center"
           style={{ marginLeft: -31 }}
         >
-          Irrigation Date
+          Irrigation Date - step(2/3)
         </Typography>
       </header>
 
       <main className={classes.main}>
-        <Typography variant="body2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex sed porro
-          minus ullam quibusdam reiciendis minima laudantium quisquam dolorem
-          molestiae! Cupiditate praesentium ducimus sapiente. Dolorum quaerat
-          impedit tempore cupiditate pariatur.
+        <Typography
+          component="h1"
+          variant="subtitle2"
+          align="center"
+          gutterBottom
+        >
+          When did you last irrigate your lawn?
         </Typography>
+
+        <br />
+        <form className={classes.container} noValidate>
+          <TextField
+            id="date"
+            label="Irrigation Date"
+            type="date"
+            variant="outlined"
+            format="YYYY-MM-DD"
+            // defaultValue={format(new Date(), "MM-dd-yyyy")}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </form>
       </main>
 
       <footer className={classes.footer}>
-        <ButtonGLink to="/sprinkler" variant="outlined" color="primary">
+        <ButtonGLink
+          to="/sprinkler"
+          variant="contained"
+          color="primary"
+          fullWidth
+          classes={{ root: classes.btnBig }}
+        >
           Continue
         </ButtonGLink>
       </footer>

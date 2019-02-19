@@ -7,9 +7,31 @@ import theme from "./.cache/theme";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faHome,
+  faGripHorizontal,
+  faPlus,
+  faCloudSun,
+  faBolt,
+  faSun,
+  faSnowflake,
+  faCloudRain,
+  faWater
+} from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
-library.add(faChevronLeft);
+library.add(
+  faChevronLeft,
+  faHome,
+  faGripHorizontal,
+  faPlus,
+  faCloudSun,
+  faBolt,
+  faSun,
+  faSnowflake,
+  faCloudRain,
+  faWater
+);
 
 install();
 

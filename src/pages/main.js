@@ -10,14 +10,16 @@ import Fields from "../components/fields";
 
 const MainPage = () => {
   console.log("MainPage");
+  const [mainPageIdx, setMainPageIdx] = React.useState(1);
+  const handleMainPageIdx = i => setMainPageIdx(i);
   return (
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />
 
-      <SwipeableViews index={1} enableMouseEvents>
-        <Forecast />
-        <Field />
-        <Fields />
+      <SwipeableViews index={mainPageIdx} enableMouseEvents>
+        <Forecast handleMainPageIdx={handleMainPageIdx} />
+        <Field handleMainPageIdx={handleMainPageIdx} />
+        <Fields handleMainPageIdx={handleMainPageIdx} />
       </SwipeableViews>
     </Layout>
   );

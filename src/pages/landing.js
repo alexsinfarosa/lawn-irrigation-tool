@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     height: "100vh",
     width: "100vw"
-    // padding: theme.spacing(2)
   },
   titleText: {
     color: theme.palette.text.secondary,
@@ -35,9 +34,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
-    // background: theme.palette.primary.light,
     marginBottom: theme.spacing(8)
-    // color: "white"
   },
   btnBig: {
     paddingTop: theme.spacing(2),
@@ -97,7 +94,7 @@ const LandingPage = () => {
         <Typography
           // color="inherit"
           variant="caption"
-          align="justify"
+          align="center"
           className={classes.smallTextBottom}
         >
           To ensure a healthy lawn, use less water and save money please follow

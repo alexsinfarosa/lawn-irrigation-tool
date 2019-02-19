@@ -61,17 +61,12 @@ function IrrigationDatePage() {
           align="center"
           style={{ marginLeft: -31 }}
         >
-          Irrigation Date - step(2/3)
+          Irrigation Date - <small>step(2/3)</small>
         </Typography>
       </header>
 
       <main className={classes.main}>
-        <Typography
-          component="h1"
-          variant="subtitle2"
-          align="center"
-          gutterBottom
-        >
+        <Typography variant="h6" align="center" gutterBottom>
           When did you last irrigate your lawn?
         </Typography>
 

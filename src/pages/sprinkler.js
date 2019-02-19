@@ -99,23 +99,21 @@ function SprinklerTypePage() {
         </Link>
 
         <Typography
-          component="h1"
           variant="subtitle1"
           align="center"
           style={{ marginLeft: -31 }}
         >
-          Sprinkler Type step(3/3)
+          Sprinkler Type - <small>step(3/3)</small>
         </Typography>
       </header>
 
       <main className={classes.main}>
         <div className={classes.leftRightPadding}>
-          <Typography
-            component="h1"
-            variant="subtitle2"
-            align="justify"
-            gutterBottom
-          >
+          <Typography variant="h6" align="center" gutterBottom>
+            What type of water system do you have?
+          </Typography>
+
+          <Typography variant="caption" align="justify">
             As different types of sprinkler heads can deliver different volumes
             of water please choose the type of sprinkler heads that you have.
             <br />
@@ -134,13 +132,11 @@ function SprinklerTypePage() {
               ""
             </Typography>
           ) : (
-            <Typography variant="subtitle1" align="center">
+            <Typography variant="subtitle1" align="center" color="secondary">
               {selectedImg}
             </Typography>
           )}
         </div>
-
-        <br />
 
         <div className={classes.containerList}>
           <GridList className={classes.gridList} cols={1.5}>

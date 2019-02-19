@@ -56,12 +56,12 @@ function FieldLocationPage() {
           align="center"
           style={{ marginLeft: -31 }}
         >
-          Create Location - step(1/3)
+          Create Location - <small>step(1/3)</small>
         </Typography>
       </header>
 
       <main className={classes.main}>
-        <Typography component="h1" variant="h6" align="center" gutterBottom>
+        <Typography variant="h6" align="center" gutterBottom>
           Enter Your Location
         </Typography>
 

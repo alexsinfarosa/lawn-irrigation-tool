@@ -95,7 +95,7 @@ const LandingPage = () => {
         </Typography>
 
         <Typography
-          color="inherit"
+          // color="inherit"
           variant="caption"
           align="justify"
           className={classes.smallTextBottom}

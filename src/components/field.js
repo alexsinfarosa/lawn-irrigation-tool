@@ -130,7 +130,7 @@ const Field = ({ handleMainPageIdx }) => {
         <div className={classes.top}>
           <div className={classes.dayBlock}>
             <Typography variant="caption" className={classes.textDay}>
-              TODAY <small style={{ fontSize: "0.3rem" }}>(EVEN)</small>
+              TODAY <small style={{ fontSize: "0.7rem" }}>(even)</small>
             </Typography>
             <Button
               variant="outlined"

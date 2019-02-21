@@ -20,10 +20,10 @@ import MultipleStreamRotor from "../images/multipleStreamRotorSprinkler.png";
 import MoveableSprinkler from "../images/moveableSprinkler.png";
 
 const images = [
-  { title: "Spray Sprinkler", img: SpraySprinkler },
-  { title: "Single Stream Rotor", img: SingleStreamRotor },
-  { title: "Multiple Stream Rotor", img: MultipleStreamRotor },
-  { title: "Moveable Sprinkler", img: MoveableSprinkler }
+  { title: "Spray Sprinkler", img: SpraySprinkler, flux: 2.4 },
+  { title: "Single Stream Rotor", img: SingleStreamRotor, flux: 4.3 },
+  { title: "Multiple Stream Rotor", img: MultipleStreamRotor, flux: 6.3 },
+  { title: "Moveable Sprinkler", img: MoveableSprinkler, flux: 8.9 }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -80,16 +80,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SprinklerTypePage() {
+function SprinklerTypePage({ location }) {
   console.log("SprinklerTypePage");
   const classes = useStyles();
-  const [selectedImg, setSelectedImg] = React.useState("");
+  const [sprinkler, setSprinkler] = React.useState("");
+  const [flux, setFlux] = React.useState(null);
 
   function handleChange(event) {
-    if (event.target.value === selectedImg) {
-      setSelectedImg("");
+    if (event.target.value === sprinkler) {
+      setSprinkler("");
     } else {
-      setSelectedImg(event.target.value);
+      setSprinkler(event.target.value);
+      const sprinkler = images.find(img => img.title === event.target.value);
+      setFlux(sprinkler.flux);
     }
   }
 
@@ -125,7 +128,7 @@ function SprinklerTypePage() {
 
           <br />
 
-          {selectedImg === "" ? (
+          {sprinkler === "" ? (
             <Typography
               variant="subtitle1"
               align="center"
@@ -135,7 +138,7 @@ function SprinklerTypePage() {
             </Typography>
           ) : (
             <Typography variant="subtitle1" align="center" color="secondary">
-              {selectedImg}
+              {sprinkler}
             </Typography>
           )}
         </div>
@@ -156,7 +159,7 @@ function SprinklerTypePage() {
                     actionIcon={
                       <IconButton>
                         <Checkbox
-                          checked={selectedImg === tile.title}
+                          checked={sprinkler === tile.title}
                           onChange={handleChange}
                           value={tile.title}
                           style={{ color: "#fff" }}
@@ -174,6 +177,7 @@ function SprinklerTypePage() {
       <footer className={classes.footer}>
         <ButtonGLink
           to="/main"
+          state={{ ...location.state, sprinkler, flux }}
           variant="contained"
           fullWidth
           classes={{ root: classes.btnBig }}

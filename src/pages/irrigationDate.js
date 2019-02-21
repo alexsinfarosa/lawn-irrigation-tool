@@ -46,9 +46,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function IrrigationDatePage() {
+function IrrigationDatePage({ location }) {
   console.log("IrrigationDatePage");
   const classes = useStyles();
+  const [irrigationDate, setIrrigationDate] = React.useState(
+    new Date().toString()
+  );
 
   return (
     <div className={classes.root}>
@@ -86,6 +89,9 @@ function IrrigationDatePage() {
             InputLabelProps={{
               shrink: true
             }}
+            onChange={e =>
+              setIrrigationDate(new Date(e.target.value).toString())
+            }
           />
         </form>
       </main>
@@ -93,6 +99,7 @@ function IrrigationDatePage() {
       <footer className={classes.footer}>
         <ButtonGLink
           to="/sprinkler"
+          state={{ ...location.state, irrigationDate }}
           variant="contained"
           fullWidth
           classes={{ root: classes.btnBig }}

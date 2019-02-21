@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import ButtonGLink from "../components/ButtonGLink";
+import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// GOOGLE API
+import PlacesAutocomplete from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   main: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
     padding: theme.spacing(2),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
@@ -45,6 +51,57 @@ const useStyles = makeStyles(theme => ({
 function FieldLocationPage() {
   console.log("FieldLocationPage");
   const classes = useStyles();
+  const theme = useTheme();
+
+  // STATE --------------------------------------------------
+  const [address, setAddress] = useState("");
+  const [streetNumber, setStreetNumber] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleAddressChange = address => {
+    setAddress(address);
+    setErrorMessage("");
+    setLatitude(null);
+    setLongitude(null);
+  };
+
+  const determineStreetNumber = address => {
+    const arr = address.split(" ");
+    const streetNumber = +arr[0];
+    if (!isNaN(streetNumber)) {
+      // console.log("there is a street number!");
+      setStreetNumber(streetNumber);
+    }
+  };
+
+  const handleSelect = address => {
+    setAddress(address);
+    geocodeByAddress(address)
+      .then(results => {
+        const formattedAddress = results[0].formatted_address;
+        determineStreetNumber(formattedAddress);
+        return getLatLng(results[0]);
+      })
+      .then(({ lat, lng }) => {
+        if (!(lat >= 37.2 && lat <= 47.6) || !(lng >= -82.7 && lng <= -66.1)) {
+          setErrorMessage("ZERO_RESULTS");
+        } else {
+          setLatitude(lat);
+          setLongitude(lng);
+        }
+      })
+      .catch(error => console.error("Error", error));
+  };
+
+  // Returns error if address is not valid
+  const handleError = async (status, clearSuggestions) => {
+    // console.log("Error from Google Maps API", status);
+    setErrorMessage(status);
+    clearSuggestions();
+  };
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -61,7 +118,6 @@ function FieldLocationPage() {
           Create Location - <small>step(1/3)</small>
         </Typography>
       </header>
-
       <main className={classes.main}>
         <Typography variant="h6" align="center" gutterBottom>
           Enter Your Location
@@ -74,27 +130,109 @@ function FieldLocationPage() {
         </Typography>
 
         <br />
-        <TextField
-          id="outlined-full-width"
-          label="Address"
-          placeholder="Type your address"
-          // helperText=""
-          fullWidth
-          margin="normal"
-          variant="outlined"
-        />
+        <PlacesAutocomplete
+          value={address}
+          onChange={handleAddressChange}
+          onSelect={handleSelect}
+          shouldFetchSuggestions={address.length > 2}
+          onError={handleError}
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading
+          }) => (
+            <div>
+              <TextField
+                id="address"
+                label="Address"
+                placeholder="Type your address"
+                // helperText=""
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                {...getInputProps()}
+              />
+              <div
+                className="autocomplete-dropdown-container"
+                style={{ height: "100%", overflowY: "scroll" }}
+              >
+                {loading && (
+                  <Typography
+                    variant="caption"
+                    align="center"
+                    style={{ padding: theme.spacing(2) }}
+                  >
+                    Loading...
+                  </Typography>
+                )}
+                {!loading &&
+                  address.length > 0 &&
+                  errorMessage === "ZERO_RESULTS" && (
+                    <Typography
+                      variant="caption"
+                      align="center"
+                      color="error"
+                      style={{ padding: theme.spacing(2) }}
+                    >
+                      Address is not valid
+                    </Typography>
+                  )}
+                <List component="nav">
+                  {suggestions.map(suggestion => {
+                    const className = suggestion.active
+                      ? "suggestion-item--active"
+                      : "suggestion-item";
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                      : { backgroundColor: "#ffffff", cursor: "pointer" };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style
+                        })}
+                      >
+                        <ListItem
+                          button
+                          style={{
+                            padding: theme.spacing(1.8)
+                            // background: theme.palette.background.default
+                          }}
+                        >
+                          <ListItemText
+                            primary={suggestion.formattedSuggestion.mainText}
+                            secondary={
+                              suggestion.formattedSuggestion.secondaryText
+                            }
+                          />
+                        </ListItem>
+                      </div>
+                    );
+                  })}
+                </List>
+              </div>
+            </div>
+          )}
+        </PlacesAutocomplete>
       </main>
 
-      <footer className={classes.footer}>
-        <ButtonGLink
-          to="/irrigationDate"
-          variant="contained"
-          fullWidth
-          classes={{ root: classes.btnBig }}
-        >
-          Continue
-        </ButtonGLink>
-      </footer>
+      {/* FOOTER */}
+      {errorMessage.length === 0 && latitude && (
+        <footer className={classes.footer}>
+          <ButtonGLink
+            to="/irrigationDate"
+            state={{ address, streetNumber, latitude, longitude }}
+            variant="contained"
+            fullWidth
+            classes={{ root: classes.btnBig }}
+          >
+            Continue
+          </ButtonGLink>
+        </footer>
+      )}
     </div>
   );
 }

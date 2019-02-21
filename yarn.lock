@@ -805,7 +805,7 @@
     signedsource "^1.0.0"
     yargs "^9.0.0"
 
-"@material-ui/core@next":
+"@material-ui/core@^4.0.0-alpha.0":
   version "4.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.0.0-alpha.0.tgz#7342e6c672d2351a7657af9b92fe7a5411b7dd00"
   integrity sha512-2bg325ZdSLRHbHMluoXvUzrnLu6WwMyiSfQhDZtwlpaFgWRZSwGskWQLGxNp/O9Lwu/SMYA2A0YHJtaMbvKqFw==
@@ -837,7 +837,7 @@
     react-transition-group "^2.2.1"
     warning "^4.0.1"
 
-"@material-ui/styles@next":
+"@material-ui/styles@^4.0.0-alpha.0":
   version "4.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-alpha.0.tgz#fbfdba318dac6d1138b49edeaaf42be867234822"
   integrity sha512-OZBO4Z0kJY5810ZNxpfiIz02X0GMD8+dd4fizsS9y8txsS97qRQEU7CpksytRwaF1UWSXsXCd5+mHkDtuLs21A==

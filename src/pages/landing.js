@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 
-import ButtonGLink from "../components/ButtonGLink";
+import ButtonGLink from "../components/buttonGLink";
 
 const useStyles = makeStyles(theme => ({
   root: {

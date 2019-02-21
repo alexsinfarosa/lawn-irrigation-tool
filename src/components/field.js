@@ -161,7 +161,7 @@ const Field = ({ handleMainPageIdx }) => {
 
           <div className={classes.dayBlock}>
             <Typography variant="caption" className={classes.textDay}>
-              Feb 20th
+              Feb 21st
             </Typography>
             <Button
               // variant="outlined"
@@ -191,7 +191,7 @@ const Field = ({ handleMainPageIdx }) => {
 
           <div className={classes.dayBlock}>
             <Typography variant="caption" className={classes.textDay}>
-              Feb 21st
+              Feb 22nd
             </Typography>
             <Button
               // variant="outlined"

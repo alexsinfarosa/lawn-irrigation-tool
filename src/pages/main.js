@@ -10,7 +10,7 @@ import Fields from "../components/fields";
 
 const MainPage = ({ location }) => {
   console.log("MainPage");
-  const [mainPageIdx, setMainPageIdx] = React.useState(0);
+  const [mainPageIdx, setMainPageIdx] = React.useState(1);
   const handleMainPageIdx = i => setMainPageIdx(i);
 
   console.log(location.state);
@@ -18,7 +18,11 @@ const MainPage = ({ location }) => {
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />
 
-      <SwipeableViews index={mainPageIdx} enableMouseEvents>
+      <SwipeableViews
+        index={mainPageIdx}
+        onChangeIndex={() => setMainPageIdx(mainPageIdx)}
+        enableMouseEvents
+      >
         <Forecast handleMainPageIdx={handleMainPageIdx} />
         <Field handleMainPageIdx={handleMainPageIdx} />
         <Fields handleMainPageIdx={handleMainPageIdx} />

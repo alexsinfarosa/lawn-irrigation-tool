@@ -7,6 +7,9 @@ import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
 
 import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FieldLocationPage() {
+function FieldLocationPage(props) {
   console.log("FieldLocationPage");
   const classes = useStyles();
   const theme = useTheme();
@@ -102,6 +105,15 @@ function FieldLocationPage() {
     clearSuggestions();
   };
 
+  // reset parameters
+  const handleCloseClick = () => {
+    console.log("fired!!!!");
+    setAddress("");
+    setLatitude(null);
+    setLongitude(null);
+    setErrorMessage("");
+  };
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -125,8 +137,9 @@ function FieldLocationPage() {
 
         <br />
         <Typography variant="caption" align="justify" gutterBottom>
-          Note: We also consider the Nassau County odd/even irrigation ordinance
-          if an address number is provided.
+          Note: Weather data are only available for Nassau County. We also
+          consider the odd/even irrigation ordinance if an address number is
+          provided.
         </Typography>
 
         <br />
@@ -144,16 +157,31 @@ function FieldLocationPage() {
             loading
           }) => (
             <div>
-              <TextField
-                id="address"
-                label="Address"
-                placeholder="Type your address"
-                // helperText=""
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                {...getInputProps()}
-              />
+              <form noValidate autoComplete="off">
+                <TextField
+                  autocomplete="off"
+                  id="address"
+                  label="Address"
+                  placeholder="Type your address"
+                  // helperText=""
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="delete address"
+                          onClick={handleCloseClick}
+                        >
+                          <small>&#10005;</small>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                  {...getInputProps()}
+                />
+              </form>
               <div
                 className="autocomplete-dropdown-container"
                 style={{ height: "100%", overflowY: "scroll" }}
@@ -181,25 +209,13 @@ function FieldLocationPage() {
                   )}
                 <List component="nav">
                   {suggestions.map(suggestion => {
-                    const className = suggestion.active
-                      ? "suggestion-item--active"
-                      : "suggestion-item";
-                    // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
                     return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          className,
-                          style
-                        })}
-                      >
+                      <div {...getSuggestionItemProps(suggestion)}>
                         <ListItem
-                          button
                           style={{
-                            padding: theme.spacing(1.8)
-                            // background: theme.palette.background.default
+                            padding: theme.spacing(1.8, 0, 1.8, 1.8),
+                            margin: 0,
+                            background: theme.palette.background.default
                           }}
                         >
                           <ListItemText
@@ -209,6 +225,7 @@ function FieldLocationPage() {
                             }
                           />
                         </ListItem>
+                        <Divider />
                       </div>
                     );
                   })}

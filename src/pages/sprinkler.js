@@ -9,7 +9,7 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import ButtonGLink from "../components/ButtonGLink";
+import ButtonGLink from "../components/buttonGLink";
 import ImageSprinkler from "../components/imgSprinkler";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center"
+    flexDirection: "column"
+    // justifyContent: "center"
   },
   containerList: {
     display: "flex",
@@ -53,7 +53,8 @@ const useStyles = makeStyles(theme => ({
   gridList: {
     flexWrap: "nowrap",
     transform: "translateZ(0)",
-    width: "100%"
+    width: "100%",
+    height: "100%"
   },
   title: {
     color: "#fff",
@@ -174,17 +175,19 @@ function SprinklerTypePage({ location }) {
         </div>
       </main>
 
-      <footer className={classes.footer}>
-        <ButtonGLink
-          to="/main"
-          state={{ ...location.state, sprinkler, flux }}
-          variant="contained"
-          fullWidth
-          classes={{ root: classes.btnBig }}
-        >
-          Create Field
-        </ButtonGLink>
-      </footer>
+      {sprinkler.length !== 0 && (
+        <footer className={classes.footer}>
+          <ButtonGLink
+            to="/main"
+            state={{ ...location.state, sprinkler, flux }}
+            variant="contained"
+            fullWidth
+            classes={{ root: classes.btnBig }}
+          >
+            Create Field
+          </ButtonGLink>
+        </footer>
+      )}
     </div>
   );
 }

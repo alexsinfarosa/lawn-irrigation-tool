@@ -5,9 +5,9 @@ import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
-import ButtonGLink from "../components/ButtonGLink";
+import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import format from "date-fns/format";
+import format from "date-fns/format";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   main: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    // justifyContent: "center",
     padding: theme.spacing(2),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
@@ -49,9 +49,7 @@ const useStyles = makeStyles(theme => ({
 function IrrigationDatePage({ location }) {
   console.log("IrrigationDatePage");
   const classes = useStyles();
-  const [irrigationDate, setIrrigationDate] = React.useState(
-    new Date().toString()
-  );
+  const [irrigationDate, setIrrigationDate] = React.useState("");
 
   return (
     <div className={classes.root}>
@@ -83,7 +81,7 @@ function IrrigationDatePage({ location }) {
             type="date"
             variant="outlined"
             format="YYYY-MM-DD"
-            // defaultValue={format(new Date(), "MM-dd-yyyy")}
+            defaultValue={format(new Date(), "yyyy-MM-dd")}
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -96,17 +94,19 @@ function IrrigationDatePage({ location }) {
         </form>
       </main>
 
-      <footer className={classes.footer}>
-        <ButtonGLink
-          to="/sprinkler"
-          state={{ ...location.state, irrigationDate }}
-          variant="contained"
-          fullWidth
-          classes={{ root: classes.btnBig }}
-        >
-          Continue
-        </ButtonGLink>
-      </footer>
+      {irrigationDate.length !== 0 && (
+        <footer className={classes.footer}>
+          <ButtonGLink
+            to="/sprinkler"
+            state={{ ...location.state, irrigationDate }}
+            variant="contained"
+            fullWidth
+            classes={{ root: classes.btnBig }}
+          >
+            Continue
+          </ButtonGLink>
+        </footer>
+      )}
     </div>
   );
 }

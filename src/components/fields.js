@@ -65,18 +65,51 @@ const Fields = ({ handleMainPageIdx }) => {
       </header>
 
       <main className={classes.main}>
-        <Paper style={{ marginLeft: 10 }} elevation={1}>
+        <Paper style={{ marginLeft: 10, marginBottom: 24 }} elevation={1}>
           <List component="nav" style={{ paddingTop: 22 }}>
             <ListItem button>
               <div style={{ marginLeft: -24 }}>
-                <Button variant="contained" color="secondary" size="small">
-                  45
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  style={{ width: 75 }}
+                >
+                  water
                 </Button>
               </div>
 
               <ListItemText
                 primary={"114 Cayuga St."}
                 secondary={"2018-08-09"}
+              />
+
+              <ListItemSecondaryAction>
+                <IconButton aria-label="Delete">
+                  <FontAwesomeIcon icon="trash" size="xs" />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+        </Paper>
+
+        <Paper style={{ marginLeft: 10 }} elevation={1}>
+          <List component="nav" style={{ paddingTop: 22 }}>
+            <ListItem button>
+              <div style={{ marginLeft: -24 }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  style={{ width: 75 }}
+                >
+                  OK
+                </Button>
+              </div>
+
+              <ListItemText
+                primary={"698 Madison AV."}
+                secondary={"2018-11-29"}
               />
 
               <ListItemSecondaryAction>

@@ -18,7 +18,8 @@ import {
   faSnowflake,
   faCloudRain,
   faWater,
-  faTrash
+  faTrash,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
 library.add(
@@ -32,7 +33,8 @@ library.add(
   faSnowflake,
   faCloudRain,
   faWater,
-  faTrash
+  faTrash,
+  faTimes
 );
 
 install();

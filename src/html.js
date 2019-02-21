@@ -11,6 +11,7 @@ export default function HTML(props) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+
         <script
           type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUk9begav92si1W6yVe39GlOO7Au2aB0A&libraries=places"

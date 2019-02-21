@@ -206,6 +206,11 @@ body {
   -ms-font-feature-settings: "kern", "liga", "clig", "calt";
   -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
   font-feature-settings: "kern", "liga", "clig", "calt";
+
+  /* Alex */
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 img {
   max-width: 100%;
@@ -617,4 +622,9 @@ pre tt:after {
   html {
     font-size: 120%;
   }
+}
+
+/* Alex */
+::-webkit-scrollbar {
+  background: #fafafa;
 }

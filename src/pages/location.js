@@ -4,15 +4,14 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 
 import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import hideVirtualKeyboard from "hide-virtual-keyboard";
 
 // GOOGLE API
 import PlacesAutocomplete from "react-places-autocomplete";
@@ -93,6 +92,7 @@ function FieldLocationPage(props) {
         } else {
           setLatitude(lat);
           setLongitude(lng);
+          hideVirtualKeyboard();
         }
       })
       .catch(error => console.error("Error", error));
@@ -159,7 +159,7 @@ function FieldLocationPage(props) {
             <div>
               <form noValidate autoComplete="off">
                 <TextField
-                  autocomplete="off"
+                  autoComplete="off"
                   id="address"
                   label="Address"
                   placeholder="Type your address"
@@ -167,6 +167,9 @@ function FieldLocationPage(props) {
                   fullWidth
                   margin="normal"
                   variant="outlined"
+                  SelectProps={{
+                    native: true
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -179,57 +182,67 @@ function FieldLocationPage(props) {
                       </InputAdornment>
                     )
                   }}
-                  {...getInputProps()}
+                  {...getInputProps({ className: "location-search-input" })}
                 />
               </form>
               <div
                 className="autocomplete-dropdown-container"
-                style={{ height: "100%", overflowY: "scroll" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  padding: 0,
+                  margin: 0,
+                  marginTop: -24
+                }}
               >
                 {loading && (
-                  <Typography
-                    variant="caption"
-                    align="center"
-                    style={{ padding: theme.spacing(2) }}
-                  >
+                  <Typography variant="caption" align="center">
                     Loading...
                   </Typography>
                 )}
                 {!loading &&
                   address.length > 0 &&
                   errorMessage === "ZERO_RESULTS" && (
-                    <Typography
-                      variant="caption"
-                      align="center"
-                      color="error"
-                      style={{ padding: theme.spacing(2) }}
-                    >
+                    <Typography variant="caption" align="center" color="error">
                       Address is not valid
                     </Typography>
                   )}
-                <List component="nav">
-                  {suggestions.map(suggestion => {
-                    return (
-                      <div {...getSuggestionItemProps(suggestion)}>
-                        <ListItem
-                          style={{
-                            padding: theme.spacing(1.8, 0, 1.8, 1.8),
-                            margin: 0,
-                            background: theme.palette.background.default
-                          }}
-                        >
-                          <ListItemText
-                            primary={suggestion.formattedSuggestion.mainText}
-                            secondary={
-                              suggestion.formattedSuggestion.secondaryText
-                            }
-                          />
-                        </ListItem>
-                        <Divider />
+
+                {suggestions.map(suggestion => {
+                  const className = suggestion.active
+                    ? "suggestion-item--active"
+                    : "suggestion-item";
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? {
+                        backgroundColor: theme.palette.primary.light,
+                        borderRadius: 4,
+                        color: "#ffffff",
+                        padding: theme.spacing(2),
+                        cursor: "pointer"
+                      }
+                    : {
+                        backgroundColor: theme.palette.background.default,
+                        padding: theme.spacing(2),
+                        cursor: "pointer"
+                      };
+                  return (
+                    <div {...getSuggestionItemProps(suggestion)}>
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style
+                        })}
+                      >
+                        <Typography variant="caption" color="inherit">
+                          {suggestion.description}
+                        </Typography>
                       </div>
-                    );
-                  })}
-                </List>
+                      <Divider />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

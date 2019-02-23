@@ -1,8 +1,8 @@
 module.exports = {
   pathPrefix: "/irrigation-tool-v2",
   siteMetadata: {
-    title: `Irrigation Tool`,
-    description: `Irrigation Tool`,
+    title: `Lawn Irrigation Tool`,
+    description: `Lawn Irrigation Tool`,
     author: `@alexsinfarosa`
   },
   plugins: [
@@ -19,8 +19,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Irrigation Tool`,
-        short_name: `IrriTool`,
+        name: `Lawn Irrigation Tool`,
+        short_name: `LawnIrriTool`,
         start_url: `/`,
         // This is used on splash screen when app is launched
         background_color: `#663399`,

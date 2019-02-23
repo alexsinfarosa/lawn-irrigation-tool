@@ -87,6 +87,7 @@ function SprinklerTypePage({ location }) {
   const [sprinkler, setSprinkler] = React.useState("");
   const [flux, setFlux] = React.useState(null);
 
+  console.log(location.state);
   function handleChange(event) {
     if (event.target.value === sprinkler) {
       setSprinkler("");

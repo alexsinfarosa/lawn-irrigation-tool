@@ -5,7 +5,7 @@ import green from "@material-ui/core/colors/green";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: purple[300],
+      light: "red",
       main: purple[500],
       dark: purple[700]
     },
@@ -14,11 +14,6 @@ const theme = createMuiTheme({
       main: green[500],
       dark: green[700]
     }
-  },
-  typography: {
-    // fontSize: 20,
-    // htmlFontSize: 10,
-    useNextVariants: true
   }
 });
 

@@ -49,8 +49,10 @@ const useStyles = makeStyles(theme => ({
 function IrrigationDatePage({ location }) {
   console.log("IrrigationDatePage");
   const classes = useStyles();
-  const [irrigationDate, setIrrigationDate] = React.useState("");
-
+  const [irrigationDate, setIrrigationDate] = React.useState(
+    new Date().toString()
+  );
+  console.log(irrigationDate);
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -76,12 +78,12 @@ function IrrigationDatePage({ location }) {
         <br />
         <form className={classes.container} noValidate>
           <TextField
-            id="date"
+            id="irrigationDate"
             label="Irrigation Date"
             type="date"
             variant="outlined"
-            format="YYYY-MM-DD"
-            defaultValue={format(new Date(), "yyyy-MM-dd")}
+            format="yyyy-MM-dd"
+            defaultValue={format(new Date(irrigationDate), "yyyy-MM-dd")}
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -94,19 +96,17 @@ function IrrigationDatePage({ location }) {
         </form>
       </main>
 
-      {irrigationDate.length !== 0 && (
-        <footer className={classes.footer}>
-          <ButtonGLink
-            to="/sprinkler"
-            state={{ ...location.state, irrigationDate }}
-            variant="contained"
-            fullWidth
-            classes={{ root: classes.btnBig }}
-          >
-            Continue
-          </ButtonGLink>
-        </footer>
-      )}
+      <footer className={classes.footer}>
+        <ButtonGLink
+          to="/sprinkler"
+          state={{ ...location.state, irrigationDate }}
+          variant="contained"
+          fullWidth
+          classes={{ root: classes.btnBig }}
+        >
+          Continue
+        </ButtonGLink>
+      </footer>
     </div>
   );
 }

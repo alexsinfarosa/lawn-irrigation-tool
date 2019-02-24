@@ -18,15 +18,17 @@ const MainPage = ({ location }) => {
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />
 
-      <SwipeableViews
-        index={mainPageIdx}
-        onChangeIndex={() => setMainPageIdx(mainPageIdx)}
-        enableMouseEvents
-      >
-        <Forecast handleMainPageIdx={handleMainPageIdx} />
-        <Field handleMainPageIdx={handleMainPageIdx} />
-        <Fields handleMainPageIdx={handleMainPageIdx} />
-      </SwipeableViews>
+      <div style={{ height: "100%" }}>
+        <SwipeableViews
+          index={mainPageIdx}
+          onChangeIndex={() => setMainPageIdx(mainPageIdx)}
+          enableMouseEvents
+        >
+          <Forecast handleMainPageIdx={handleMainPageIdx} />
+          <Field handleMainPageIdx={handleMainPageIdx} />
+          <Fields handleMainPageIdx={handleMainPageIdx} />
+        </SwipeableViews>
+      </div>
     </Layout>
   );
 };

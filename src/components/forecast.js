@@ -16,13 +16,12 @@ const useStyles = makeStyles(theme => ({
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     justifyItems: "center",
-    padding: theme.spacing(2),
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
+    padding: theme.spacing(4),
     background: theme.palette.background.default,
     position: "fixed",
     top: 0,
-    width: "100%"
+    width: "100%",
+    zIndex: 1000
   },
   main: {
     display: "flex",

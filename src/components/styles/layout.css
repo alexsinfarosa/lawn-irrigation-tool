@@ -5,6 +5,7 @@ html {
 }
 body {
   margin: 0;
+  height: 100%;
 }
 article,
 aside,
@@ -622,9 +623,4 @@ pre tt:after {
   html {
     font-size: 120%;
   }
-}
-
-/* Alex */
-::-webkit-scrollbar {
-  background: #fafafa;
 }

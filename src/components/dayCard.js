@@ -7,7 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  root: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     columnGap: theme.spacing(2),
@@ -16,10 +16,13 @@ const useStyles = makeStyles(theme => ({
     "topSide topSide"
     "leftSide rightSide"
     "bottomSide bottomSide"
-    `
+    `,
+    height: "100%",
+    padding: theme.spacing(2)
   },
   topSide: {
-    gridArea: "topSide"
+    gridArea: "topSide",
+    marginBottom: theme.spacing(3)
     // background: "pink"
   },
   leftSide: {
@@ -36,11 +39,12 @@ const useStyles = makeStyles(theme => ({
   },
   bottomSide: {
     gridArea: "bottomSide",
+    marginTop: theme.spacing(3),
     // background: "teal",
     display: "flex"
   },
   circle: {
-    border: `1px solid ${theme.palette.text.hint}`,
+    border: `1px solid ${theme.palette.divider}`,
     borderRadius: "50%",
     display: "flex",
     justifyContent: "center",
@@ -50,17 +54,22 @@ const useStyles = makeStyles(theme => ({
     height: 130
   }
 }));
-const DayCard = () => {
+const DayCard = ({ day }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const [isWater, setIsWater] = React.useState(false);
   return (
-    <div className={classes.container}>
-      <Typography variant="bosy1" align="center" className={classes.topSide}>
-        TODAY
-      </Typography>
+    <div className={classes.root}>
+      <div className={classes.topSide}>
+        <Typography variant="body1" align="center">
+          {day.date}
+        </Typography>
 
+        <Typography variant="subtitle1" align="center" color="textSecondary">
+          {day.address}
+        </Typography>
+      </div>
       <div className={classes.leftSide}>
         <div className={classes.circle}>
           <div
@@ -71,7 +80,7 @@ const DayCard = () => {
             }}
           >
             <FontAwesomeIcon icon="sun" size="2x" style={{ marginRight: 4 }} />
-            <Typography variant="h4">20˚</Typography>
+            <Typography variant="h4">{day.temp}˚</Typography>
           </div>
           <div
             style={{
@@ -88,14 +97,13 @@ const DayCard = () => {
               style={{ marginRight: 8 }}
             />
             <Typography variant="body2" className={classes.textParams}>
-              5%
+              {day.pcpn}%
             </Typography>
           </div>
         </div>
       </div>
-
       <div className={classes.rightSide}>
-        {isWater ? (
+        {day.shouldWater ? (
           <Typography variant="h6">NO DEFICIT</Typography>
         ) : (
           <Typography variant="h6" color="secondary">
@@ -103,9 +111,8 @@ const DayCard = () => {
           </Typography>
         )}
       </div>
-
       <div className={classes.bottomSide}>
-        {isWater ? (
+        {day.shouldWater ? (
           <Button
             variant="contained"
             color="secondary"
@@ -120,13 +127,13 @@ const DayCard = () => {
               }}
             >
               I watered!
-              <Checkbox checked={isWater} style={{ color: "#fff" }} />
+              <Checkbox checked={day.shouldWater} style={{ color: "#fff" }} />
             </div>
           </Button>
         ) : (
           <Button
-            variant="contained"
-            color="default"
+            variant="outlined"
+            color="secondary"
             fullWidth
             style={{ padding: theme.spacing(2) }}
             onClick={() => setIsWater(!isWater)}
@@ -139,8 +146,10 @@ const DayCard = () => {
             >
               Didn't water
               <Checkbox
-                checked={isWater}
-                style={{ color: theme.palette.text.secondary }}
+                checked={day.shouldWater}
+                style={{
+                  color: theme.palette.secondary.light
+                }}
               />
             </div>
           </Button>

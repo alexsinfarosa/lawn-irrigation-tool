@@ -1,8 +1,8 @@
 import React from "react";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
 
+import SwipeableViews from "react-swipeable-views";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // components
@@ -12,39 +12,56 @@ import BarChart from "../components/barChart";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
-    height: "100vh",
-    gridTemplateRows: "auto 1fr"
+    gridTemplateRows: "80px auto",
+    height: "100vh"
   },
   header: {
     display: "grid",
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     justifyItems: "center",
-    padding: theme.spacing(2, 3),
-    background: theme.palette.background.default,
-    position: "fixed",
-    top: 0,
-    width: "100%"
+    padding: theme.spacing(0, 4),
+    background: theme.palette.background.default
   },
   main: {
-    display: "grid",
-    gridTemplateRows: "auto 1fr 1fr",
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(10),
-    height: "100vh"
-  },
-  main_top: {
-    padding: theme.spacing(1, 0)
+    overflow: "auto",
+    height: "calc(100vh - 80px)"
   },
   btnBig: {
     paddingTop: theme.spacing(2, 5)
   }
 }));
 
+const days = [
+  {
+    address: "114 Cayuga St.",
+    date: "Monday February 25th",
+    temp: 20,
+    pcpn: 5,
+    shouldWater: true
+  },
+  {
+    address: "114 Cayuga St.",
+    date: "Sunday February 24th",
+    temp: 14,
+    pcpn: 80,
+    shouldWater: false
+  },
+  {
+    address: "114 Cayuga St.",
+    date: "Saturday February 23th",
+    temp: 15,
+    pcpn: 10,
+    shouldWater: true
+  }
+];
+
 const Field = ({ handleMainPageIdx }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
+  const [dayCardIdx, setDayCardIdx] = React.useState(1);
+  const handleDayCardIdx = i => setDayCardIdx(i);
 
   return (
     <div className={classes.root}>
@@ -68,18 +85,18 @@ const Field = ({ handleMainPageIdx }) => {
 
       <main className={classes.main}>
         {/* grid top */}
-        <div className={classes.main_top}>
-          <Typography variant="subtitle1" align="center">
-            114 Cayuga St.
-          </Typography>
-        </div>
 
-        {/* grid middle */}
-
-        <DayCard />
+        <SwipeableViews
+          index={dayCardIdx}
+          onChangeIndex={() => handleDayCardIdx(dayCardIdx)}
+          enableMouseEvents
+        >
+          {days.map(day => (
+            <DayCard key={day.date} day={day} />
+          ))}
+        </SwipeableViews>
 
         {/* grid bottom */}
-
         <BarChart />
       </main>
     </div>

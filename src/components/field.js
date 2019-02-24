@@ -34,14 +34,8 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   main_top: {
-    background: "pink",
     padding: theme.spacing(1, 0)
   },
-  main_middle: {
-    width: "100%",
-    background: "orange"
-  },
-  main_bottom: { background: "tomato" },
   btnBig: {
     paddingTop: theme.spacing(2, 5)
   }
@@ -81,14 +75,12 @@ const Field = ({ handleMainPageIdx }) => {
         </div>
 
         {/* grid middle */}
-        <div className={classes.main_middle}>
-          <DayCard />
-        </div>
+
+        <DayCard />
 
         {/* grid bottom */}
-        <div className={classes.main_bottom}>
-          <BarChart />
-        </div>
+
+        <BarChart />
       </main>
     </div>
   );

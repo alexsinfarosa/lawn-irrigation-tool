@@ -19,7 +19,8 @@ import {
   faCloudRain,
   faWater,
   faTrash,
-  faTimes
+  faTimes,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
 library.add(
@@ -34,7 +35,8 @@ library.add(
   faCloudRain,
   faWater,
   faTrash,
-  faTimes
+  faTimes,
+  faCheck
 );
 
 install();

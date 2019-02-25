@@ -29,9 +29,9 @@ const useStyles = makeStyles(theme => ({
     // background: "orange"
   },
   forecastRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr",
-    justifyItems: "center"
+    display: "flex",
+    justifyContent: "space-between",
+    height: 40
   }
 }));
 
@@ -103,7 +103,11 @@ const Forecast = ({ handleMainPageIdx, forecast, address }) => {
         <div className={classes.forecastList}>
           {forecast.daily.data.map(day => (
             <div key={day.time} className={classes.forecastRow}>
-              <Typography variant="caption">
+              <Typography
+                variant="caption"
+                align="left"
+                style={{ background: "white" }}
+              >
                 {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
               </Typography>
               <div>

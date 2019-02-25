@@ -8,27 +8,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
-    height: "100vh",
-    gridTemplateRows: "auto 1fr"
+    gridTemplateRows: "80px auto",
+    height: "100vh"
   },
   header: {
     display: "grid",
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     justifyItems: "center",
-    padding: theme.spacing(4),
-    background: theme.palette.background.default,
-    position: "fixed",
-    top: 0,
-    width: "100%",
-    zIndex: 1000
+    padding: theme.spacing(0, 4),
+    background: theme.palette.background.default
   },
   main: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(10)
+    overflow: "auto",
+    height: "calc(100vh - 80px)"
   }
 }));
 

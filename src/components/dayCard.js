@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     "bottomSide bottomSide"
     `,
     height: "100%",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2, 4)
   },
   topSide: {
     gridArea: "topSide",

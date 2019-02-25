@@ -75,9 +75,8 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.primary.light,
     color: "#fff"
   },
-  leftRightPadding: {
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4)
+  padding: {
+    padding: theme.spacing(2, 4)
   }
 }));
 
@@ -115,11 +114,12 @@ function SprinklerTypePage({ location }) {
       </header>
 
       <main className={classes.main}>
-        <div className={classes.leftRightPadding}>
-          <Typography variant="h6" align="center" gutterBottom>
+        <div className={classes.padding}>
+          <Typography variant="h6" align="center">
             What type of water system do you have?
           </Typography>
 
+          <br />
           <Typography variant="caption" align="justify">
             As different types of sprinkler heads can deliver different volumes
             of water please choose the type of sprinkler heads that you have.
@@ -127,22 +127,6 @@ function SprinklerTypePage({ location }) {
             If none is selected, it defaults to the most commonly sold type in
             the region.
           </Typography>
-
-          <br />
-
-          {sprinkler === "" ? (
-            <Typography
-              variant="subtitle1"
-              align="center"
-              style={{ color: "#fff" }}
-            >
-              ""
-            </Typography>
-          ) : (
-            <Typography variant="subtitle1" align="center" color="secondary">
-              {sprinkler}
-            </Typography>
-          )}
         </div>
 
         <div className={classes.containerList}>

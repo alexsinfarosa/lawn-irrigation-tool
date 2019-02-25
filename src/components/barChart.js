@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2, 4)
   }
 }));
 

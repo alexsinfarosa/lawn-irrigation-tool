@@ -8,7 +8,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-// import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "../components/Link";
@@ -16,27 +20,24 @@ import Link from "../components/Link";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
-    height: "100vh",
-    gridTemplateRows: "auto 1fr"
+    gridTemplateRows: "80px auto",
+    height: "100vh"
   },
   header: {
     display: "grid",
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     justifyItems: "center",
-    padding: theme.spacing(4),
-    background: theme.palette.background.default,
-    position: "fixed",
-    top: 0,
-    width: "100%",
-    zIndex: 1000
+    padding: theme.spacing(0, 4),
+    background: theme.palette.background.default
   },
   main: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(10)
+    overflow: "auto",
+    height: "calc(100vh - 80px)"
+  },
+  paper: {
+    margin: theme.spacing(2, 4),
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -44,6 +45,8 @@ const Fields = ({ handleMainPageIdx }) => {
   console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
+
+  const [isDialog, setIsDialog] = React.useState(false);
 
   return (
     <div className={classes.root}>
@@ -64,17 +67,17 @@ const Fields = ({ handleMainPageIdx }) => {
       </header>
 
       <main className={classes.main}>
-        <Paper style={{ marginLeft: 10, marginBottom: 24 }} elevation={1}>
+        <Paper className={classes.paper} elevation={1}>
           <List component="nav" style={{ paddingTop: 22 }}>
             <ListItem button>
-              <div style={{ marginLeft: -24 }}>
+              <div style={{ marginLeft: -32 }}>
                 <Button
                   variant="contained"
                   color="secondary"
                   size="small"
                   style={{ width: 75 }}
                 >
-                  water
+                  water!
                 </Button>
               </div>
 
@@ -84,7 +87,10 @@ const Fields = ({ handleMainPageIdx }) => {
               />
 
               <ListItemSecondaryAction>
-                <IconButton aria-label="Delete">
+                <IconButton
+                  aria-label="Delete"
+                  onClick={() => setIsDialog(true)}
+                >
                   <FontAwesomeIcon icon="trash" size="xs" />
                 </IconButton>
               </ListItemSecondaryAction>
@@ -92,17 +98,17 @@ const Fields = ({ handleMainPageIdx }) => {
           </List>
         </Paper>
 
-        <Paper style={{ marginLeft: 10 }} elevation={1}>
+        <Paper className={classes.paper} elevation={1}>
           <List component="nav" style={{ paddingTop: 22 }}>
             <ListItem button>
-              <div style={{ marginLeft: -24 }}>
+              <div style={{ marginLeft: -32 }}>
                 <Button
                   variant="contained"
                   color="secondary"
                   size="small"
                   style={{ width: 75 }}
                 >
-                  OK
+                  NO deficit
                 </Button>
               </div>
 
@@ -120,6 +126,37 @@ const Fields = ({ handleMainPageIdx }) => {
           </List>
         </Paper>
       </main>
+
+      {/* DIALOG -----------------------------*/}
+      <Dialog
+        open={isDialog}
+        onClose={() => setIsDialog(false)}
+        aria-labelledby="alert-dialog-delete-lawn"
+        aria-describedby="alert-dialog-delete-selected-lawn"
+        // hideBackdrop={true}
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="body2">
+            Are you sure you want to delete it?
+          </Typography>
+        </DialogTitle>
+
+        <DialogActions>
+          <Button onClick={() => setIsDialog(false)} color="secondary">
+            Undo
+          </Button>
+          <Button
+            onClick={() => {
+              // deleteField(fieldId);
+              setIsDialog(false);
+            }}
+            color="secondary"
+            autoFocus
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

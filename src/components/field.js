@@ -1,9 +1,10 @@
 import React from "react";
-import { Context } from "../store/createContext";
 import { makeStyles, useTheme } from "@material-ui/styles";
 
 import SwipeableViews from "react-swipeable-views";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import takeRight from "lodash.takeright";
 
 // components
 import DayCard from "../components/dayCard";
@@ -56,14 +57,14 @@ const days = [
   }
 ];
 
-const Field = ({ handleMainPageIdx }) => {
+const Field = ({ handleMainPageIdx, field }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
-  const { field } = React.useContext(Context);
   const [dayCardIdx, setDayCardIdx] = React.useState(1);
   const handleDayCardIdx = i => setDayCardIdx(i);
   console.log(field);
+  console.log(field.id, field.longitude);
 
   return (
     <div className={classes.root}>
@@ -94,7 +95,7 @@ const Field = ({ handleMainPageIdx }) => {
           enableMouseEvents
         >
           {days.map(day => (
-            <DayCard key={day.date} day={day} />
+            <DayCard key={day.date} field={field} day={day} />
           ))}
         </SwipeableViews>
 

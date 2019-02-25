@@ -1,6 +1,8 @@
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 
@@ -8,26 +10,99 @@ import Forecast from "../components/forecast";
 import Field from "../components/field";
 import Fields from "../components/fields";
 
+const fieldsInitialState = [];
+const fieldInitialState = {
+  address: "",
+  cropType: "grass",
+  data: [],
+  forecast: null,
+  id: null,
+  irrigationDate: new Date().toString(),
+  latitude: null,
+  longitude: null,
+  soilCapacity: "medium",
+  sprinklerType: { name: "", flux: null },
+  streetNumber: null
+};
+
 const MainPage = () => {
   console.log("MainPage");
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
   const handleMainPageIdx = i => setMainPageIdx(i);
 
+  const [field, setField] = React.useState(fieldInitialState);
+  const [fields, setFields] = React.useState(fieldsInitialState);
+
+  function handleChangeField(event) {
+    setField({ ...field, [event.target.name]: event.target.value });
+  }
+
+  const readFromLocalstorage = () => {
+    // console.log("readFromLocalStorage");
+    const localStorageRef = localStorage.getItem("nrcc-irrigation-tool");
+    // console.log(localStorageRef);
+    if (localStorageRef) {
+      const params = JSON.parse(localStorageRef);
+      // console.log(params);
+      if (params.length > 0) {
+        const fieldCopy = { ...fieldInitialState };
+
+        fieldCopy.address = params[0].address;
+        fieldCopy.cropType = params[0].cropType;
+        fieldCopy.data = [...params[0].data];
+        fieldCopy.forecast = { ...params[0].forecast };
+        fieldCopy.id = params[0].id;
+        fieldCopy.irrigationDate = params[0].irrigationDate;
+        fieldCopy.latitude = params[0].latitude;
+        fieldCopy.longitude = params[0].longitude;
+        fieldCopy.soilCapacity = params[0].soilCapacity;
+        fieldCopy.sprinklerType = params[0].sprinklerType;
+        fieldCopy.streetNumber = params[0].streetNumber;
+        setField(fieldCopy);
+
+        // setting up initial state for the fields
+        setFields(params);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    readFromLocalstorage();
+  }, [field.address]);
+
+  console.log(field, fields);
   return (
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />
 
-      <div style={{ height: "100%" }}>
-        <SwipeableViews
-          index={mainPageIdx}
-          onChangeIndex={() => setMainPageIdx(mainPageIdx)}
-          enableMouseEvents
+      {field.data.length !== 0 ? (
+        <div style={{ height: "100%" }}>
+          <SwipeableViews
+            index={mainPageIdx}
+            onChangeIndex={() => setMainPageIdx(mainPageIdx)}
+            enableMouseEvents
+          >
+            <Forecast
+              handleMainPageIdx={handleMainPageIdx}
+              forecast={field.forecast}
+              address={field.address}
+            />
+            <Field handleMainPageIdx={handleMainPageIdx} field={field} />
+            <Fields handleMainPageIdx={handleMainPageIdx} fields={fields} />
+          </SwipeableViews>
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
         >
-          <Forecast handleMainPageIdx={handleMainPageIdx} />
-          <Field handleMainPageIdx={handleMainPageIdx} />
-          <Fields handleMainPageIdx={handleMainPageIdx} />
-        </SwipeableViews>
-      </div>
+          <FontAwesomeIcon icon="spinner" spin />
+        </div>
+      )}
     </Layout>
   );
 };

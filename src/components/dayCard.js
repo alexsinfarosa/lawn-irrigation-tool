@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     height: 110
   }
 }));
-const DayCard = ({ day }) => {
+const DayCard = ({ field, day }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -67,7 +67,7 @@ const DayCard = ({ day }) => {
         </Typography>
 
         <Typography variant="subtitle2" align="center" color="textSecondary">
-          {day.address}
+          {field.address}
         </Typography>
       </div>
       <div className={classes.leftSide}>

@@ -1,8 +1,9 @@
 import React from "react";
-
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 
+import { weatherIcons } from "../utils/weatherIcons";
+import format from "date-fns/format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const useStyles = makeStyles(theme => ({
@@ -21,14 +22,25 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     overflow: "auto",
-    height: "calc(100vh - 80px)"
+    height: "calc(100vh - 80px)",
+    padding: theme.spacing(0, 4)
+  },
+  forecastList: {
+    // background: "orange"
+  },
+  forecastRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+    justifyItems: "center"
   }
 }));
 
-const Forecast = ({ handleMainPageIdx }) => {
+const Forecast = ({ handleMainPageIdx, forecast, address }) => {
   console.log("Forecast");
   const classes = useStyles();
   const theme = useTheme();
+
+  console.log(forecast);
 
   return (
     <div className={classes.root}>
@@ -52,7 +64,7 @@ const Forecast = ({ handleMainPageIdx }) => {
           align="center"
           style={{ marginBottom: theme.spacing(2) }}
         >
-          114 Cayuga St.
+          {address}
         </Typography>
 
         <div
@@ -72,20 +84,48 @@ const Forecast = ({ handleMainPageIdx }) => {
             }}
           >
             <FontAwesomeIcon icon="sun" size="2x" style={{ marginRight: 4 }} />
-            <Typography variant="h4">20˚</Typography>
+            <Typography variant="h4">
+              {Math.round(forecast.currently.temperature, 2)}˚
+            </Typography>
           </div>
-          <Typography variant="caption">Mostly Cloudly</Typography>
-        </div>
-
-        <div style={{ marginBottom: theme.spacing(4) }}>
-          <Typography variant="button">Next 7 Days</Typography>
           <Typography variant="caption">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora
-            dignissimos voluptate, eveniet perspiciati.
+            {forecast.currently.summary}
           </Typography>
         </div>
 
-        <div>Forecast Table</div>
+        <div style={{ marginBottom: theme.spacing(4) }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Next 7 Days
+          </Typography>
+          <Typography variant="caption">{forecast.daily.summary}</Typography>
+        </div>
+
+        <div className={classes.forecastList}>
+          {forecast.daily.data.map(day => (
+            <div key={day.time} className={classes.forecastRow}>
+              <Typography variant="caption">
+                {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
+              </Typography>
+              <div>
+                <img
+                  src={weatherIcons[day.icon]}
+                  alt={day.summary}
+                  style={{
+                    width: 16,
+                    height: 16
+                  }}
+                />
+              </div>
+              <Typography variant="caption">{`${Math.round(
+                day.temperatureLow,
+                1
+              )}˚`}</Typography>
+              <Typography variant="caption">
+                {`${Math.round(day.temperatureHigh, 1)}˚`}
+              </Typography>
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );

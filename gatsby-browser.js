@@ -5,8 +5,6 @@ import { install } from "@material-ui/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import theme from "./.cache/theme";
 
-import AppProvider from "./src/store/provider";
-
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
@@ -22,7 +20,8 @@ import {
   faWater,
   faTrash,
   faTimes,
-  faCheck
+  faCheck,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
 library.add(
@@ -38,7 +37,8 @@ library.add(
   faWater,
   faTrash,
   faTimes,
-  faCheck
+  faCheck,
+  faSpinner
 );
 
 install();
@@ -54,9 +54,5 @@ export const onInitialClientRender = () => {
 };
 
 export const wrapRootElement = ({ element }) => {
-  return (
-    <AppProvider>
-      <ThemeProvider theme={theme}>{element}</ThemeProvider>;
-    </AppProvider>
-  );
+  return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
 };

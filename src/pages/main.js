@@ -8,12 +8,11 @@ import Forecast from "../components/forecast";
 import Field from "../components/field";
 import Fields from "../components/fields";
 
-const MainPage = ({ location }) => {
+const MainPage = () => {
   console.log("MainPage");
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
   const handleMainPageIdx = i => setMainPageIdx(i);
 
-  console.log(location.state);
   return (
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />

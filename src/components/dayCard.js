@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const useStyles = makeStyles(theme => ({
@@ -50,8 +50,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    width: 130,
-    height: 130
+    width: 110,
+    height: 110
   }
 }));
 const DayCard = ({ day }) => {
@@ -62,11 +62,11 @@ const DayCard = ({ day }) => {
   return (
     <div className={classes.root}>
       <div className={classes.topSide}>
-        <Typography variant="body1" align="center">
+        <Typography variant="subtitle1" align="center">
           {day.date}
         </Typography>
 
-        <Typography variant="subtitle1" align="center" color="textSecondary">
+        <Typography variant="subtitle2" align="center" color="textSecondary">
           {day.address}
         </Typography>
       </div>
@@ -112,48 +112,15 @@ const DayCard = ({ day }) => {
         )}
       </div>
       <div className={classes.bottomSide}>
-        {day.shouldWater ? (
-          <Button
-            variant="contained"
-            color="secondary"
-            fullWidth
-            style={{ padding: theme.spacing(2) }}
-            onClick={() => setIsWater(!isWater)}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center"
-              }}
-            >
-              I watered!
-              <Checkbox checked={day.shouldWater} style={{ color: "#fff" }} />
-            </div>
-          </Button>
-        ) : (
-          <Button
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            style={{ padding: theme.spacing(2) }}
-            onClick={() => setIsWater(!isWater)}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center"
-              }}
-            >
-              Didn't water
-              <Checkbox
-                checked={day.shouldWater}
-                style={{
-                  color: theme.palette.secondary.light
-                }}
-              />
-            </div>
-          </Button>
-        )}
+        <Button
+          variant={day.shouldWater ? "contained" : "outlined"}
+          color="secondary"
+          fullWidth
+          style={{ padding: theme.spacing(2) }}
+          onClick={() => setIsWater(!isWater)}
+        >
+          {day.shouldWater ? "I watered!" : "I did not water"}
+        </Button>
       </div>
     </div>
   );

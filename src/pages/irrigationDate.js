@@ -99,7 +99,6 @@ function IrrigationDatePage({ location }) {
       <footer className={classes.footer}>
         <ButtonGLink
           to="/sprinkler"
-          state={{ ...location.state, irrigationDate }}
           variant="contained"
           fullWidth
           classes={{ root: classes.btnBig }}

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Context } from "../store/createContext";
 import { makeStyles, useTheme } from "@material-ui/styles";
 
 import SwipeableViews from "react-swipeable-views";
@@ -60,8 +60,10 @@ const Field = ({ handleMainPageIdx }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
+  const { field } = React.useContext(Context);
   const [dayCardIdx, setDayCardIdx] = React.useState(1);
   const handleDayCardIdx = i => setDayCardIdx(i);
+  console.log(field);
 
   return (
     <div className={classes.root}>

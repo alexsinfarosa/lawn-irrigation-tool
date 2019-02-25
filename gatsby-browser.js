@@ -5,6 +5,8 @@ import { install } from "@material-ui/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import theme from "./.cache/theme";
 
+import AppProvider from "./src/store/provider";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
@@ -52,5 +54,9 @@ export const onInitialClientRender = () => {
 };
 
 export const wrapRootElement = ({ element }) => {
-  return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
+  return (
+    <AppProvider>
+      <ThemeProvider theme={theme}>{element}</ThemeProvider>;
+    </AppProvider>
+  );
 };

@@ -254,7 +254,6 @@ function FieldLocationPage(props) {
         <footer className={classes.footer}>
           <ButtonGLink
             to="/irrigationDate"
-            state={{ address, streetNumber, latitude, longitude }}
             variant="contained"
             fullWidth
             classes={{ root: classes.btnBig }}

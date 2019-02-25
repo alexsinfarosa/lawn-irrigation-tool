@@ -86,7 +86,7 @@ function SprinklerTypePage({ location }) {
   const [sprinkler, setSprinkler] = React.useState("");
   const [flux, setFlux] = React.useState(null);
 
-  console.log(location.state);
+  // console.log(location.state);
   function handleChange(event) {
     if (event.target.value === sprinkler) {
       setSprinkler("");
@@ -164,7 +164,6 @@ function SprinklerTypePage({ location }) {
         <footer className={classes.footer}>
           <ButtonGLink
             to="/main"
-            state={{ ...location.state, sprinkler, flux }}
             variant="contained"
             fullWidth
             classes={{ root: classes.btnBig }}

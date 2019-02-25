@@ -27,4 +27,4 @@ function BarChart() {
   );
 }
 
-export default BarChart;
+export default React.memo(BarChart);

@@ -1,5 +1,5 @@
+font-family: sans-serif;
 html {
-  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -621,6 +621,6 @@ pre tt:after {
 }
 @media only screen and (max-width: 480px) {
   html {
-    font-size: 120%;
+    font-size: 100%;
   }
 }

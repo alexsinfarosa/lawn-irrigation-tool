@@ -1,6 +1,6 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
@@ -8,6 +8,9 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import Checkbox from "@material-ui/core/Checkbox";
+
+import "rc-slider/assets/index.css";
+import Slider, { createSliderWithTooltip } from "rc-slider";
 
 import ButtonGLink from "../components/buttonGLink";
 import ImageSprinkler from "../components/imgSprinkler";
@@ -18,6 +21,8 @@ import SpraySprinkler from "../images/spraySprinkler.png";
 import SingleStreamRotor from "../images/singleStreamRotorSprinkler.png";
 import MultipleStreamRotor from "../images/multipleStreamRotorSprinkler.png";
 import MoveableSprinkler from "../images/moveableSprinkler.png";
+
+const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 const images = [
   { title: "Spray Sprinkler", img: SpraySprinkler, flux: 2.4 },
@@ -48,7 +53,8 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "hidden",
-    padding: theme.spacing(0)
+    padding: theme.spacing(0),
+    marginLeft: -2
   },
   gridList: {
     flexWrap: "nowrap",
@@ -77,14 +83,21 @@ const useStyles = makeStyles(theme => ({
   },
   padding: {
     padding: theme.spacing(2, 4)
+  },
+  slider: {
+    padding: theme.spacing(2, 4)
+  },
+  tipSlider: {
+    background: "pink"
   }
 }));
 
-function SprinklerTypePage({ location }) {
+function SprinklerTypePage() {
   console.log("SprinklerTypePage");
   const classes = useStyles();
+  const theme = useTheme();
   const [sprinkler, setSprinkler] = React.useState("");
-  const [flux, setFlux] = React.useState(null);
+  const [minutes, setMinutes] = React.useState(0);
 
   // console.log(location.state);
   function handleChange(event) {
@@ -93,7 +106,7 @@ function SprinklerTypePage({ location }) {
     } else {
       setSprinkler(event.target.value);
       const sprinkler = images.find(img => img.title === event.target.value);
-      setFlux(sprinkler.flux);
+      setMinutes(sprinkler.minutes);
     }
   }
 
@@ -157,6 +170,35 @@ function SprinklerTypePage({ location }) {
               );
             })}
           </GridList>
+        </div>
+
+        <div style={{ padding: theme.spacing(2, 4) }}>
+          <Typography variant="body2" align="center" gutterBottom>
+            How long is the sprinkler running?
+          </Typography>
+          <br />
+          <div style={{ width: 300, marginTop: theme.spacing(3) }}>
+            <SliderWithTooltip
+              // dots
+              // activeDotStyle={{ borderColor: theme.palette.primary.light }}
+              min={0}
+              step={5}
+              max={120}
+              tipFormatter={e => `${e} min`}
+              // tipProps={{ overlayClassName: "tipSlider" }}
+              defaultValue={15}
+              trackStyle={{ backgroundColor: theme.palette.primary.light }}
+              handleStyle={{
+                borderColor: theme.palette.primary.light,
+                height: 28,
+                width: 28,
+                marginLeft: -14,
+                marginTop: -12,
+                backgroundColor: theme.palette.primary.light
+              }}
+              // railStyle={{ backgroundColor: "red", height: 10 }}
+            />
+          </div>
         </div>
       </main>
 

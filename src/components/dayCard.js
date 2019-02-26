@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
     gridArea: "bottomSide",
     marginTop: theme.spacing(3),
     // background: "teal",
-    display: "flex"
+    display: "flex",
+    flexDirection: "column"
   },
   circle: {
     border: `1px solid ${theme.palette.divider}`,
@@ -59,6 +60,7 @@ const DayCard = ({ field, day }) => {
   const theme = useTheme();
 
   const [isWater, setIsWater] = React.useState(false);
+
   return (
     <div className={classes.root}>
       <div className={classes.topSide}>
@@ -103,6 +105,13 @@ const DayCard = ({ field, day }) => {
         </div>
       </div>
       <div className={classes.rightSide}>
+        <Typography
+          variant="caption"
+          color={theme.palette.text.secondary}
+          style={{ fontSize: "0.6rem" }}
+        >
+          RECOMMENDATION:
+        </Typography>
         {day.shouldWater ? (
           <Typography variant="h6">NO DEFICIT</Typography>
         ) : (
@@ -112,15 +121,40 @@ const DayCard = ({ field, day }) => {
         )}
       </div>
       <div className={classes.bottomSide}>
-        <Button
-          variant={day.shouldWater ? "contained" : "outlined"}
-          color="secondary"
-          fullWidth
-          style={{ padding: theme.spacing(2) }}
-          onClick={() => setIsWater(!isWater)}
-        >
-          {day.shouldWater ? "I watered!" : "I did not water"}
-        </Button>
+        <div style={{ display: "flex" }}>
+          <Button
+            variant={isWater ? "outlined" : "contained"}
+            color="secondary"
+            fullWidth
+            style={{
+              padding: theme.spacing(2),
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+              boxShadow: "none",
+              borderRight: "none",
+              fontSize: "0.8rem"
+            }}
+            onClick={() => setIsWater(!isWater)}
+          >
+            I did not water
+          </Button>
+          <Button
+            variant={isWater ? "contained" : "outlined"}
+            color="secondary"
+            fullWidth
+            style={{
+              padding: theme.spacing(2),
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              boxShadow: "none",
+              borderLeft: "none",
+              fontSize: "0.8rem"
+            }}
+            onClick={() => setIsWater(!isWater)}
+          >
+            I watered
+          </Button>
+        </div>
       </div>
     </div>
   );

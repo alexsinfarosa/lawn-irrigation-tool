@@ -31,6 +31,7 @@
     "react-dom": "^16.8.3",
     "react-helmet": "^5.2.0",
     "react-places-autocomplete": "^7.2.1",
+    "react-spinners": "^0.5.1",
     "react-swipeable-views": "^0.13.1",
     "react-switch": "^4.1.0",
     "react-toggle-button": "^2.2.0",

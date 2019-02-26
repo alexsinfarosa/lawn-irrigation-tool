@@ -25,13 +25,10 @@ const useStyles = makeStyles(theme => ({
     height: "calc(100vh - 80px)",
     padding: theme.spacing(0, 4)
   },
-  forecastList: {
-    // background: "orange"
-  },
   forecastRow: {
     display: "flex",
     justifyContent: "space-between",
-    height: 40
+    height: 38
   }
 }));
 
@@ -93,21 +90,39 @@ const Forecast = ({ handleMainPageIdx, forecast, address }) => {
           </Typography>
         </div>
 
-        <div style={{ marginBottom: theme.spacing(4) }}>
-          <Typography variant="subtitle2" gutterBottom>
+        <div
+          style={{
+            margin: theme.spacing(0, -4, 4, -4)
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            gutterBottom
+            color="primary"
+            style={{
+              fontWeight: "bold",
+              color: "#fff",
+              background: theme.palette.secondary.light,
+              padding: theme.spacing(0, 4, 0, 4)
+            }}
+          >
             Next 7 Days
           </Typography>
-          <Typography variant="caption">{forecast.daily.summary}</Typography>
+          <Typography
+            variant="caption"
+            style={{
+              padding: theme.spacing(0, 4, 0, 4),
+              display: "block"
+            }}
+          >
+            {forecast.daily.summary}
+          </Typography>
         </div>
 
         <div className={classes.forecastList}>
           {forecast.daily.data.map(day => (
             <div key={day.time} className={classes.forecastRow}>
-              <Typography
-                variant="caption"
-                align="left"
-                style={{ background: "white" }}
-              >
+              <Typography variant="caption" align="left" style={{ width: 31 }}>
                 {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
               </Typography>
               <div>

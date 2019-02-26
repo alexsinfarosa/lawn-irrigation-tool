@@ -1,7 +1,8 @@
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
+import { useTheme } from "@material-ui/styles";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RingLoader from "react-spinners/RingLoader";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -27,6 +28,7 @@ const fieldInitialState = {
 
 const MainPage = () => {
   console.log("MainPage");
+  const theme = useTheme();
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
   const handleMainPageIdx = i => setMainPageIdx(i);
 
@@ -100,7 +102,7 @@ const MainPage = () => {
             alignItems: "center"
           }}
         >
-          <FontAwesomeIcon icon="spinner" spin />
+          <RingLoader color={theme.palette.primary.main} />
         </div>
       )}
     </Layout>

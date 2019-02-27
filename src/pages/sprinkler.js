@@ -24,11 +24,11 @@ import MoveableSprinkler from "../images/moveableSprinkler.png";
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
-const images = [
-  { title: "Spray Sprinkler", img: SpraySprinkler, flux: 2.4 },
-  { title: "Single Stream Rotor", img: SingleStreamRotor, flux: 4.3 },
-  { title: "Multiple Stream Rotor", img: MultipleStreamRotor, flux: 6.3 },
-  { title: "Moveable Sprinkler", img: MoveableSprinkler, flux: 8.9 }
+const sprinklers = [
+  { name: "Spray Sprinkler", img: SpraySprinkler, waterFlow: 2.4 },
+  { name: "Single Stream Rotor", img: SingleStreamRotor, waterFlow: 4.3 },
+  { name: "Multiple Stream Rotor", img: MultipleStreamRotor, waterFlow: 6.3 },
+  { name: "Moveable Sprinkler", img: MoveableSprinkler, waterFlow: 8.9 }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -92,24 +92,70 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+// Initial state ------------------------------------------------------
+let initialState = {
+  sprinkler: { name: "", img: null, waterFlow: 0 },
+  minutes: 15
+};
+
+// REDUCER ---------------------------------
+function reducer(state, action) {
+  console.log(state, action);
+  switch (action.type) {
+    case "setSprinkler":
+      return {
+        ...state,
+        sprinkler: {
+          name: action.name,
+          img: action.img,
+          waterFlow: action.waterFlow
+        }
+      };
+    case "setMinutes":
+      return { ...state, minutes: action.minutes };
+    case "reset":
+      return {
+        sprinkler: { name: "", img: null, waterFlow: 0 },
+        minutes: 15
+      };
+    default:
+      throw new Error();
+  }
+}
+
 function SprinklerTypePage() {
   console.log("SprinklerTypePage");
   const classes = useStyles();
   const theme = useTheme();
-  const [sprinkler, setSprinkler] = React.useState("");
-  const [minutes, setMinutes] = React.useState(0);
 
-  // console.log(location.state);
-  function handleChange(event) {
-    if (event.target.value === sprinkler) {
-      setSprinkler("");
-    } else {
-      setSprinkler(event.target.value);
-      const sprinkler = images.find(img => img.title === event.target.value);
-      setMinutes(sprinkler.minutes);
-    }
+  // getting object from local storage -----------------------------
+  const localStorageRef = window.localStorage.getItem("LIT_sprinkler");
+  if (localStorageRef) {
+    initialState = { ...JSON.parse(localStorageRef) };
   }
 
+  // State --------------------------------------------
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+
+  // Side effects --------------------------------------------------
+  React.useEffect(() => {
+    window.localStorage.setItem("LIT_sprinkler", JSON.stringify(state));
+  }, [state]);
+
+  function handleChange(event) {
+    if (event.target.value === state.sprinkler.name) {
+      dispatch({ type: "setSprinkler", name: "", img: null, minutes: 15 });
+    } else {
+      const spk = sprinklers.find(s => s.name === event.target.value);
+      dispatch({
+        type: "setSprinkler",
+        name: spk.name,
+        img: spk.img,
+        waterFlow: spk.waterFlow
+      });
+    }
+  }
+  console.log(state);
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -144,13 +190,13 @@ function SprinklerTypePage() {
 
         <div className={classes.containerList}>
           <GridList className={classes.gridList} cols={1.5}>
-            {images.map(tile => {
+            {sprinklers.map(sprinkler => {
               return (
-                <GridListTile key={tile.img}>
-                  <ImageSprinkler src={tile.img} />
+                <GridListTile key={sprinkler.img}>
+                  <ImageSprinkler src={sprinkler.img} />
                   {/* <img src={tile.img} alt={tile.title} /> */}
                   <GridListTileBar
-                    title={tile.title}
+                    title={sprinkler.name}
                     classes={{
                       root: classes.titleBar,
                       title: classes.title
@@ -158,9 +204,9 @@ function SprinklerTypePage() {
                     actionIcon={
                       <IconButton>
                         <Checkbox
-                          checked={sprinkler === tile.title}
+                          checked={state.sprinkler.name === sprinkler.name}
                           onChange={handleChange}
-                          value={tile.title}
+                          value={sprinkler.name}
                           style={{ color: "#fff" }}
                         />
                       </IconButton>
@@ -176,6 +222,7 @@ function SprinklerTypePage() {
           <Typography variant="body2" align="center" gutterBottom>
             How long is the sprinkler running?
           </Typography>
+
           <br />
           <div style={{ width: 300, marginTop: theme.spacing(3) }}>
             <SliderWithTooltip
@@ -197,12 +244,15 @@ function SprinklerTypePage() {
                 backgroundColor: theme.palette.primary.light
               }}
               // railStyle={{ backgroundColor: "red", height: 10 }}
+              onAfterChange={minutes =>
+                dispatch({ type: "setMinutes", minutes })
+              }
             />
           </div>
         </div>
       </main>
 
-      {sprinkler.length !== 0 && (
+      {true && (
         <footer className={classes.footer}>
           <ButtonGLink
             to="/main"

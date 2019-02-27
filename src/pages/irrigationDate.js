@@ -46,13 +46,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function IrrigationDatePage({ location }) {
+// Initial State ---------------------------------------------
+let initialState = new Date().toString();
+
+function IrrigationDatePage() {
   console.log("IrrigationDatePage");
   const classes = useStyles();
-  const [irrigationDate, setIrrigationDate] = React.useState(
-    new Date().toString()
-  );
-  console.log(irrigationDate);
+
+  const localStorageRef = window.localStorage.getItem("LIR_irrigationDate");
+  if (localStorageRef) {
+    initialState = new Date(localStorageRef).toString();
+  }
+  // State ---------------------------------------------------
+  const [irrigationDate, setIrrigationDate] = React.useState(initialState);
+  const handleIrrigationDate = e => {
+    const date = new Date(e.target.value).toString();
+    setIrrigationDate(date);
+  };
+
+  React.useEffect(() => {
+    window.localStorage.setItem("LIR_irrigationDate", irrigationDate);
+  }, [irrigationDate]);
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -89,9 +104,7 @@ function IrrigationDatePage({ location }) {
             InputLabelProps={{
               shrink: true
             }}
-            onChange={e =>
-              setIrrigationDate(new Date(e.target.value).toString())
-            }
+            onChange={handleIrrigationDate}
           />
         </form>
       </main>

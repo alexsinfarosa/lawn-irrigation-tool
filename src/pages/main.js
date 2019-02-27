@@ -22,9 +22,20 @@ const fieldInitialState = {
   latitude: null,
   longitude: null,
   soilCapacity: "medium",
-  sprinklerType: { name: "", flux: null },
+  sprinkler: { type: "", minutes: 0, waterFlow: null },
   streetNumber: null
 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "setField":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
 
 const MainPage = () => {
   console.log("MainPage");

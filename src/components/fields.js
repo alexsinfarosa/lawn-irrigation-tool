@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fields = ({ handleMainPageIdx, fields, setField, setFields }) => {
+const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
   console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
@@ -57,17 +57,16 @@ const Fields = ({ handleMainPageIdx, fields, setField, setFields }) => {
       window.localStorage.getItem("lawn-irrigation-tool")
     );
     const newFields = fields.filter(field => field.id !== fieldId);
-    setFields(newFields);
-    setField(newFields[0]);
     if (newFields.length === 0) {
       window.localStorage.removeItem("lawn-irrigation-tool");
       navigate("/");
     } else {
+      setFields(newFields);
+      setField(newFields[0]);
       window.localStorage.setItem(
         "lawn-irrigation-tool",
         JSON.stringify(newFields)
       );
-      handleMainPageIdx(1);
     }
   };
 
@@ -77,7 +76,7 @@ const Fields = ({ handleMainPageIdx, fields, setField, setFields }) => {
         <FontAwesomeIcon
           icon="home"
           size="lg"
-          onClick={() => handleMainPageIdx(1)}
+          onClick={() => setMainPageIdx(1)}
         />
         <FontAwesomeIcon
           icon="grip-horizontal"
@@ -95,10 +94,9 @@ const Fields = ({ handleMainPageIdx, fields, setField, setFields }) => {
             <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>
                 <ListItem
-                  button
                   onClick={() => {
                     setField(field);
-                    handleMainPageIdx(1);
+                    setMainPageIdx(1);
                   }}
                 >
                   <div style={{ marginLeft: -32 }}>

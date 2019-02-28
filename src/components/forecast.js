@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Forecast = ({ handleMainPageIdx, forecast, address }) => {
+const Forecast = ({ setMainPageIdx, forecast, address }) => {
   console.log("Forecast");
   const classes = useStyles();
   const theme = useTheme();
@@ -51,7 +51,7 @@ const Forecast = ({ handleMainPageIdx, forecast, address }) => {
             <FontAwesomeIcon
               icon="home"
               size="lg"
-              onClick={() => handleMainPageIdx(1)}
+              onClick={() => setMainPageIdx(1)}
             />
           </header>
 

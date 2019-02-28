@@ -16,7 +16,6 @@ const MainPage = () => {
 
   // STATE --------------------------------------------------------------
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
-  const handleMainPageIdx = i => setMainPageIdx(i);
 
   // fields -------------------------------------------------------------
   const initialFields =
@@ -54,19 +53,18 @@ const MainPage = () => {
       <div style={{ height: "100%" }}>
         <SwipeableViews
           index={mainPageIdx}
-          // onChangeIndex={() => setMainPageIdx(mainPageIdx)}
-          onTransitionEnd={() => setMainPageIdx(mainPageIdx)}
+          onChangeIndex={setMainPageIdx}
           enableMouseEvents
         >
           <Forecast
-            handleMainPageIdx={handleMainPageIdx}
+            setMainPageIdx={setMainPageIdx}
             forecast={field.forecast}
             address={field.address}
           />
 
-          <Field handleMainPageIdx={handleMainPageIdx} field={field} />
+          <Field setMainPageIdx={setMainPageIdx} field={field} />
           <Fields
-            handleMainPageIdx={handleMainPageIdx}
+            setMainPageIdx={setMainPageIdx}
             fields={fields}
             setField={setField}
             setFields={setFields}

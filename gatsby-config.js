@@ -20,7 +20,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Lawn Irrigation Tool`,
-        short_name: `LawnIrriTool`,
+        short_name: `Lawn Irrigation Tool`,
         start_url: `/`,
         // This is used on splash screen when app is launched
         background_color: `#663399`,

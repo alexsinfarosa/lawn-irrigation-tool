@@ -316,7 +316,6 @@ function SprinklerTypePage() {
 
       <footer className={classes.footer}>
         <Button
-          // to="/main"
           variant="contained"
           fullWidth
           classes={{ root: classes.btnBig }}

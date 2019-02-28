@@ -1,5 +1,5 @@
 import React from "react";
-import { Router } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -9,6 +9,11 @@ import Main from "./main";
 
 const IndexPage = () => {
   console.log("IndexPage");
+
+  const isLocalStorage = window.localStorage.getItem("lawn-irrigation-tool");
+  if (isLocalStorage) {
+    return <Redirect from="/" to="/main" noThrow />;
+  }
 
   return (
     <Layout>

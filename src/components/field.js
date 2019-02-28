@@ -4,8 +4,6 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import takeRight from "lodash.takeright";
-
 // components
 import DayCard from "../components/dayCard";
 import BarChart from "../components/barChart";
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Field = ({ handleMainPageIdx, field }) => {
+const Field = ({ setMainPageIdx, field }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
@@ -49,7 +47,7 @@ const Field = ({ handleMainPageIdx, field }) => {
         <FontAwesomeIcon
           icon="cloud-sun"
           size="lg"
-          onClick={() => handleMainPageIdx(0)}
+          onClick={() => setMainPageIdx(0)}
         />
         <FontAwesomeIcon
           icon="home"
@@ -59,7 +57,7 @@ const Field = ({ handleMainPageIdx, field }) => {
         <FontAwesomeIcon
           icon="grip-horizontal"
           size="lg"
-          onClick={() => handleMainPageIdx(2)}
+          onClick={() => setMainPageIdx(2)}
         />
       </header>
 

@@ -10,10 +10,12 @@ import SEO from "../components/seo";
 import Forecast from "../components/forecast";
 import Field from "../components/field";
 import Fields from "../components/fields";
+import Loading from "../components/loading";
+import loading from "../components/loading";
 
-const MainPage = () => {
+const MainPage = ({ location }) => {
   console.log("MainPage");
-
+  console.log(location.state);
   // STATE --------------------------------------------------------------
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
 
@@ -41,9 +43,17 @@ const MainPage = () => {
   };
   const [field, setField] = React.useState(initialField);
 
+  // React.useEffect(() => {
+  //   setLoading(false);
+  // }, []);
+
   // if there is nothing in local storage go to landing page
   if (fields.length === 0) {
     return <Redirect from="/main" to="/" noThrow />;
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

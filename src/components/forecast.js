@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
   forecastRow: {
     display: "flex",
     justifyContent: "space-between",
-    height: 38
+    height: 50,
+    alignItems: "center"
   }
 }));
 
@@ -57,9 +58,9 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
 
           <main className={classes.main}>
             <Typography
-              variant="subtitle1"
+              variant="h6"
               align="center"
-              style={{ marginBottom: theme.spacing(2) }}
+              style={{ marginBottom: theme.spacing(1) }}
             >
               {address}
             </Typography>
@@ -69,8 +70,7 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                padding: theme.spacing(2),
-                paddingBottom: theme.spacing(4)
+                padding: theme.spacing(2, 4)
               }}
             >
               <div
@@ -84,21 +84,21 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    alignitems: "center",
-                    height: 40
+                    alignitems: "baseline",
+                    height: 60
                   }}
                 >
                   <img
                     src={weatherIcons[forecast.daily.data[0].icon]}
                     alt="daily forecast icon"
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 60,
+                      height: 60,
                       marginRight: 8
                     }}
                   />
                 </div>
-                <Typography variant="h4">
+                <Typography variant="h3">
                   {Math.round(forecast.currently.temperature, 2)}˚
                 </Typography>
               </div>
@@ -113,7 +113,7 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
               }}
             >
               <Typography
-                variant="subtitle2"
+                variant="h6"
                 gutterBottom
                 color="primary"
                 style={{
@@ -140,27 +140,27 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
               {forecast.daily.data.map(day => (
                 <div key={day.time} className={classes.forecastRow}>
                   <Typography
-                    variant="caption"
+                    variant="body2"
                     align="left"
-                    style={{ width: 31 }}
+                    style={{ width: 40 }}
                   >
                     {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
                   </Typography>
-                  <div>
-                    <img
-                      src={weatherIcons[day.icon]}
-                      alt={day.summary}
-                      style={{
-                        width: 16,
-                        height: 16
-                      }}
-                    />
-                  </div>
-                  <Typography variant="caption">{`${Math.round(
+
+                  <img
+                    src={weatherIcons[day.icon]}
+                    alt={day.summary}
+                    style={{
+                      width: 24,
+                      marginTop: 20
+                    }}
+                  />
+
+                  <Typography variant="body2">{`${Math.round(
                     day.temperatureLow,
                     1
                   )}˚`}</Typography>
-                  <Typography variant="caption">
+                  <Typography variant="body2">
                     {`${Math.round(day.temperatureHigh, 1)}˚`}
                   </Typography>
                 </div>

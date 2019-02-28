@@ -15,8 +15,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
-    width: "100vw"
+    height: "100vh"
+    // width: "100vw"
   },
   titleText: {
     color: theme.palette.text.secondary,
@@ -47,8 +47,8 @@ const IndexPage = () => {
   console.log("IndexPage");
   const classes = useStyles();
 
-  const isLocalStorage = window.localStorage.getItem("lawn-irrigation-tool");
-  if (isLocalStorage) {
+  const localStorage = window.localStorage.getItem("lawn-irrigation-tool");
+  if (localStorage) {
     return <Redirect from="/" to="/main" noThrow />;
   }
 

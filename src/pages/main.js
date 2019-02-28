@@ -10,22 +10,20 @@ import SEO from "../components/seo";
 import Forecast from "../components/forecast";
 import Field from "../components/field";
 import Fields from "../components/fields";
-import Loading from "../components/loading";
-import loading from "../components/loading";
 
-const MainPage = ({ location }) => {
+const MainPage = () => {
   console.log("MainPage");
-  console.log(location.state);
-  // STATE --------------------------------------------------------------
+
+  // STATE ---------------------------------------------
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
 
-  // fields -------------------------------------------------------------
+  // fields -------------------------------------------------------
   const initialFields =
     JSON.parse(window.localStorage.getItem("lawn-irrigation-tool")) || [];
   const [fields, setFields] = React.useState(initialFields);
   // console.log(fields);
 
-  // field ---------------------------------------------------------------
+  // field --------------------------------------------------------
   const initialField = () => {
     if (fields.length > 0) {
       return fields[0];
@@ -46,10 +44,6 @@ const MainPage = ({ location }) => {
   // if there is nothing in local storage go to landing page
   if (fields.length === 0) {
     return <Redirect from="/main" to="/" noThrow />;
-  }
-
-  if (loading) {
-    return <Loading />;
   }
 
   return (

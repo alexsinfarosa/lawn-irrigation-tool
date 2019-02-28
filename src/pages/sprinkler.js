@@ -1,4 +1,5 @@
 import React from "react";
+import { navigate } from "@reach/router";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Link from "../components/Link";
@@ -14,7 +15,13 @@ import Slider, { createSliderWithTooltip } from "rc-slider";
 
 import ButtonGLink from "../components/buttonGLink";
 import ImageSprinkler from "../components/imgSprinkler";
+import Loading from "../components/loading";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// utils --------------------------------------
+import { fetchForecastData, getPET } from "../utils/api.js";
+import takeRight from "lodash.takeright";
 
 // images
 import SpraySprinkler from "../images/spraySprinkler.png";
@@ -148,18 +155,35 @@ function SprinklerTypePage() {
   const theme = useTheme();
 
   // State --------------------------------------------
+  const [loading, setLoading] = React.useState(false);
   const [state, dispatch] = React.useReducer(reducer, initialState());
 
-  const addField = () => {
+  const addField = async () => {
+    setLoading(true);
+    const location = JSON.parse(window.localStorage.getItem("LIT_location"));
+    const irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
+    let field = { ...location, irrigationDate, sprinkler: { ...state } };
+    field.id = Date.now();
+    field.soilCapacity = "medium";
+
+    // get forecast data and Deficit data from Brian's call------------
+    field.forecast = await fetchForecastData(field.lat, field.lng);
+    field.data = await getPET(
+      field.irrigationDate,
+      field.lat,
+      field.lng,
+      field.soilCapacity,
+      0
+    );
+
+    // get the last 7 days to display in the field screen
+    field.last7Days = takeRight(field.data, 7);
+
     let results = [];
     const fields = JSON.parse(
       window.localStorage.getItem("lawn-irrigation-tool")
     );
 
-    const location = JSON.parse(window.localStorage.getItem("LIT_location"));
-    const irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
-    let field = { ...location, irrigationDate, sprinkler: { ...state } };
-    field.id = Date.now();
     fields ? (results = [field, ...fields]) : (results = [field]);
 
     window.localStorage.setItem(
@@ -167,8 +191,11 @@ function SprinklerTypePage() {
       JSON.stringify(results)
     );
 
+    // cleaning up ----------------------------------------------
     window.localStorage.removeItem("LIT_location");
     window.localStorage.removeItem("LIT_irrigationDate");
+    navigate("/main");
+    setLoading(false);
   };
 
   // selecting the sprinkler --------------------------------------------
@@ -185,6 +212,10 @@ function SprinklerTypePage() {
         minutes: spk.minutes
       });
     }
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (
@@ -285,7 +316,7 @@ function SprinklerTypePage() {
 
       <footer className={classes.footer}>
         <ButtonGLink
-          to="/main"
+          // to="/main"
           variant="contained"
           fullWidth
           classes={{ root: classes.btnBig }}

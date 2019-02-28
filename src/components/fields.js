@@ -1,4 +1,5 @@
 import React from "react";
+import { navigate } from "@reach/router";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
@@ -43,12 +44,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fields = ({ handleMainPageIdx, fields, runModel }) => {
+const Fields = ({ handleMainPageIdx, fields, setField }) => {
   console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
 
   const [isDialog, setIsDialog] = React.useState(false);
+  const [fieldId, setFieldId] = React.useState(0);
+
+  const deleteField = () => {
+    const fields = JSON.parse(
+      window.localStorage.getItem("lawn-irrigation-tool")
+    );
+    const newFields = fields.filter(field => field.id !== fieldId);
+    console.log(newFields);
+    if (newFields.length === 0) {
+      window.localStorage.removeItem("lawn-irrigation-tool");
+      navigate("/");
+    } else {
+      window.localStorage.setItem(
+        "lawn-irrigation-tool",
+        JSON.stringify(newFields)
+      );
+      handleMainPageIdx(1);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -71,16 +91,12 @@ const Fields = ({ handleMainPageIdx, fields, runModel }) => {
       <main className={classes.main}>
         {fields.map(field => {
           return (
-            <Paper
-              key={field.irrigationDate}
-              className={classes.paper}
-              elevation={1}
-            >
+            <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>
                 <ListItem
                   button
                   onClick={() => {
-                    runModel(field);
+                    setField(field);
                     handleMainPageIdx(1);
                   }}
                 >
@@ -106,7 +122,10 @@ const Fields = ({ handleMainPageIdx, fields, runModel }) => {
                   <ListItemSecondaryAction>
                     <IconButton
                       aria-label="Delete"
-                      onClick={() => setIsDialog(true)}
+                      onClick={() => {
+                        setFieldId(field.id);
+                        setIsDialog(true);
+                      }}
                     >
                       <FontAwesomeIcon icon="trash" size="xs" />
                     </IconButton>
@@ -138,7 +157,7 @@ const Fields = ({ handleMainPageIdx, fields, runModel }) => {
           </Button>
           <Button
             onClick={() => {
-              // deleteField(fieldId);
+              deleteField();
               setIsDialog(false);
             }}
             color="secondary"

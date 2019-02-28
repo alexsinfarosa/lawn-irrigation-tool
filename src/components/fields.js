@@ -80,7 +80,7 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
         />
         <FontAwesomeIcon
           icon="grip-horizontal"
-          size="lg"
+          size="2x"
           color={theme.palette.secondary.main}
         />
         <Link to="/location" variant="button" color="inherit">

@@ -65,7 +65,7 @@ const DayCard = ({ address, irrigationDay, waterFlow, minutes, day }) => {
   return (
     <div className={classes.root}>
       <div className={classes.topSide}>
-        <Typography variant="subtitle1" align="center">
+        <Typography variant="h6" align="center">
           {format(new Date(day.date), "EEEE, MMMM do")}
         </Typography>
 

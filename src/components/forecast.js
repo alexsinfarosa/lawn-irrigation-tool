@@ -17,8 +17,7 @@ const useStyles = makeStyles(theme => ({
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     justifyItems: "center",
-    padding: theme.spacing(0, 4),
-    background: theme.palette.background.default
+    padding: theme.spacing(0, 4)
   },
   main: {
     overflow: "auto",
@@ -28,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   forecastRow: {
     display: "flex",
     justifyContent: "space-between",
-    height: 50,
+    // height: 50,
     alignItems: "center"
   }
 }));
@@ -46,7 +45,7 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
             <FontAwesomeIcon icon="grip-horizontal" size="lg" color="#fafafa" />
             <FontAwesomeIcon
               icon="cloud-sun"
-              size="lg"
+              size="2x"
               color={theme.palette.secondary.main}
             />
             <FontAwesomeIcon
@@ -60,7 +59,7 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
             <Typography
               variant="h6"
               align="center"
-              style={{ marginBottom: theme.spacing(1) }}
+              style={{ margin: theme.spacing(2, 0) }}
             >
               {address}
             </Typography>
@@ -139,28 +138,47 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
             <div className={classes.forecastList}>
               {forecast.daily.data.map(day => (
                 <div key={day.time} className={classes.forecastRow}>
-                  <Typography
-                    variant="body2"
-                    align="left"
-                    style={{ width: 40 }}
-                  >
-                    {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
-                  </Typography>
+                  <div>
+                    <Typography
+                      variant="body1"
+                      align="left"
+                      style={{ width: 40, fontWeight: "bold" }}
+                    >
+                      {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
+                    </Typography>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon="cloud-rain"
+                        style={{ marginRight: 4 }}
+                        color={theme.palette.text.secondary}
+                        size="xs"
+                      />
+                      <Typography variant="caption" align="left">
+                        {`${Math.round(day.precipProbability * 100)}%`}
+                      </Typography>
+                    </div>
+                  </div>
 
                   <img
                     src={weatherIcons[day.icon]}
                     alt={day.summary}
                     style={{
                       width: 24,
-                      marginTop: 20
+                      marginTop: 21
                     }}
                   />
 
-                  <Typography variant="body2">{`${Math.round(
+                  <Typography variant="body1">{`${Math.round(
                     day.temperatureLow,
                     1
                   )}˚`}</Typography>
-                  <Typography variant="body2">
+                  <Typography variant="body1">
                     {`${Math.round(day.temperatureHigh, 1)}˚`}
                   </Typography>
                 </div>

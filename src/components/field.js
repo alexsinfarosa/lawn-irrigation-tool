@@ -51,7 +51,7 @@ const Field = ({ setMainPageIdx, field }) => {
         />
         <FontAwesomeIcon
           icon="home"
-          size="lg"
+          size="2x"
           color={theme.palette.secondary.main}
         />
         <FontAwesomeIcon

@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fields = ({ handleMainPageIdx, fields, setField }) => {
+const Fields = ({ handleMainPageIdx, fields, setField, setFields }) => {
   console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
@@ -57,7 +57,8 @@ const Fields = ({ handleMainPageIdx, fields, setField }) => {
       window.localStorage.getItem("lawn-irrigation-tool")
     );
     const newFields = fields.filter(field => field.id !== fieldId);
-    console.log(newFields);
+    setFields(newFields);
+    setField(newFields[0]);
     if (newFields.length === 0) {
       window.localStorage.removeItem("lawn-irrigation-tool");
       navigate("/");

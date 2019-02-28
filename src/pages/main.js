@@ -21,7 +21,7 @@ const MainPage = () => {
   // fields -------------------------------------------------------------
   const initialFields =
     JSON.parse(window.localStorage.getItem("lawn-irrigation-tool")) || [];
-  const [fields] = React.useState(initialFields);
+  const [fields, setFields] = React.useState(initialFields);
   // console.log(fields);
 
   // field ---------------------------------------------------------------
@@ -69,6 +69,7 @@ const MainPage = () => {
             handleMainPageIdx={handleMainPageIdx}
             fields={fields}
             setField={setField}
+            setFields={setFields}
           />
         </SwipeableViews>
       </div>

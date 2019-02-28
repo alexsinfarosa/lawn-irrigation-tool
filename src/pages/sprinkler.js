@@ -9,11 +9,11 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 
 import "rc-slider/assets/index.css";
 import Slider, { createSliderWithTooltip } from "rc-slider";
 
-import ButtonGLink from "../components/buttonGLink";
 import ImageSprinkler from "../components/imgSprinkler";
 import Loading from "../components/loading";
 
@@ -315,7 +315,7 @@ function SprinklerTypePage() {
       </main>
 
       <footer className={classes.footer}>
-        <ButtonGLink
+        <Button
           // to="/main"
           variant="contained"
           fullWidth
@@ -323,7 +323,7 @@ function SprinklerTypePage() {
           onClick={addField}
         >
           Create Field
-        </ButtonGLink>
+        </Button>
       </footer>
     </div>
   );

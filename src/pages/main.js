@@ -9,6 +9,7 @@ import SEO from "../components/seo";
 
 // utils --------------------------------------
 import { fetchForecastData, getPET } from "../utils/api.js";
+import takeRight from "lodash.takeright";
 
 // components
 import Forecast from "../components/forecast";
@@ -62,6 +63,7 @@ const MainPage = () => {
         soilCapacity,
         0
       );
+      fieldCopy.last7Days = takeRight(fieldCopy.data, 7);
       const fields = JSON.parse(
         window.localStorage.getItem("lawn-irrigation-tool")
       );

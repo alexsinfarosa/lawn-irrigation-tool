@@ -33,35 +33,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const days = [
-  {
-    address: "114 Cayuga St.",
-    date: "Monday February 25th",
-    temp: 20,
-    pcpn: 5,
-    shouldWater: true
-  },
-  {
-    address: "114 Cayuga St.",
-    date: "Sunday February 24th",
-    temp: 14,
-    pcpn: 80,
-    shouldWater: false
-  },
-  {
-    address: "114 Cayuga St.",
-    date: "Saturday February 23th",
-    temp: 15,
-    pcpn: 10,
-    shouldWater: true
-  }
-];
-
 const Field = ({ handleMainPageIdx, field }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
-  const [dayCardIdx, setDayCardIdx] = React.useState(1);
+
+  const { last7Days } = field;
+  // state --------------------------------------------
+  const [dayCardIdx, setDayCardIdx] = React.useState(6);
   const handleDayCardIdx = i => setDayCardIdx(i);
 
   return (
@@ -92,9 +71,17 @@ const Field = ({ handleMainPageIdx, field }) => {
           onChangeIndex={() => handleDayCardIdx(dayCardIdx)}
           enableMouseEvents
         >
-          {days.map(day => (
-            <DayCard key={day.date} field={field} day={day} />
-          ))}
+          {last7Days &&
+            last7Days.map(day => (
+              <DayCard
+                key={day.date}
+                waterFlow={field.sprinkler.waterFlow}
+                minutes={field.sprinkler.minutes}
+                address={field.address}
+                irrigationDate={field.irrigationDate}
+                day={day}
+              />
+            ))}
         </SwipeableViews>
 
         {/* grid bottom */}

@@ -25,23 +25,28 @@ import MoveableSprinkler from "../images/moveableSprinkler.png";
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 const sprinklers = [
-  { name: "Spray Sprinkler", img: SpraySprinkler, waterFlow: 2.4, minutes: 0 },
+  {
+    name: "Spray Sprinkler",
+    img: SpraySprinkler,
+    waterFlow: 0.024,
+    minutes: 0
+  },
   {
     name: "Single Stream Rotor",
     img: SingleStreamRotor,
-    waterFlow: 4.3,
+    waterFlow: 0.012,
     minutes: 0
   },
   {
     name: "Multiple Stream Rotor",
     img: MultipleStreamRotor,
-    waterFlow: 6.3,
+    waterFlow: 0.075,
     minutes: 0
   },
   {
     name: "Moveable Sprinkler",
     img: MoveableSprinkler,
-    waterFlow: 8.9,
+    waterFlow: 0.044,
     minutes: 0
   }
 ];

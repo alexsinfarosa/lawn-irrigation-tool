@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import format from "date-fns/format";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     height: 110
   }
 }));
-const DayCard = ({ field, day }) => {
+const DayCard = ({ address, irrigationDay, waterFlow, minutes, day }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -65,11 +66,11 @@ const DayCard = ({ field, day }) => {
     <div className={classes.root}>
       <div className={classes.topSide}>
         <Typography variant="subtitle1" align="center">
-          {day.date}
+          {format(new Date(day.date), "EEEE, MMMM do")}
         </Typography>
 
         <Typography variant="subtitle2" align="center" color="textSecondary">
-          {field.address}
+          {address}
         </Typography>
       </div>
       <div className={classes.leftSide}>
@@ -82,7 +83,7 @@ const DayCard = ({ field, day }) => {
             }}
           >
             <FontAwesomeIcon icon="sun" size="2x" style={{ marginRight: 4 }} />
-            <Typography variant="h4">{day.temp}˚</Typography>
+            <Typography variant="h4">25˚</Typography>
           </div>
           <div
             style={{
@@ -99,7 +100,7 @@ const DayCard = ({ field, day }) => {
               style={{ marginRight: 8 }}
             />
             <Typography variant="body2" className={classes.textParams}>
-              {day.pcpn}%
+              {day.pcpn.toFixed(2)}%
             </Typography>
           </div>
         </div>
@@ -111,11 +112,13 @@ const DayCard = ({ field, day }) => {
         >
           RECOMMENDATION:
         </Typography>
-        {day.shouldWater ? (
-          <Typography variant="h6">NO DEFICIT</Typography>
-        ) : (
+        {day.deficit > 2 * waterFlow * minutes ? (
           <Typography variant="h6" color="secondary">
             WATER!
+          </Typography>
+        ) : (
+          <Typography variant="h6" color="default">
+            NO DEFICIT
           </Typography>
         )}
       </div>

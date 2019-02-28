@@ -43,10 +43,6 @@ const MainPage = ({ location }) => {
   };
   const [field, setField] = React.useState(initialField);
 
-  // React.useEffect(() => {
-  //   setLoading(false);
-  // }, []);
-
   // if there is nothing in local storage go to landing page
   if (fields.length === 0) {
     return <Redirect from="/main" to="/" noThrow />;

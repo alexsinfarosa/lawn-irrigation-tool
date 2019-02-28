@@ -4,10 +4,10 @@ import { Redirect } from "@reach/router";
 import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 
-import Layout from "./layout";
-import SEO from "./seo";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 
-import ButtonGLink from "./buttonGLink";
+import ButtonGLink from "../components/buttonGLink";
 
 const useStyles = makeStyles(theme => ({
   root: {

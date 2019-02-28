@@ -7,88 +7,87 @@ import RingLoader from "react-spinners/RingLoader";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 
+// utils --------------------------------------
+import { fetchForecastData, getPET } from "../utils/api.js";
+
+// components
 import Forecast from "../components/forecast";
 import Field from "../components/field";
 import Fields from "../components/fields";
 
-const fieldsInitialState = [];
-const fieldInitialState = {
-  address: "",
-  cropType: "grass",
-  data: [],
-  forecast: null,
-  id: null,
-  irrigationDate: new Date().toString(),
-  latitude: null,
-  longitude: null,
-  soilCapacity: "medium",
-  sprinkler: { type: "", minutes: 0, waterFlow: null },
-  streetNumber: null
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "setField":
-      return { count: state.count + 1 };
-    case "decrement":
-      return { count: state.count - 1 };
-    default:
-      throw new Error();
-  }
-}
-
 const MainPage = () => {
   console.log("MainPage");
   const theme = useTheme();
+
+  // STATE --------------------------------------------------------------
+  const [loading, setLoading] = React.useState(false);
   const [mainPageIdx, setMainPageIdx] = React.useState(1);
   const handleMainPageIdx = i => setMainPageIdx(i);
 
-  const [field, setField] = React.useState(fieldInitialState);
-  const [fields, setFields] = React.useState(fieldsInitialState);
+  // fields -------------------------------------------------------------
+  const initialFields = () =>
+    JSON.parse(window.localStorage.getItem("lawn-irrigation-tool")) || [];
+  const [fields] = React.useState(initialFields);
 
-  function handleChangeField(event) {
-    setField({ ...field, [event.target.name]: event.target.value });
-  }
-
-  const readFromLocalstorage = () => {
-    // console.log("readFromLocalStorage");
-    const localStorageRef = localStorage.getItem("nrcc-irrigation-tool");
-    // console.log(localStorageRef);
-    if (localStorageRef) {
-      const params = JSON.parse(localStorageRef);
-      // console.log(params);
-      if (params.length > 0) {
-        const fieldCopy = { ...fieldInitialState };
-
-        fieldCopy.address = params[0].address;
-        fieldCopy.cropType = params[0].cropType;
-        fieldCopy.data = [...params[0].data];
-        fieldCopy.forecast = { ...params[0].forecast };
-        fieldCopy.id = params[0].id;
-        fieldCopy.irrigationDate = params[0].irrigationDate;
-        fieldCopy.latitude = params[0].latitude;
-        fieldCopy.longitude = params[0].longitude;
-        fieldCopy.soilCapacity = params[0].soilCapacity;
-        fieldCopy.sprinklerType = params[0].sprinklerType;
-        fieldCopy.streetNumber = params[0].streetNumber;
-        setField(fieldCopy);
-
-        // setting up initial state for the fields
-        setFields(params);
-      }
+  // field ---------------------------------------------------------------
+  const initialField = () => {
+    if (fields.length > 0) {
+      return fields[0];
     }
+    return {
+      address: "",
+      data: [],
+      forecast: {},
+      irrigationDate: new Date().toString(),
+      lat: null,
+      lng: null,
+      sprinkler: { name: "", img: null, waterFlow: null, minutes: 0 },
+      streetNumber: null
+    };
+  };
+  const [field, setField] = React.useState(initialField);
+
+  // Model data --------------------------------------------------------
+  const runModel = async field => {
+    const soilCapacity = "medium";
+    const fieldCopy = { ...field };
+
+    if (fieldCopy.data === undefined) {
+      setLoading(true);
+      fieldCopy.forecast = await fetchForecastData(field.lat, field.lng);
+      fieldCopy.data = await getPET(
+        field.irrigationDate,
+        field.lat,
+        field.lng,
+        soilCapacity,
+        0
+      );
+      const fields = JSON.parse(
+        window.localStorage.getItem("lawn-irrigation-tool")
+      );
+
+      const index = fields.findIndex(field => field.id === fieldCopy.id);
+      fields.splice(index, 1, fieldCopy);
+      window.localStorage.setItem(
+        "lawn-irrigation-tool",
+        JSON.stringify(fields)
+      );
+      setLoading(false);
+    }
+
+    setField(fieldCopy);
   };
 
+  // side effects ---------------------------------------------------------
   React.useEffect(() => {
-    readFromLocalstorage();
-  }, [field.address]);
+    runModel(field);
+  }, []);
 
-  console.log(field, fields);
   return (
     <Layout>
       <SEO title="Main" keywords={[`gatsby`]} />
 
-      {field.data.length !== 0 ? (
+      {!loading ? (
         <div style={{ height: "100%" }}>
           <SwipeableViews
             index={mainPageIdx}
@@ -101,7 +100,11 @@ const MainPage = () => {
               address={field.address}
             />
             <Field handleMainPageIdx={handleMainPageIdx} field={field} />
-            <Fields handleMainPageIdx={handleMainPageIdx} fields={fields} />
+            <Fields
+              handleMainPageIdx={handleMainPageIdx}
+              fields={fields}
+              runModel={runModel}
+            />
           </SwipeableViews>
         </div>
       ) : (

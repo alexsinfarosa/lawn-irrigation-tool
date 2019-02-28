@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import takeRight from "lodash.takeright";
+// import takeRight from "lodash.takeright";
 
 // components
 import DayCard from "../components/dayCard";
@@ -63,8 +63,6 @@ const Field = ({ handleMainPageIdx, field }) => {
   const theme = useTheme();
   const [dayCardIdx, setDayCardIdx] = React.useState(1);
   const handleDayCardIdx = i => setDayCardIdx(i);
-  console.log(field);
-  console.log(field.id, field.longitude);
 
   return (
     <div className={classes.root}>

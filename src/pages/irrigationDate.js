@@ -47,16 +47,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Initial State ---------------------------------------------
-let initialState = new Date().toString();
+const initialState = () => new Date().toString();
 
 function IrrigationDatePage() {
   console.log("IrrigationDatePage");
   const classes = useStyles();
 
-  const localStorageRef = window.localStorage.getItem("LIR_irrigationDate");
-  if (localStorageRef) {
-    initialState = new Date(localStorageRef).toString();
-  }
   // State ---------------------------------------------------
   const [irrigationDate, setIrrigationDate] = React.useState(initialState);
   const handleIrrigationDate = e => {
@@ -65,7 +61,7 @@ function IrrigationDatePage() {
   };
 
   React.useEffect(() => {
-    window.localStorage.setItem("LIR_irrigationDate", irrigationDate);
+    window.localStorage.setItem("LIT_irrigationDate", irrigationDate);
   }, [irrigationDate]);
 
   return (

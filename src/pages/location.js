@@ -54,12 +54,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Initial State ---------------------------
-let initialState = {
-  address: "",
-  isStreetNumber: true,
-  lat: null,
-  lng: null,
-  streetNumber: null
+const initialState = () => {
+  return {
+    address: "",
+    isStreetNumber: true,
+    lat: null,
+    lng: null,
+    streetNumber: null
+  };
 };
 
 // REDUCER ---------------------------------
@@ -91,20 +93,14 @@ function FieldLocationPage() {
   const classes = useStyles();
   const theme = useTheme();
 
-  // getting object from local storage -----------------------------
-  const localStorageRef = window.localStorage.getItem("LIT_location");
-  if (localStorageRef) {
-    initialState = { ...JSON.parse(localStorageRef) };
-  }
-
   // STATE --------------------------------------------------------
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState());
   const [errorMessage, setErrorMessage] = useState("");
 
   // Side effects --------------------------------------------------
   React.useEffect(() => {
     window.localStorage.setItem("LIT_location", JSON.stringify(state));
-  }, [state.address]);
+  }, [state]);
 
   // Handle address change ------------------------------------------
   const handleAddressChange = address => {
@@ -122,7 +118,7 @@ function FieldLocationPage() {
   };
 
   // Click on one of the suggested addresses of the list
-  const handleSelect = address => {
+  const handleSelectAdress = address => {
     dispatch({ type: "setAddress", address });
     geocodeByAddress(address)
       .then(results => {
@@ -190,7 +186,7 @@ function FieldLocationPage() {
                 onChange={() => dispatch({ type: "toggleStreetNumber" })}
               />
             }
-            label="My street number must follow the odd/even irrigation ordinance"
+            label="My street number follows the odd/even irrigation ordinance"
           />
         </FormGroup>
         <br />
@@ -198,7 +194,7 @@ function FieldLocationPage() {
         <PlacesAutocomplete
           value={state.address}
           onChange={handleAddressChange}
-          onSelect={handleSelect}
+          onSelect={handleSelectAdress}
           shouldFetchSuggestions={state.address.length > 2}
           onError={handleError}
         >

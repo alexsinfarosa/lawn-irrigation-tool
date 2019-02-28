@@ -107,8 +107,7 @@ const DayCard = ({ field, day }) => {
       <div className={classes.rightSide}>
         <Typography
           variant="caption"
-          color={theme.palette.text.secondary}
-          style={{ fontSize: "0.6rem" }}
+          style={{ fontSize: "0.6rem", color: theme.palette.text.secondary }}
         >
           RECOMMENDATION:
         </Typography>

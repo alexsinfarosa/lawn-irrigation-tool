@@ -25,10 +25,25 @@ import MoveableSprinkler from "../images/moveableSprinkler.png";
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 const sprinklers = [
-  { name: "Spray Sprinkler", img: SpraySprinkler, waterFlow: 2.4 },
-  { name: "Single Stream Rotor", img: SingleStreamRotor, waterFlow: 4.3 },
-  { name: "Multiple Stream Rotor", img: MultipleStreamRotor, waterFlow: 6.3 },
-  { name: "Moveable Sprinkler", img: MoveableSprinkler, waterFlow: 8.9 }
+  { name: "Spray Sprinkler", img: SpraySprinkler, waterFlow: 2.4, minutes: 0 },
+  {
+    name: "Single Stream Rotor",
+    img: SingleStreamRotor,
+    waterFlow: 4.3,
+    minutes: 0
+  },
+  {
+    name: "Multiple Stream Rotor",
+    img: MultipleStreamRotor,
+    waterFlow: 6.3,
+    minutes: 0
+  },
+  {
+    name: "Moveable Sprinkler",
+    img: MoveableSprinkler,
+    waterFlow: 8.9,
+    minutes: 0
+  }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -93,31 +108,30 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Initial state ------------------------------------------------------
-let initialState = {
-  sprinkler: { name: "", img: null, waterFlow: 0 },
-  minutes: 15
+const initialState = () => {
+  return {
+    name: "",
+    img: null,
+    waterFlow: 0,
+    minutes: 0
+  };
 };
 
 // REDUCER ---------------------------------
 function reducer(state, action) {
-  console.log(state, action);
   switch (action.type) {
     case "setSprinkler":
       return {
         ...state,
-        sprinkler: {
-          name: action.name,
-          img: action.img,
-          waterFlow: action.waterFlow
-        }
+        name: action.name,
+        img: action.img,
+        waterFlow: action.waterFlow,
+        minutes: action.minutes
       };
     case "setMinutes":
       return { ...state, minutes: action.minutes };
     case "reset":
-      return {
-        sprinkler: { name: "", img: null, waterFlow: 0 },
-        minutes: 15
-      };
+      return { name: "", img: null, waterFlow: 0, minutes: 0 };
     default:
       throw new Error();
   }
@@ -128,34 +142,46 @@ function SprinklerTypePage() {
   const classes = useStyles();
   const theme = useTheme();
 
-  // getting object from local storage -----------------------------
-  const localStorageRef = window.localStorage.getItem("LIT_sprinkler");
-  if (localStorageRef) {
-    initialState = { ...JSON.parse(localStorageRef) };
-  }
-
   // State --------------------------------------------
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState());
 
-  // Side effects --------------------------------------------------
-  React.useEffect(() => {
-    window.localStorage.setItem("LIT_sprinkler", JSON.stringify(state));
-  }, [state]);
+  const addField = () => {
+    let results = [];
+    const fields = JSON.parse(
+      window.localStorage.getItem("lawn-irrigation-tool")
+    );
 
-  function handleChange(event) {
-    if (event.target.value === state.sprinkler.name) {
-      dispatch({ type: "setSprinkler", name: "", img: null, minutes: 15 });
+    const location = JSON.parse(window.localStorage.getItem("LIT_location"));
+    const irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
+    let field = { ...location, irrigationDate, sprinkler: { ...state } };
+    field.id = Date.now();
+    fields ? (results = [field, ...fields]) : (results = [field]);
+
+    window.localStorage.setItem(
+      "lawn-irrigation-tool",
+      JSON.stringify(results)
+    );
+
+    window.localStorage.removeItem("LIT_location");
+    window.localStorage.removeItem("LIT_irrigationDate");
+  };
+
+  // selecting the sprinkler --------------------------------------------
+  function toggleImage(event) {
+    if (event.target.value === state.name) {
+      dispatch({ type: "reset" });
     } else {
       const spk = sprinklers.find(s => s.name === event.target.value);
       dispatch({
         type: "setSprinkler",
         name: spk.name,
         img: spk.img,
-        waterFlow: spk.waterFlow
+        waterFlow: spk.waterFlow,
+        minutes: spk.minutes
       });
     }
   }
-  console.log(state);
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -204,8 +230,8 @@ function SprinklerTypePage() {
                     actionIcon={
                       <IconButton>
                         <Checkbox
-                          checked={state.sprinkler.name === sprinkler.name}
-                          onChange={handleChange}
+                          checked={state.name === sprinkler.name}
+                          onChange={toggleImage}
                           value={sprinkler.name}
                           style={{ color: "#fff" }}
                         />
@@ -233,7 +259,7 @@ function SprinklerTypePage() {
               max={120}
               tipFormatter={e => `${e} min`}
               // tipProps={{ overlayClassName: "tipSlider" }}
-              defaultValue={15}
+              defaultValue={state.minutes}
               trackStyle={{ backgroundColor: theme.palette.primary.light }}
               handleStyle={{
                 borderColor: theme.palette.primary.light,
@@ -252,18 +278,17 @@ function SprinklerTypePage() {
         </div>
       </main>
 
-      {true && (
-        <footer className={classes.footer}>
-          <ButtonGLink
-            to="/main"
-            variant="contained"
-            fullWidth
-            classes={{ root: classes.btnBig }}
-          >
-            Create Field
-          </ButtonGLink>
-        </footer>
-      )}
+      <footer className={classes.footer}>
+        <ButtonGLink
+          to="/main"
+          variant="contained"
+          fullWidth
+          classes={{ root: classes.btnBig }}
+          onClick={addField}
+        >
+          Create Field
+        </ButtonGLink>
+      </footer>
     </div>
   );
 }

@@ -16,6 +16,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "../components/Link";
 
+// utils ------------
+import format from "date-fns/format";
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
@@ -40,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fields = ({ handleMainPageIdx }) => {
+const Fields = ({ handleMainPageIdx, fields, runModel }) => {
   console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
@@ -66,64 +69,53 @@ const Fields = ({ handleMainPageIdx }) => {
       </header>
 
       <main className={classes.main}>
-        <Paper className={classes.paper} elevation={1}>
-          <List component="nav" style={{ paddingTop: 22 }}>
-            <ListItem button>
-              <div style={{ marginLeft: -32 }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  style={{ width: 75 }}
+        {fields.map(field => {
+          return (
+            <Paper
+              key={field.irrigationDate}
+              className={classes.paper}
+              elevation={1}
+            >
+              <List component="nav" style={{ paddingTop: 22 }}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    runModel(field);
+                    handleMainPageIdx(1);
+                  }}
                 >
-                  water!
-                </Button>
-              </div>
+                  <div style={{ marginLeft: -32 }}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      style={{ width: 75 }}
+                    >
+                      water!
+                    </Button>
+                  </div>
 
-              <ListItemText
-                primary={"114 Cayuga St."}
-                secondary={"2018-08-09"}
-              />
+                  <ListItemText
+                    primary={field.address}
+                    secondary={format(
+                      new Date(field.irrigationDate),
+                      "MMMM dd, yyyy"
+                    )}
+                  />
 
-              <ListItemSecondaryAction>
-                <IconButton
-                  aria-label="Delete"
-                  onClick={() => setIsDialog(true)}
-                >
-                  <FontAwesomeIcon icon="trash" size="xs" />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </Paper>
-
-        <Paper className={classes.paper} elevation={1}>
-          <List component="nav" style={{ paddingTop: 22 }}>
-            <ListItem button>
-              <div style={{ marginLeft: -32 }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  style={{ width: 75 }}
-                >
-                  NO deficit
-                </Button>
-              </div>
-
-              <ListItemText
-                primary={"698 Madison AV."}
-                secondary={"2018-11-29"}
-              />
-
-              <ListItemSecondaryAction>
-                <IconButton aria-label="Delete">
-                  <FontAwesomeIcon icon="trash" size="xs" />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-        </Paper>
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      aria-label="Delete"
+                      onClick={() => setIsDialog(true)}
+                    >
+                      <FontAwesomeIcon icon="trash" size="xs" />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            </Paper>
+          );
+        })}
       </main>
 
       {/* DIALOG -----------------------------*/}

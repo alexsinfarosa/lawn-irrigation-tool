@@ -19,7 +19,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <SEO title="IrriTool" keywords={[`app`]} />
+      <SEO title="Lawn Irrigation Tool" keywords={[`app`]} />
       <Router>
         <LandingPage path="/" />
         <Main path="/main" />

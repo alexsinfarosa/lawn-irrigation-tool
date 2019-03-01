@@ -181,9 +181,10 @@ function SprinklerTypePage() {
     // get the last 7 days to display in the field screen
     const last7Days = takeRight(field.data, 7);
 
-    field.last7Days = last7Days.map(day => {
+    field.last7Days = last7Days.map((day, i) => {
       day.deficit = Math.abs(day.deficit);
       day.threshold = field.threshold;
+      day.xAxis = i === 4 ? "TODAY" : "";
       if (day.deficit > field.threshold) {
         day.message = "WATER!";
         day.color = "#F06543";

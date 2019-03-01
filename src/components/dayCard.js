@@ -28,20 +28,19 @@ const useStyles = makeStyles(theme => ({
   },
   leftSide: {
     gridArea: "leftSide",
-    // background: "orange",
     justifySelf: "right",
     alignSelf: "center"
   },
   rightSide: {
     gridArea: "rightSide",
-    // background: "tomato",
     justifySelf: "left",
-    alignSelf: "center"
+    alignSelf: "center",
+    // background: "pink",
+    height: "100%"
   },
   bottomSide: {
     gridArea: "bottomSide",
     marginTop: theme.spacing(3),
-    // background: "teal",
     display: "flex",
     flexDirection: "column"
   },
@@ -56,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     height: 110
   }
 }));
-const DayCard = ({ address, irrigationDay, waterFlow, minutes, day }) => {
+const DayCard = ({ address, index, day }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -66,45 +65,60 @@ const DayCard = ({ address, irrigationDay, waterFlow, minutes, day }) => {
     <div className={classes.root}>
       <div className={classes.topSide}>
         <Typography variant="h6" align="center">
-          {format(new Date(day.date), "EEEE, MMMM do")}
+          {index === 6 ? "TODAY" : format(new Date(day.date), "EEEE, MMMM do")}
         </Typography>
 
         <Typography variant="subtitle2" align="center" color="textSecondary">
           {address}
         </Typography>
       </div>
+
       <div className={classes.leftSide}>
         <div className={classes.circle}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <FontAwesomeIcon icon="sun" size="2x" style={{ marginRight: 4 }} />
-            <Typography variant="h4">25˚</Typography>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: theme.palette.text.secondary
-            }}
-          >
-            <FontAwesomeIcon
-              icon="cloud-rain"
-              size="lg"
-              color="inherit"
-              style={{ marginRight: 8 }}
-            />
-            <Typography variant="body2" className={classes.textParams}>
-              {day.pcpn.toFixed(2)}%
-            </Typography>
-          </div>
+          {index === 6 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <FontAwesomeIcon
+                icon="sun"
+                size="2x"
+                style={{ marginRight: 4 }}
+              />
+              <Typography variant="h4">51˚</Typography>
+            </div>
+          )}
+          {index === 6 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: theme.palette.text.secondary
+              }}
+            >
+              <FontAwesomeIcon
+                icon="cloud-rain"
+                size="lg"
+                color="inherit"
+                style={{ marginRight: 8 }}
+              />
+              <Typography variant="body2" className={classes.textParams}>
+                {day.pcpn.toFixed(2)}%
+              </Typography>
+            </div>
+          )}
+          {index !== 6 && (
+            <div>
+              <Typography variant="h5">PAST</Typography>
+            </div>
+          )}
         </div>
       </div>
+
       <div className={classes.rightSide}>
         <Typography
           variant="caption"
@@ -112,16 +126,15 @@ const DayCard = ({ address, irrigationDay, waterFlow, minutes, day }) => {
         >
           RECOMMENDATION:
         </Typography>
-        {day.deficit > 2 * waterFlow * minutes ? (
-          <Typography variant="h6" color="secondary">
-            WATER!
-          </Typography>
-        ) : (
-          <Typography variant="h6" color="default">
-            NO DEFICIT
-          </Typography>
-        )}
+
+        <Typography
+          variant="h6"
+          color={day.message === "WATER!" ? "secondary" : "default"}
+        >
+          {day.message}
+        </Typography>
       </div>
+
       <div className={classes.bottomSide}>
         <div style={{ display: "flex" }}>
           <Button

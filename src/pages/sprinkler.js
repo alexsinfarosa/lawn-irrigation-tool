@@ -36,25 +36,25 @@ const sprinklers = [
     name: "Spray Sprinkler",
     img: SpraySprinkler,
     waterFlow: 0.024,
-    minutes: 0
+    minutes: 1
   },
   {
     name: "Single Stream Rotor",
     img: SingleStreamRotor,
     waterFlow: 0.012,
-    minutes: 0
+    minutes: 1
   },
   {
     name: "Multiple Stream Rotor",
     img: MultipleStreamRotor,
     waterFlow: 0.075,
-    minutes: 0
+    minutes: 1
   },
   {
     name: "Moveable Sprinkler",
     img: MoveableSprinkler,
     waterFlow: 0.044,
-    minutes: 0
+    minutes: 1
   }
 ];
 
@@ -125,7 +125,7 @@ const initialState = () => {
     name: "",
     img: null,
     waterFlow: 0,
-    minutes: 0
+    minutes: 1
   };
 };
 
@@ -143,7 +143,7 @@ function reducer(state, action) {
     case "setMinutes":
       return { ...state, minutes: action.minutes };
     case "reset":
-      return { name: "", img: null, waterFlow: 0, minutes: 0 };
+      return { name: "", img: null, waterFlow: 0, minutes: 1 };
     default:
       throw new Error();
   }
@@ -175,9 +175,24 @@ function SprinklerTypePage() {
       field.soilCapacity,
       0
     );
+    // THRESHOLD---
+    field.threshold = 2 * state.waterFlow * state.minutes;
 
     // get the last 7 days to display in the field screen
-    field.last7Days = takeRight(field.data, 7);
+    const last7Days = takeRight(field.data, 7);
+
+    field.last7Days = last7Days.map(day => {
+      day.deficit = Math.abs(day.deficit);
+      day.threshold = field.threshold;
+      if (day.deficit > field.threshold) {
+        day.message = "WATER!";
+        day.color = "#F06543";
+      } else {
+        day.message = "NO DEFICIT";
+        day.color = "#00A676";
+      }
+      return day;
+    });
 
     let results = [];
     const fields = JSON.parse(
@@ -290,7 +305,7 @@ function SprinklerTypePage() {
             <SliderWithTooltip
               // dots
               // activeDotStyle={{ borderColor: theme.palette.primary.light }}
-              min={0}
+              min={1}
               step={5}
               max={120}
               tipFormatter={e => `${e} min`}

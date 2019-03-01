@@ -70,7 +70,7 @@ const Field = ({ setMainPageIdx, field }) => {
           enableMouseEvents
         >
           {last7Days &&
-            last7Days.map(day => (
+            last7Days.map((day, i) => (
               <DayCard
                 key={day.date}
                 waterFlow={field.sprinkler.waterFlow}
@@ -78,12 +78,13 @@ const Field = ({ setMainPageIdx, field }) => {
                 address={field.address}
                 irrigationDate={field.irrigationDate}
                 day={day}
+                index={i}
               />
             ))}
         </SwipeableViews>
 
         {/* grid bottom */}
-        <BarChart />
+        <BarChart last7Days={last7Days} />
       </main>
     </div>
   );

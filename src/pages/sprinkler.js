@@ -20,8 +20,10 @@ import Loading from "../components/loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // utils --------------------------------------
-import { fetchForecastData, getPET } from "../utils/api.js";
+import { fetchForecastData, currentModelMainFunction } from "../utils/api.js";
 import takeRight from "lodash.takeright";
+import reverse from "lodash.reverse";
+import format from "date-fns/format";
 
 // images
 import SpraySprinkler from "../images/spraySprinkler.png";
@@ -35,7 +37,7 @@ const sprinklers = [
   {
     name: "Spray Sprinkler",
     img: SpraySprinkler,
-    waterFlow: 0.024,
+    waterFlow: 0.024, // inches
     minutes: 1
   },
   {
@@ -47,7 +49,7 @@ const sprinklers = [
   {
     name: "Multiple Stream Rotor",
     img: MultipleStreamRotor,
-    waterFlow: 0.075,
+    waterFlow: 0.055,
     minutes: 1
   },
   {
@@ -124,7 +126,7 @@ const initialState = () => {
   return {
     name: "",
     img: null,
-    waterFlow: 0,
+    waterFlow: 0.05,
     minutes: 1
   };
 };
@@ -164,36 +166,43 @@ function SprinklerTypePage() {
     const irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
-    field.soilCapacity = "medium";
 
-    // get forecast data and Deficit data from Brian's call------------
+    // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
-    field.data = await getPET(
-      field.irrigationDate,
+
+    // default params -------------------------------------------
+    field.initialDeficit = 0;
+    field.plantingDate = field.irrigationDate;
+    field.soilCapacity = "medium";
+    field.cropType = "grass";
+
+    // get data from Brian's call --------------------------------
+    field.data = await currentModelMainFunction(
       field.lat,
       field.lng,
+      field.initialDeficit,
+      field.irrigationDate,
+      field.plantingDate,
       field.soilCapacity,
-      0
+      field.cropType
     );
-    // THRESHOLD---
-    field.threshold = 2 * state.waterFlow * state.minutes;
 
-    // get the last 7 days to display in the field screen
+    // THRESHOLD ------------------------------------------------
+    field.threshold = 2 * state.waterFlow * state.minutes; // inches
+
+    // get the last 7 days to display in the field screen -------
     const last7Days = takeRight(field.data, 7);
 
     field.last7Days = last7Days.map((day, i) => {
-      day.deficit = Math.abs(day.deficit);
       day.threshold = field.threshold;
-      day.xAxis = i === 4 ? "TODAY" : "";
-      if (day.deficit > field.threshold) {
-        day.message = "WATER!";
-        day.color = "#F06543";
-      } else {
-        day.message = "NO DEFICIT";
-        day.color = "#00A676";
-      }
+      day.xAxis = i === 4 ? "TODAY" : format(new Date(day.date), "dd/MM");
+      day.message = day.deficit > field.threshold ? "WATER!" : "NO DEFCIT";
+      day.negativeDeficit = day.deficit < 0 ? day.deficit : 0;
+      day.deficit = day.deficit < 0 ? 0 : day.deficit;
       return day;
     });
+
+    field.reversedLast7Days = reverse(field.last7Days);
 
     let results = [];
     const fields = JSON.parse(
@@ -308,7 +317,7 @@ function SprinklerTypePage() {
               // activeDotStyle={{ borderColor: theme.palette.primary.light }}
               min={1}
               step={5}
-              max={120}
+              max={121}
               tipFormatter={e => `${e} min`}
               // tipProps={{ overlayClassName: "tipSlider" }}
               defaultValue={state.minutes}

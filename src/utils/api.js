@@ -1,4 +1,5 @@
 import axios from "axios";
+import format from "date-fns/format";
 
 // Fetch forecast data -------------------------------
 export const fetchForecastData = (latitude, longitude) => {
@@ -17,10 +18,79 @@ export const fetchForecastData = (latitude, longitude) => {
     });
 };
 
-// Brian's call ------------------------------------------------
+// -----------------------------------------------------------
+export const currentModelMainFunction = (
+  lat,
+  lng,
+  initDeficit,
+  irrigationDate,
+  plantingDate,
+  soilCapacity,
+  croptype
+) => {
+  // console.log(currentModelMainFunction CALLED!)
+  const year = new Date(irrigationDate).getFullYear().toString();
+  // the first date is 03/01 of the selected year. It goes up to today plus 3 days forecast
+  const url = `${process.env.GATSBY_PROXYIRRIGATION}?lat=${lat.toFixed(
+    4
+  )}&lon=${lng.toFixed(4)}&year=${year}`;
 
-// soildata:
-// soil moisture and drainage characteristics for different levels of soil water capacity
+  // console.log(url);
+  return axios
+    .get(url)
+    .then(res => {
+      // console.log(`BrianCALL`, res.data);
+      const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
+      const pcpns = [...res.data.precip, ...res.data.precip_fcst];
+      const pets = [...res.data.pet, ...res.data.pet_fcst];
+
+      const results = runWaterDeficitModel(
+        pcpns,
+        pets,
+        initDeficit,
+        irrigationDate,
+        plantingDate,
+        soilCapacity,
+        croptype
+      );
+
+      // console.log(results);
+      const data = results.deficitDaily.map((val, i) => {
+        let p = {};
+        p.date = `${dates[i]}/${year}`;
+        p.deficit = +val.toFixed(2);
+        p.pet = pets[i];
+        p.pcpn = pcpns[i];
+        return p;
+      });
+
+      // console.log(data);
+      return data;
+    })
+    .catch(err => {
+      console.log("Failed to fetch PET data", err);
+    });
+};
+
+////////////////////////////////////////////////////////////////////////////
+// BELOW IS BRIAN'S CALL
+////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Climate Smart Farming Water Deficit Calculator
+// Copyright (c) 2018 Cornell Institute for Climate Smart Solutions
+// All Rights Reserved
+//
+// This software is published under the provisions of the GNU General Public
+// License <http://www.gnu.org/licenses/>. A text copy of the license can be
+// found in the file 'LICENSE' included with this software.
+//
+// A text copy of the copyright notice, licensing conditions and disclaimers
+// is available in the file 'COPYRIGHT' included with this software.
+//
+///////////////////////////////////////////////////////////////////////////////
+
 const modeldata = {
   cropinfo: {
     grass: {
@@ -42,6 +112,7 @@ const modeldata = {
         fieldcapacity: 2.0,
         saturation: 5.0
       },
+      // This is what we use--------------------------
       medium: {
         wiltingpoint: 2.0 / 3,
         prewiltingpoint: 2.225 / 3,
@@ -49,6 +120,7 @@ const modeldata = {
         fieldcapacity: 3.5 / 3,
         saturation: 5.5 / 3
       },
+      // ----------------------------------------------
       high: {
         wiltingpoint: 3.0,
         prewiltingpoint: 3.3,
@@ -64,8 +136,8 @@ const modeldata = {
     }
   }
 };
-const { medium } = modeldata.soildata.soilmoistureoptions;
 
+const { medium } = modeldata.soildata.soilmoistureoptions;
 // const noDeficit = medium.saturation - medium.fieldcapacity;
 const deficitNoStress = medium.stressthreshold - medium.fieldcapacity;
 const deficitStress = medium.prewiltingpoint - medium.fieldcapacity;
@@ -76,111 +148,119 @@ const deficitStress = medium.prewiltingpoint - medium.fieldcapacity;
 // console.log(deficitStress);
 // console.log(severeStress);
 
-export const determineColor = deficit => {
-  if (deficit >= 0) {
-    return "#2E933C";
-  }
-  if (deficit >= deficitStress && deficit < deficitNoStress) {
-    return "#FC9E4F";
-  }
-};
+// modeldata should contain the following
 
-const getPotentialDailyDrainage = soilcap => {
-  // -----------------------------------------------------------------------------------------
+// cropinfo:
+// crop options, including crop coefficients for different growth stages, and length (days) of growth stages.
+// Crop coefficients will be used to create a coefficient curve when needed.
+// Growth stage length (L) and coefficients (Kc) from FAO-56, chapter 6, single crop coefficient - and additional sources for NEUS values
+
+// soildata:
+// soil moisture and drainage characteristics for different levels of soil water capacity
+
+function getPotentialDailyDrainage(soilcap) {
+  // -------------------------------------------
   // Calculate potential daily drainage of soil
-  //
   // soilcap : soil water capacity : string ('high', 'medium', 'low')
-  // -----------------------------------------------------------------------------------------
+  // --------------------------------------------
   return (
     (modeldata.soildata.soilmoistureoptions[soilcap].saturation -
       modeldata.soildata.soilmoistureoptions[soilcap].fieldcapacity) /
     modeldata.soildata.soildrainageoptions[soilcap].daysToDrainToFcFromSat
   );
-};
+}
 
-const getTawForPlant = soilcap => {
-  // -----------------------------------------------------------------------------------------
+function getTawForPlant(soilcap) {
+  // --------------------------------------------
   // Calculate total available water (TAW) for plant, defined here as:
   // soil moisture at field capacity minus soil moisture at wilting point
-  //
   // soilcap : soil water capacity : string ('high', 'medium', 'low')
-  // -----------------------------------------------------------------------------------------
+  // ---------------------------------------------
   return (
     modeldata.soildata.soilmoistureoptions[soilcap].fieldcapacity -
     modeldata.soildata.soilmoistureoptions[soilcap].wiltingpoint
   );
-};
+}
 
-const getWaterStressCoeff = (Dr, TAW) => {
-  // -----------------------------------------------------------------------------------------
+function getWaterStressCoeff(Dr, TAW) {
+  // ---------------------------------------------
   // Calculate coefficient for adjusting ET when accounting for decreased ET during water stress conditions.
   // Refer to FAO-56 eq 84, pg 169
   // Dr  : the antecedent water deficit (in)
   // TAW : total available (in) water for the plant (soil moisture at field capacity minus soil moisture at wilting point).
   // p   : at what fraction between field capacity and wilting point do we start applying this water stress factor.
   // Ks  : water stress coefficient
-  // -----------------------------------------------------------------------------------------
-  let Ks = null;
-  const p = 0.5;
+  // ----------------------------------------------
+  var Ks = null;
+  var p = 0.5;
   Dr = -1 * Dr;
   Ks = Dr <= p * TAW ? 1 : (TAW - Dr) / ((1 - p) * TAW);
   Ks = Math.max(Ks, 0);
   return Ks;
-};
+}
 
-export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
-  // console.log("getPET CALLED!", sdate, lat, lon, soilCapacity, initDeficit);
-  const year = new Date(sdate).getFullYear().toString();
-  const latitude = lat.toFixed(4);
-  const longitude = lon.toFixed(4);
-  // the first date is 03/01
-  const url = `${
-    process.env.GATSBY_PROXYIRRIGATION
-  }?lat=${latitude}&lon=${longitude}&year=${year}`;
-  // console.log(url);
-  return axios
-    .get(url)
-    .then(res => {
-      // console.log(`BrianCALL`, res.data);
-      const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
-      const pcpns = [...res.data.precip, ...res.data.precip_fcst];
-      const pets = [...res.data.pet, ...res.data.pet_fcst];
-      const results = runWaterDeficitModel(
-        pcpns,
-        pets,
-        initDeficit,
-        soilCapacity,
-        0,
-        0
-      );
+function getSingleCropCoeff(numdays, croptype) {
+  // ----------------------------------------------
+  // Calculate crop coefficient for a specific growth stage of plant.
+  // - Coefficients for initial, middle and end growth stages are assigned directly.
+  // - Coefficients for development and late growth stages are determined by linear interpolation between coefficients for surrounding stages.
+  // Refer to FAO-56 single crop coefficient reference, along with other sources for values specific for the Northeast US.
+  //
+  // numdays : days since planting, used to estimate the growth stage.
+  // croptype  : the crop type
+  // Lini  : length (days) of initial growth stage
+  // Ldev  : length (days) of development growth stage
+  // Lmid  : length (days) of middle (mature) growth stage
+  // Llate : length (days) of late growth stage
+  // Kcini : crop coefficient for initial growth stage
+  // Kcmid : crop coefficient for middle (mature) growth stage
+  // Kcend : crop coefficient at end of growing season
+  // Kc    : crop coefficient for this specific growth stage - we use Kc to adjust grass reference ET
+  // -----------------------------------------------
+  var Lini = modeldata.cropinfo[croptype]["Lini"];
+  var Ldev = modeldata.cropinfo[croptype]["Ldev"];
+  var Lmid = modeldata.cropinfo[croptype]["Lmid"];
+  var Llate = modeldata.cropinfo[croptype]["Llate"];
+  var Kcini = modeldata.cropinfo[croptype]["Kcini"];
+  var Kcmid = modeldata.cropinfo[croptype]["Kcmid"];
+  var Kcend = modeldata.cropinfo[croptype]["Kcend"];
+  var Kc = null;
 
-      const data = results.deficitDaily.map((val, i) => {
-        let p = {};
-        p.date = `${dates[i]}/${year}`;
-        p.deficit = +val.toFixed(2);
-        p.pet = pets[i];
-        p.pcpn = pcpns[i];
-        return p;
-      });
+  if (numdays <= Lini) {
+    // before planting or in initial growth stage
+    Kc = Kcini;
+  } else if (numdays > Lini && numdays < Lini + Ldev) {
+    // in development growth stage
+    // linearly interpolate between Kcini and Kcmid to find Kc within development stage
+    Kc = Kcini + ((numdays - Lini) * (Kcmid - Kcini)) / Ldev;
+  } else if (numdays >= Lini + Ldev && numdays <= Lini + Ldev + Lmid) {
+    // in middle (mature) growth stage
+    Kc = Kcmid;
+  } else if (
+    numdays > Lini + Ldev + Lmid &&
+    numdays < Lini + Ldev + Lmid + Llate
+  ) {
+    // in late growth stage
+    // linearly interpolate between Kcmid and Kcend to find Kc within late growth stage
+    Kc = Kcmid - ((numdays - (Lini + Ldev + Lmid)) * (Kcmid - Kcend)) / Llate;
+  } else {
+    // at end of growing season
+    Kc = Kcend;
+  }
 
-      // console.log(data);
-      return data;
-    })
-    .catch(err => {
-      console.log("Failed to fetch PET data", err);
-    });
-};
+  return Kc;
+}
 
-export const runWaterDeficitModel = (
+export function runWaterDeficitModel(
   precip,
   pet,
   initDeficit,
+  startDate,
+  plantingDate,
   soilcap,
-  deficitAdjustment,
-  todayIdx
-) => {
-  // console.log(precip, pet, initDeficit, soilcap);
-  // -----------------------------------------------------------------------------------------
+  croptype
+) {
+  // -------------------------------------------
   // Calculate daily water deficit (inches) from daily precipitation, evapotranspiration, soil drainage and runoff.
   //
   // The water deficit is calculated relative to field capacity (i.e. the amount of water available to the plant).
@@ -194,18 +274,18 @@ export const runWaterDeficitModel = (
   //  precip       : daily precipitation array (in) : (NRCC ACIS grid 3)
   //  pet          : daily potential evapotranspiration array (in) : (grass reference PET obtained from NRCC MORECS model output)
   //  initDeficit  : water deficit used to initialize the model
-  //  startDate    : date of model initialization     ** removed for this implementation -kle
-  //  plantingDate : date crop was planted            ** removed for this implementation -kle
+  //  startDate    : date of model initialization
+  //  plantingDate : date crop was planted
   //  soilcap      : soil water capacity ('high','medium','low')
   //  croptype     : type of crop
   //
-  // -----------------------------------------------------------------------------------------
+  // ---------------------------------------
 
   // a running tally of the deficit
   var deficit = null;
 
   // days since planting, for help in determining the plant's current growth stage
-  //var daysSincePlanting = null; ** removed for this implementation -kle
+  var daysSincePlanting = null;
   // Total water available to plant
   var TAW = null;
   // water stress coefficient
@@ -255,19 +335,20 @@ export const runWaterDeficitModel = (
 
   // Need to know the number of days since planting for crop coefficient calculation
   // If the number is negative, assuming Kc = Kcini for bare soil and single crop coeff method (FAO-56)
-  // daysSincePlanting =  Math.floor(( Date.parse(startDate) - Date.parse(plantingDate) ) / 86400000);    ** removed for this implementation -kle
+  daysSincePlanting = Math.floor(
+    (Date.parse(startDate) - Date.parse(plantingDate)) / 86400000
+  );
 
   // Loop through all days, starting with the second day (we already have the deficit for the initial day from model initialization)
   for (var idx = 1; idx < pet.length; idx++) {
     // increment as we advance through the growth stages of the plant
-    //daysSincePlanting += 1    ** removed for this implementation -kle
+    daysSincePlanting += 1;
 
     // Calculate Ks, the water stress coefficient, using antecedent deficit
     TAW = getTawForPlant(soilcap);
     Ks = getWaterStressCoeff(deficitDaily[idx - 1], TAW);
     // Calculate Kc, the crop coefficient, using the days since planting
-    //Kc = getSingleCropCoeff(daysSincePlanting,croptype);  ** removed for this implementation -kle
-    Kc = 1; // ** added for this implementation -kle
+    Kc = getSingleCropCoeff(daysSincePlanting, croptype);
 
     // Vars to hold the daily tally for components of the water balance model daily - mostly for calc verification
     // Initialize the daily totals here.
@@ -329,24 +410,6 @@ export const runWaterDeficitModel = (
       );
     }
 
-    // user action: manually adding water deficiency
-    let deficitAdjustmentSum = 0;
-    if (deficitAdjustment.length > 0) {
-      deficitAdjustmentSum = deficitAdjustment.reduce(
-        (acc, curr) => acc + curr
-      );
-    }
-    // console.log(
-    //   `BEF: ${idx ===
-    //     todayIdx}, ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficitAdjustmentSum}, ${deficit})}`
-    // );
-
-    deficit = idx === todayIdx ? deficit + deficitAdjustmentSum : deficit;
-    // console.log(
-    //   `AFT: ${idx ===
-    //     todayIdx}, ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficitAdjustmentSum},${deficit})}`
-    // );
-
     deficitDailyChange.push(deficit - deficitDaily[deficitDaily.length - 1]);
     deficitDaily.push(deficit);
     drainageDaily.push(totalDailyDrainage);
@@ -355,8 +418,7 @@ export const runWaterDeficitModel = (
     precipDaily.push(totalDailyPrecip);
   }
 
-  // console.log('INSIDE WATER DEFICIT MODEL');
-  // console.log(deficitDaily);
+  // console.log("INSIDE WATER DEFICIT MODEL");
 
   return {
     deficitDailyChange: deficitDailyChange,
@@ -366,4 +428,4 @@ export const runWaterDeficitModel = (
     petDaily: petDaily,
     precipDaily: precipDaily
   };
-};
+}

@@ -1,12 +1,12 @@
 import React from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
 
+import SwipeableViews from "react-swipeable-views";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import format from "date-fns/format";
 
-// component
-import BarChart from "./barChart";
+// components
+import DayCard from "../components/dayCard";
+import BarChart from "../components/barChart";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +36,7 @@ const Field = ({ setMainPageIdx, field }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const { reversedLast7Days } = field;
+  const { last7Days } = field;
   // state --------------------------------------------
   const [dayCardIdx, setDayCardIdx] = React.useState(6);
   const handleDayCardIdx = i => setDayCardIdx(i);
@@ -62,12 +62,29 @@ const Field = ({ setMainPageIdx, field }) => {
       </header>
 
       <main className={classes.main}>
-        <div className={classes.topSide}>
-          <Typography variant="subtitle1" align="center" color="textSecondary">
-            {field.address}
-          </Typography>
-        </div>
-        <BarChart reversedLast7Days={reversedLast7Days} />
+        {/* grid top */}
+
+        <SwipeableViews
+          index={dayCardIdx}
+          onChangeIndex={() => handleDayCardIdx(dayCardIdx)}
+          enableMouseEvents
+        >
+          {last7Days &&
+            last7Days.map((day, i) => (
+              <DayCard
+                key={day.date}
+                waterFlow={field.sprinkler.waterFlow}
+                minutes={field.sprinkler.minutes}
+                address={field.address}
+                irrigationDate={field.irrigationDate}
+                day={day}
+                index={i}
+              />
+            ))}
+        </SwipeableViews>
+
+        {/* grid bottom */}
+        <BarChart last7Days={last7Days} />
       </main>
     </div>
   );

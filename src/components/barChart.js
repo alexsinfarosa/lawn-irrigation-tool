@@ -1,62 +1,62 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles, useTheme } from "@material-ui/styles";
+// import Typography from "@material-ui/core/Typography";
 
-import { ComposedChart, Bar, Cell, Text, Label, XAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis } from "recharts";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "grid",
     padding: theme.spacing(2, 0)
+    // background: "pink"
   }
 }));
 
-function BarChart({ last7Days }) {
+function BarChartDeficit({ reversedLast7Days }) {
   console.log("BarChart");
   const classes = useStyles();
-  console.log(last7Days);
-
-  const renderCustomizedLabel = props => {
-    const { x, y, width, height, value } = props;
-    const radius = 10;
-
-    return (
-      <g>
-        <circle cx={x + width / 2} cy={y - radius} r={radius} fill="#8884d8" />
-        <text
-          x={x + width / 2}
-          y={y - radius}
-          fill="#fff"
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {value.split(" ")[1]}
-        </text>
-      </g>
-    );
-  };
+  const theme = useTheme();
+  console.log(reversedLast7Days);
 
   return (
     <div className={classes.root}>
-      <Typography variant="subtitle1" align="center">
-        Deficit Values
-      </Typography>
-      <ComposedChart
+      <BarChart
+        layout="vertical"
         width={window.innerWidth}
-        height={window.innerHeight / 3.2}
-        data={last7Days}
-        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+        height={window.innerHeight - 120}
+        data={reversedLast7Days}
+        maxBarSize={20}
+        stackOffset="sign"
+        margin={{ top: 24, right: 32, left: 16, bottom: 32 }}
       >
-        <Bar dataKey="deficit" layout="vertical" label={{ position: "top" }}>
-          {last7Days.map((day, i) => {
-            return <Cell key={day.date} fill={day.color} />;
-          })}
-        </Bar>
-        <XAxis dataKey="xAxis" tickLine={false} axisLine={true} height={20} />
-      </ComposedChart>
+        <XAxis type="number" />
+        <YAxis
+          dataKey="xAxis"
+          type="category"
+          tickLine={false}
+          axisLine={false}
+        />
+        <Bar
+          dataKey="threshold"
+          fill={"#82ca9d"}
+          stackId="stack"
+          radius={[0, 0, 0, 0]}
+        />
+        <Bar
+          dataKey="deficit"
+          fill={theme.palette.secondary.main}
+          stackId="stack"
+          radius={[0, 20, 20, 0]}
+        />
+        <Bar
+          dataKey="negativeDeficit"
+          fill={"#82ca9d"}
+          stackId="stack"
+          radius={[20, 0, 0, 20]}
+        />
+      </BarChart>
     </div>
   );
 }
 
-export default React.memo(BarChart);
+export default React.memo(BarChartDeficit);

@@ -195,8 +195,8 @@ function SprinklerTypePage() {
 
     field.last7Days = last7Days.map((day, i) => {
       day.threshold = field.threshold;
-      day.xAxis = i === 4 ? "TODAY" : format(new Date(day.date), "dd/MM");
-      day.message = day.deficit > field.threshold ? "WATER!" : "NO DEFCIT";
+      day.xAxis = i === 4 ? "TODAY" : format(new Date(day.date), "MM/dd");
+      day.message = day.deficit > field.threshold ? "WATER!" : "";
       day.negativeDeficit = day.deficit < 0 ? day.deficit : 0;
       day.deficit = day.deficit < 0 ? 0 : day.deficit;
       return day;

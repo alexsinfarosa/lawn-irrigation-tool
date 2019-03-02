@@ -21,7 +21,9 @@ import {
   faTrash,
   faTimes,
   faCheck,
-  faSpinner
+  faSpinner,
+  faCheckSquare,
+  faSquare
 } from "@fortawesome/free-solid-svg-icons";
 // all fontawesome icons of the project
 library.add(
@@ -38,7 +40,9 @@ library.add(
   faTrash,
   faTimes,
   faCheck,
-  faSpinner
+  faSpinner,
+  faCheckSquare,
+  faSquare
 );
 
 install();

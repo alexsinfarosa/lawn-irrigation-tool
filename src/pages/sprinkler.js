@@ -37,7 +37,7 @@ const sprinklers = [
   {
     name: "Spray Sprinkler",
     img: SpraySprinkler,
-    waterFlow: 0.024, // inches
+    waterFlow: 0.024, // inches of water
     minutes: 1
   },
   {
@@ -170,39 +170,54 @@ function SprinklerTypePage() {
     // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
-    // default params -------------------------------------------
-    field.initialDeficit = 0;
-    field.plantingDate = field.irrigationDate;
-    field.soilCapacity = "medium";
-    field.cropType = "grass";
-
     // get data from Brian's call --------------------------------
+    field.year = new Date(irrigationDate).getFullYear().toString();
     field.data = await currentModelMainFunction(
       field.lat,
       field.lng,
-      field.initialDeficit,
-      field.irrigationDate,
-      field.plantingDate,
-      field.soilCapacity,
-      field.cropType
+      field.year
     );
 
     // THRESHOLD ------------------------------------------------
     field.threshold = 2 * state.waterFlow * state.minutes; // inches
 
     // get the last 7 days to display in the field screen -------
-    const last7Days = takeRight(field.data, 7);
+    let sevenDays = [];
 
-    field.last7Days = last7Days.map((day, i) => {
+    // to eliminate 3rd forecast day.
+    const data = field.data.slice(0, -1);
+
+    const irrigationDateIdx = data.findIndex(d => d.date === "07/03/2018");
+    const idxMinusFourDays =
+      irrigationDateIdx - 4 < 0 ? 0 : irrigationDateIdx - 4;
+    const idxPlus2Days = irrigationDateIdx + 3;
+    sevenDays = data.slice(idxMinusFourDays, idxPlus2Days);
+
+    field.sevenDays = sevenDays.map(day => {
+      const today = format(new Date(), "MM/dd/yyyy");
+
       day.threshold = field.threshold;
-      day.xAxis = i === 4 ? "TODAY" : format(new Date(day.date), "MM/dd");
-      day.message = day.deficit > field.threshold ? "WATER!" : "";
+      day.yAxis =
+        day.date === today ? "TODAY" : format(new Date(day.date), "MM/dd");
       day.negativeDeficit = day.deficit < 0 ? day.deficit : 0;
       day.deficit = day.deficit < 0 ? 0 : day.deficit;
+      day.index = data.findIndex(d => d.date === day.date);
+      day.suggestion = day.deficit > field.threshold ? "WATER!" : "";
+      day.watered = false;
       return day;
     });
 
-    field.reversedLast7Days = reverse(field.last7Days);
+    console.log(
+      field.sevenDays,
+      irrigationDateIdx,
+      field.sevenDays[irrigationDateIdx]
+    );
+
+    field.todaySuggestion = field.sevenDays.find(
+      day => day.index === irrigationDateIdx
+    ).suggestion;
+
+    field.reversedSevenDays = reverse(field.sevenDays);
 
     let results = [];
     const fields = JSON.parse(
@@ -211,6 +226,7 @@ function SprinklerTypePage() {
 
     fields ? (results = [field, ...fields]) : (results = [field]);
 
+    // console.log(fields);
     window.localStorage.setItem(
       "lawn-irrigation-tool",
       JSON.stringify(results)

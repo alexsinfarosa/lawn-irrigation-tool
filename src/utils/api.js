@@ -19,17 +19,9 @@ export const fetchForecastData = (latitude, longitude) => {
 };
 
 // -----------------------------------------------------------
-export const currentModelMainFunction = (
-  lat,
-  lng,
-  initDeficit,
-  irrigationDate,
-  plantingDate,
-  soilCapacity,
-  croptype
-) => {
+export const currentModelMainFunction = (lat, lng, year) => {
   // console.log(currentModelMainFunction CALLED!)
-  const year = new Date(irrigationDate).getFullYear().toString();
+
   // the first date is 03/01 of the selected year. It goes up to today plus 3 days forecast
   const url = `${process.env.GATSBY_PROXYIRRIGATION}?lat=${lat.toFixed(
     4
@@ -39,20 +31,12 @@ export const currentModelMainFunction = (
   return axios
     .get(url)
     .then(res => {
-      // console.log(`BrianCALL`, res.data);
+      console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       const pcpns = [...res.data.precip, ...res.data.precip_fcst];
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
-      const results = runWaterDeficitModel(
-        pcpns,
-        pets,
-        initDeficit,
-        irrigationDate,
-        plantingDate,
-        soilCapacity,
-        croptype
-      );
+      const results = runWaterDeficitModel(pcpns, pets);
 
       // console.log(results);
       const data = results.deficitDaily.map((val, i) => {
@@ -254,11 +238,13 @@ function getSingleCropCoeff(numdays, croptype) {
 export function runWaterDeficitModel(
   precip,
   pet,
-  initDeficit,
-  startDate,
-  plantingDate,
-  soilcap,
-  croptype
+  // startDate doed not matter since it is only used to calculate Kc. In our case
+  // Kc will be always 1 since the startDate and the plantingDate are equal
+  startDate = new Date().toString(),
+  initDeficit = 0,
+  plantingDate = startDate,
+  soilcap = "medium",
+  croptype = "grass"
 ) {
   // -------------------------------------------
   // Calculate daily water deficit (inches) from daily precipitation, evapotranspiration, soil drainage and runoff.

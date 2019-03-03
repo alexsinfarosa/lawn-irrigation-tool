@@ -14,11 +14,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function BarChartDeficit({ reversedLast7Days }) {
+function BarChartDeficit({ reversedSevenDays }) {
   console.log("BarChart");
   const classes = useStyles();
   const theme = useTheme();
-  console.log(reversedLast7Days);
+
+  console.log(reversedSevenDays);
 
   const XaxisTick = props => {
     const { x, y, stroke, payload } = props;
@@ -30,7 +31,7 @@ function BarChartDeficit({ reversedLast7Days }) {
           dy={16}
           textAnchor="end"
           fill="#666"
-          transform="rotate(-35)"
+          transform="rotate(-15)"
         >
           {payload.value}
         </text>
@@ -57,23 +58,22 @@ function BarChartDeficit({ reversedLast7Days }) {
   };
 
   const CustomizedLabel = props => {
-    console.log(props);
     const { x, y, stroke, value, index } = props;
     return (
       <svg width={20} height={20} x={window.innerWidth - 32} y={y}>
-        {reversedLast7Days[index].message === "WATER!" ? (
+        {reversedSevenDays[index].suggestion === "WATER!" ? (
           <FontAwesomeIcon
             icon="check-square"
             size="1x"
-            // color="red"
-            onClick={() => console.log(reversedLast7Days[index])}
+            color={theme.palette.secondary.main}
+            onClick={() => console.log(reversedSevenDays[index])}
           />
         ) : (
           <FontAwesomeIcon
             icon="square"
             size="1x"
-            // color="red"
-            onClick={() => console.log(reversedLast7Days[index])}
+            color={theme.palette.text.secondary}
+            onClick={() => console.log(reversedSevenDays[index])}
           />
         )}
       </svg>
@@ -86,7 +86,7 @@ function BarChartDeficit({ reversedLast7Days }) {
         layout="vertical"
         width={window.innerWidth}
         height={window.innerHeight - 120}
-        data={reversedLast7Days}
+        data={reversedSevenDays}
         maxBarSize={20}
         stackOffset="sign"
         margin={{ top: 24, right: 64, left: 16, bottom: 32 }}
@@ -94,7 +94,7 @@ function BarChartDeficit({ reversedLast7Days }) {
       >
         <XAxis type="number" tick={<XaxisTick />} />
         <YAxis
-          dataKey="xAxis"
+          dataKey="yAxis"
           type="category"
           tickLine={false}
           axisLine={false}
@@ -111,13 +111,13 @@ function BarChartDeficit({ reversedLast7Days }) {
           fill={theme.palette.secondary.main}
           stackId="stack"
           radius={[0, 20, 20, 0]}
-          label={<CustomizedLabel reversedLast7Days={reversedLast7Days} />}
+          label={<CustomizedLabel reversedSevenDays={reversedSevenDays} />}
         />
         <Bar
           dataKey="negativeDeficit"
-          fill={"#82ca9d"}
+          fill={"#9cc9f5"}
           stackId="stack"
-          radius={[20, 0, 0, 20]}
+          radius={[0, 20, 20, 0]}
         />
       </BarChart>
     </div>

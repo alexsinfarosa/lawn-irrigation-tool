@@ -36,7 +36,7 @@ const Field = ({ setMainPageIdx, field }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const { reversedLast7Days } = field;
+  const { reversedSevenDays } = field;
   // state --------------------------------------------
   const [dayCardIdx, setDayCardIdx] = React.useState(6);
   const handleDayCardIdx = i => setDayCardIdx(i);
@@ -67,7 +67,7 @@ const Field = ({ setMainPageIdx, field }) => {
             {field.address}
           </Typography>
         </div>
-        <BarChart reversedLast7Days={reversedLast7Days} />
+        <BarChart reversedSevenDays={reversedSevenDays} />
       </main>
     </div>
   );

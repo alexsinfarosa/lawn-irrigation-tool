@@ -90,6 +90,7 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
 
       <main className={classes.main}>
         {fields.map(field => {
+          console.log(field);
           return (
             <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>
@@ -104,9 +105,16 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
                       variant="contained"
                       color="secondary"
                       size="small"
-                      style={{ width: 75 }}
+                      style={{
+                        width: 75,
+                        minHeight: 35,
+                        background:
+                          field.todaySuggestion === ""
+                            ? "#82ca9d"
+                            : theme.palette.secondary.main
+                      }}
                     >
-                      water!
+                      {field.todaySuggestion}
                     </Button>
                   </div>
 

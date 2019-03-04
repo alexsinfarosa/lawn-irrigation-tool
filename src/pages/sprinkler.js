@@ -199,12 +199,10 @@ function SprinklerTypePage() {
 
     field.sevenDays = sevenDays.map(day => {
       const today = format(new Date(), "MM/dd/yyyy");
-
       day.threshold = field.threshold;
       day.yAxis =
         day.date === today ? "TODAY" : format(new Date(day.date), "MM/dd");
-      day.negativeDeficit = day.deficit < 0 ? day.deficit : 0;
-      day.deficit = day.deficit < 0 ? 0 : day.deficit;
+      day.color = day.deficit > day.threshold ? "red" : "green";
       day.index = data.findIndex(d => d.date === day.date);
       day.suggestion = day.deficit > field.threshold ? "WATER!" : "";
       day.watered = false;

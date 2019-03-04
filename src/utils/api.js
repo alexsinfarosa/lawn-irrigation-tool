@@ -41,7 +41,7 @@ export const currentModelMainFunction = (lat, lng, year) => {
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
         p.date = `${dates[i]}/${year}`;
-        p.deficit = +val.toFixed(2);
+        p.deficit = +val;
         p.pet = pets[i];
         p.pcpn = pcpns[i];
         return p;
@@ -97,11 +97,11 @@ const modeldata = {
       },
       // This is what we use--------------------------
       medium: {
-        wiltingpoint: 2.0,
-        prewiltingpoint: 2.225,
-        stressthreshold: 2.8,
-        fieldcapacity: 3.5,
-        saturation: 5.5
+        wiltingpoint: 2.0 / 3,
+        prewiltingpoint: 2.225 / 3,
+        stressthreshold: 2.8 / 3,
+        fieldcapacity: 3.5 / 3,
+        saturation: 5.5 / 3
       },
       // ----------------------------------------------
       high: {

@@ -37,6 +37,7 @@ const Field = ({ setMainPageIdx, field }) => {
   const theme = useTheme();
 
   const { reversedSevenDays } = field;
+  console.log(reversedSevenDays);
 
   return (
     <div className={classes.root}>

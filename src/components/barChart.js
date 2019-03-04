@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 // import Checkbox from "@material-ui/core/Checkbox";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BarChart, Bar, XAxis, YAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -88,7 +88,7 @@ function BarChartDeficit({ reversedSevenDays }) {
         height={window.innerHeight - 120}
         data={reversedSevenDays}
         maxBarSize={20}
-        stackOffset="sign"
+        // stackOffset="sign"
         margin={{ top: 24, right: 64, left: 16, bottom: 32 }}
         // style={{ background: "pink" }}
       >
@@ -100,25 +100,37 @@ function BarChartDeficit({ reversedSevenDays }) {
           axisLine={false}
           tick={<YaxisTick />}
         />
-        <Bar
+        {/*<Bar
           dataKey="threshold"
           fill={"#82ca9d"}
           stackId="stack"
           radius={[0, 0, 0, 0]}
+        /> */}
+        <ReferenceLine
+          // y={reversedSevenDays[0].threshold}
+          x={0.15}
+          stroke="red"
         />
+
         <Bar
           dataKey="deficit"
-          fill={theme.palette.secondary.main}
-          stackId="stack"
+          // fill={theme.palette.secondary.main}
+          // stackId="stack"
           radius={[0, 20, 20, 0]}
           label={<CustomizedLabel reversedSevenDays={reversedSevenDays} />}
-        />
-        <Bar
+        >
+          {reversedSevenDays.map(day => {
+            console.log(day);
+            return <Cell key={day.date} fill={day.color} opacity={0.5} />;
+          })}
+        </Bar>
+
+        {/*<Bar
           dataKey="negativeDeficit"
           fill={"#9cc9f5"}
           stackId="stack"
           radius={[0, 20, 20, 0]}
-        />
+        /> */}
       </BarChart>
     </div>
   );

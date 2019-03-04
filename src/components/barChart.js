@@ -7,6 +7,10 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
 
+// utils
+import reverse from "lodash.reverse";
+import format from "date-fns/format";
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2, 0)
@@ -14,12 +18,48 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function BarChartDeficit({ reversedSevenDays }) {
+const reversedLastDays = field => {
+  // only latest value to display on the barChart
+  const irrigationDateIdx = field.data.findIndex(
+    d => d.date === field.irrigationDate
+  );
+  const idxMinusFourDays =
+    irrigationDateIdx - 4 < 0 ? 0 : irrigationDateIdx - 4;
+  const idxPlus2Days = irrigationDateIdx + 3;
+
+  // building the array for the barChart
+
+  const results = reverse(
+    field.data.slice(idxMinusFourDays, idxPlus2Days).map(day => {
+      const isAboveThreshold = day.deficit > day.threshold;
+      day.yAxis =
+        day.date === format(new Date(), "MM/dd/yyyy")
+          ? "TODAY"
+          : format(new Date(day.date), "MM/dd");
+      day.color = isAboveThreshold ? "red" : "green";
+      day.suggestion = isAboveThreshold ? "water" : "";
+      return day;
+    })
+  );
+
+  return results;
+};
+
+function BarChartDeficit({ field }) {
   console.log("BarChart");
   const classes = useStyles();
   const theme = useTheme();
 
-  // console.log(reversedSevenDays);
+  const results = reversedLastDays(field);
+
+  const watered = index => {
+    const localStorageRef = JSON.parse(
+      window.localStorage.getItem("lawn-irrigation-tool")
+    );
+    console.log(index, localStorageRef);
+  };
+
+  // console.log(results);
 
   const XaxisTick = props => {
     const { x, y, payload } = props;
@@ -61,19 +101,19 @@ function BarChartDeficit({ reversedSevenDays }) {
     const { y, index } = props;
     return (
       <svg width={20} height={20} x={window.innerWidth - 32} y={y}>
-        {reversedSevenDays[index].suggestion === "WATER!" ? (
+        {results[index].suggestion === "WATER!" ? (
           <FontAwesomeIcon
             icon="check-square"
             size="1x"
             color={theme.palette.secondary.main}
-            onClick={() => console.log(reversedSevenDays[index])}
+            onClick={() => watered(results[index])}
           />
         ) : (
           <FontAwesomeIcon
             icon="square"
             size="1x"
             color={theme.palette.text.secondary}
-            onClick={() => console.log(reversedSevenDays[index])}
+            onClick={() => watered(results[index])}
           />
         )}
       </svg>
@@ -86,7 +126,7 @@ function BarChartDeficit({ reversedSevenDays }) {
         layout="vertical"
         width={window.innerWidth}
         height={window.innerHeight - 120}
-        data={reversedSevenDays}
+        data={results}
         maxBarSize={20}
         // stackOffset="sign"
         margin={{ top: 24, right: 64, left: 16, bottom: 32 }}
@@ -106,21 +146,16 @@ function BarChartDeficit({ reversedSevenDays }) {
           stackId="stack"
           radius={[0, 0, 0, 0]}
         /> */}
-        <ReferenceLine
-          // y={reversedSevenDays[0].threshold}
-          x={0.15}
-          stroke="red"
-        />
+        <ReferenceLine x={field.threshold} stroke="red" />
 
         <Bar
           dataKey="deficit"
           // fill={theme.palette.secondary.main}
           // stackId="stack"
           radius={[0, 20, 20, 0]}
-          label={<CustomizedLabel reversedSevenDays={reversedSevenDays} />}
+          label={<CustomizedLabel results={results} />}
         >
-          {reversedSevenDays.map(day => {
-            console.log(day);
+          {results.map(day => {
             return <Cell key={day.date} fill={day.color} opacity={0.5} />;
           })}
         </Bar>

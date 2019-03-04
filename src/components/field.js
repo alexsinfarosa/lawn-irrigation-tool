@@ -36,9 +36,6 @@ const Field = ({ setMainPageIdx, field }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const { reversedSevenDays } = field;
-  console.log(reversedSevenDays);
-
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -65,7 +62,7 @@ const Field = ({ setMainPageIdx, field }) => {
             {field.address}
           </Typography>
         </div>
-        <BarChart reversedSevenDays={reversedSevenDays} />
+        <BarChart field={field} />
       </main>
     </div>
   );

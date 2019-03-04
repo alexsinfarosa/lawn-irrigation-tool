@@ -90,6 +90,7 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
 
       <main className={classes.main}>
         {fields.map(field => {
+          const isAbove = field.deficit > field.threshold;
           return (
             <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>
@@ -107,13 +108,12 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
                       style={{
                         width: 75,
                         minHeight: 35,
-                        background:
-                          field.todaySuggestion === ""
-                            ? "#82ca9d"
-                            : theme.palette.secondary.main
+                        background: isAbove
+                          ? theme.palette.secondary.main
+                          : "#82ca9d"
                       }}
                     >
-                      {field.todaySuggestion}
+                      {isAbove ? "water" : ""}
                     </Button>
                   </div>
 

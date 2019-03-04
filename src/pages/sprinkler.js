@@ -21,7 +21,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // utils --------------------------------------
 import { fetchForecastData, currentModelMainFunction } from "../utils/api.js";
-import takeRight from "lodash.takeright";
 import reverse from "lodash.reverse";
 import format from "date-fns/format";
 
@@ -164,13 +163,10 @@ function SprinklerTypePage() {
     setLoading(true);
     const location = JSON.parse(window.localStorage.getItem("LIT_location"));
     let irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
-    console.log(irrigationDate);
     const dateArr = irrigationDate.split("-");
-    const month = dateArr[1];
-    const day = dateArr[2];
     const year = dateArr[0];
     irrigationDate = `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
-    console.log(irrigationDate);
+
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
 
@@ -194,10 +190,8 @@ function SprinklerTypePage() {
     // to eliminate 3rd forecast day.
     const data = field.data.slice(0, -1);
 
-    console.log(data, irrigationDate);
-    console.log(`${month}/${day}`);
     const irrigationDateIdx = data.findIndex(d => d.date === irrigationDate);
-    console.log(irrigationDateIdx);
+
     const idxMinusFourDays =
       irrigationDateIdx - 4 < 0 ? 0 : irrigationDateIdx - 4;
     const idxPlus2Days = irrigationDateIdx + 3;
@@ -230,7 +224,6 @@ function SprinklerTypePage() {
 
     fields ? (results = [field, ...fields]) : (results = [field]);
 
-    // console.log(fields);
     window.localStorage.setItem(
       "lawn-irrigation-tool",
       JSON.stringify(results)

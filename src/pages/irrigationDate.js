@@ -8,8 +8,6 @@ import TextField from "@material-ui/core/TextField";
 import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import format from "date-fns/format";
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",

@@ -2,7 +2,7 @@ import React from "react";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
 // import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
+// import Checkbox from "@material-ui/core/Checkbox";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BarChart, Bar, XAxis, YAxis } from "recharts";
@@ -19,10 +19,10 @@ function BarChartDeficit({ reversedSevenDays }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  console.log(reversedSevenDays);
+  // console.log(reversedSevenDays);
 
   const XaxisTick = props => {
-    const { x, y, stroke, payload } = props;
+    const { x, y, payload } = props;
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -40,7 +40,7 @@ function BarChartDeficit({ reversedSevenDays }) {
   };
 
   const YaxisTick = props => {
-    const { x, y, stroke, payload } = props;
+    const { x, y, payload } = props;
     return (
       <g>
         <text
@@ -58,7 +58,7 @@ function BarChartDeficit({ reversedSevenDays }) {
   };
 
   const CustomizedLabel = props => {
-    const { x, y, stroke, value, index } = props;
+    const { y, index } = props;
     return (
       <svg width={20} height={20} x={window.innerWidth - 32} y={y}>
         {reversedSevenDays[index].suggestion === "WATER!" ? (

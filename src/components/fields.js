@@ -90,7 +90,6 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
 
       <main className={classes.main}>
         {fields.map(field => {
-          console.log(field);
           return (
             <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>

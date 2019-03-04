@@ -37,9 +37,6 @@ const Field = ({ setMainPageIdx, field }) => {
   const theme = useTheme();
 
   const { reversedSevenDays } = field;
-  // state --------------------------------------------
-  const [dayCardIdx, setDayCardIdx] = React.useState(6);
-  const handleDayCardIdx = i => setDayCardIdx(i);
 
   return (
     <div className={classes.root}>

@@ -163,7 +163,14 @@ function SprinklerTypePage() {
   const addField = async () => {
     setLoading(true);
     const location = JSON.parse(window.localStorage.getItem("LIT_location"));
-    const irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
+    let irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
+    console.log(irrigationDate);
+    const dateArr = irrigationDate.split("-");
+    const month = dateArr[1];
+    const day = dateArr[2];
+    const year = dateArr[0];
+    irrigationDate = `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
+    console.log(irrigationDate);
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
 
@@ -171,7 +178,7 @@ function SprinklerTypePage() {
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
     // get data from Brian's call --------------------------------
-    field.year = new Date(irrigationDate).getFullYear().toString();
+    field.year = year;
     field.data = await currentModelMainFunction(
       field.lat,
       field.lng,
@@ -187,7 +194,10 @@ function SprinklerTypePage() {
     // to eliminate 3rd forecast day.
     const data = field.data.slice(0, -1);
 
-    const irrigationDateIdx = data.findIndex(d => d.date === "07/03/2018");
+    console.log(data, irrigationDate);
+    console.log(`${month}/${day}`);
+    const irrigationDateIdx = data.findIndex(d => d.date === irrigationDate);
+    console.log(irrigationDateIdx);
     const idxMinusFourDays =
       irrigationDateIdx - 4 < 0 ? 0 : irrigationDateIdx - 4;
     const idxPlus2Days = irrigationDateIdx + 3;
@@ -206,12 +216,6 @@ function SprinklerTypePage() {
       day.watered = false;
       return day;
     });
-
-    console.log(
-      field.sevenDays,
-      irrigationDateIdx,
-      field.sevenDays[irrigationDateIdx]
-    );
 
     field.todaySuggestion = field.sevenDays.find(
       day => day.index === irrigationDateIdx

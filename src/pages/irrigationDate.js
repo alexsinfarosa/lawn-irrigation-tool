@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 
 import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import format from "date-fns/format";
 
 const useStyles = makeStyles(theme => ({
@@ -55,10 +56,6 @@ function IrrigationDatePage() {
 
   // State ---------------------------------------------------
   const [irrigationDate, setIrrigationDate] = React.useState(initialState);
-  const handleIrrigationDate = e => {
-    const date = new Date(e.target.value).toString();
-    setIrrigationDate(date);
-  };
 
   React.useEffect(() => {
     window.localStorage.setItem("LIT_irrigationDate", irrigationDate);
@@ -93,14 +90,14 @@ function IrrigationDatePage() {
             label="Irrigation Date"
             type="date"
             variant="outlined"
-            format="yyyy-MM-dd"
-            defaultValue={format(new Date(irrigationDate), "yyyy-MM-dd")}
+            format="MM/dd/yyyy"
+            // defaultValue={format(new Date(irrigationDate), "yyyy-MM-dd")}
             fullWidth
             margin="normal"
             InputLabelProps={{
               shrink: true
             }}
-            onChange={handleIrrigationDate}
+            onChange={e => setIrrigationDate(e.target.value)}
           />
         </form>
       </main>

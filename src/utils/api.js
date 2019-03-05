@@ -18,7 +18,8 @@ export const fetchForecastData = (latitude, longitude) => {
 };
 
 // -----------------------------------------------------------
-export const currentModelMainFunction = (lat, lng, year) => {
+export const currentModelMainFunction = field => {
+  const { lat, lng, year, sprinkler } = field;
   // console.log(currentModelMainFunction CALLED!)
 
   // the first date is 03/01 of the selected year. It goes up to today plus 3 days forecast
@@ -30,21 +31,24 @@ export const currentModelMainFunction = (lat, lng, year) => {
   return axios
     .get(url)
     .then(res => {
-      console.log(`BrianCALL`, res.data);
+      // console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       const pcpns = [...res.data.precip, ...res.data.precip_fcst];
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
       const results = runWaterDeficitModel(pcpns, pets);
 
-      // console.log(results);
+      // console.log(results.deficitDaily);
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
         p.date = `${dates[i]}/${year}`;
-        p.deficit = +val;
-        p.pet = pets[i];
-        p.pcpn = pcpns[i];
+        p.deficit = +val.toFixed(2);
+        p.pet = +pets[i];
+        p.pcpn = +pcpns[i];
         p.waterAppliedByUser = 0;
+        p.threshold = 2 * sprinkler.waterFlow * sprinkler.minutes;
+        p.barDeficit =
+          p.deficit >= 0 ? p.deficit + p.threshold : p.deficit - p.threshold;
         return p;
       });
 

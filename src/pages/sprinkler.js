@@ -163,27 +163,28 @@ function SprinklerTypePage() {
     const location = JSON.parse(window.localStorage.getItem("LIT_location"));
     let irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
     const dateArr = irrigationDate.split("-");
-    const year = dateArr[0];
     irrigationDate = `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
 
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
+    field.year = dateArr[0];
 
     // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
+    // THRESHOLD is negative because we are adding water ---------
+    field.threshold = -2 * state.waterFlow * state.minutes; // inches
+
     // get data from Brian's call --------------------------------
-    field.data = await currentModelMainFunction(field.lat, field.lng, year);
-    console.log(field.data);
-    // Brian's call is updated at noon
-    if (year !== new Date().getFullYear() && new Date().getHours() > 11) {
+    field.data = await currentModelMainFunction(field);
+
+    // irrigationDate ---------------------------------------------
+    field.dayOfIrrigation = field.data.find(day => day.date === irrigationDate);
+
+    // Brian's call is updated at noon -----------------------------
+    if (field.year !== new Date().getFullYear() && new Date().getHours() > 11) {
       field.data = field.data.slice(0, -1);
     }
-
-    field.irrigationDay = field.data.find(day => day.date === irrigationDate);
-
-    // THRESHOLD ------------------------------------------------
-    field.threshold = 2 * state.waterFlow * state.minutes; // inches
 
     // push data to local storage ---------------------------------
     let results = [];

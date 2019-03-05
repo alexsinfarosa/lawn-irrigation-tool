@@ -110,7 +110,7 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
                         minHeight: 35,
                         background: isAbove
                           ? theme.palette.secondary.main
-                          : "#82ca9d"
+                          : "#0197F6"
                       }}
                     >
                       {isAbove ? "water" : ""}

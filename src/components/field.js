@@ -35,6 +35,7 @@ const Field = ({ setMainPageIdx, field }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
+  console.log(field);
 
   return (
     <div className={classes.root}>
@@ -61,13 +62,18 @@ const Field = ({ setMainPageIdx, field }) => {
           <Typography variant="subtitle1" align="center">
             {field.address}
           </Typography>
-          <Typography
-            variant="h6"
-            align="center"
-            style={{ background: theme.palette.secondary.light, color: "#fff" }}
-          >
-            Today you should water!
-          </Typography>
+          {field.dayOfIrrigation.deficit < 0 && (
+            <Typography
+              variant="h6"
+              align="center"
+              style={{
+                background: theme.palette.secondary.light,
+                color: "#fff"
+              }}
+            >
+              Today you should water!
+            </Typography>
+          )}
         </div>
         <BarChart field={field} />
       </main>

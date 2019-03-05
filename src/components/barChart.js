@@ -137,7 +137,7 @@ function BarChartDeficit({ field }) {
 
   const CustomizedLabel = props => {
     console.log(props);
-    const { y, index, results } = props;
+    const { y, index, lastDays } = props;
     return (
       <svg
         width={24}
@@ -146,18 +146,18 @@ function BarChartDeficit({ field }) {
         y={y}
         style={{ backgroundColor: "pink", padding: 16 }}
       >
-        {results[index].waterAppliedByUser === 0 ? (
+        {lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
             icon="square"
             size="1x"
             color={theme.palette.text.secondary}
-            onClick={() => watered(index, results[index])}
+            onClick={() => watered(index, lastDays[index])}
           />
         ) : (
           <FontAwesomeIcon
             icon="check-square"
             color={theme.palette.secondary.main}
-            onClick={() => watered(index, results[index])}
+            onClick={() => watered(index, lastDays[index])}
           />
         )}
       </svg>
@@ -198,7 +198,7 @@ function BarChartDeficit({ field }) {
           // stackId="stack"
           minPointSize={1}
           radius={[0, 20, 20, 0]}
-          label={<CustomizedLabel results={lastDays} />}
+          label={<CustomizedLabel lastDays={lastDays} />}
         >
           {lastDays.map(day => {
             return <Cell key={day.date} fill={day.color} opacity={0.5} />;

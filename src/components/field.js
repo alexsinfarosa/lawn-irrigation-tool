@@ -57,9 +57,16 @@ const Field = ({ setMainPageIdx, field }) => {
       </header>
 
       <main className={classes.main}>
-        <div className={classes.topSide}>
-          <Typography variant="subtitle1" align="center" color="textSecondary">
+        <div>
+          <Typography variant="subtitle1" align="center">
             {field.address}
+          </Typography>
+          <Typography
+            variant="h6"
+            align="center"
+            style={{ background: theme.palette.secondary.light, color: "#fff" }}
+          >
+            Today you should water!
           </Typography>
         </div>
         <BarChart field={field} />

@@ -44,6 +44,7 @@ export const currentModelMainFunction = (lat, lng, year) => {
         p.deficit = +val;
         p.pet = pets[i];
         p.pcpn = pcpns[i];
+        p.waterAppliedByUser = 0;
         return p;
       });
 
@@ -97,11 +98,11 @@ const modeldata = {
       },
       // This is what we use--------------------------
       medium: {
-        wiltingpoint: 2.0 / 3,
-        prewiltingpoint: 2.225 / 3,
-        stressthreshold: 2.8 / 3,
-        fieldcapacity: 3.5 / 3,
-        saturation: 5.5 / 3
+        wiltingpoint: 2.0,
+        prewiltingpoint: 2.225,
+        stressthreshold: 2.8,
+        fieldcapacity: 3.5,
+        saturation: 5.5
       },
       // ----------------------------------------------
       high: {

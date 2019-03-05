@@ -10,6 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
 // utils
 import reverse from "lodash.reverse";
 import format from "date-fns/format";
+import { runWaterDeficitModel } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,20 +29,17 @@ const reversedLastDays = field => {
   const idxPlus2Days = irrigationDateIdx + 3;
 
   // building the array for the barChart
+  const results = field.data.slice(idxMinusFourDays, idxPlus2Days).map(day => {
+    day.yAxis =
+      day.date === format(new Date(), "MM/dd/yyyy")
+        ? "TODAY"
+        : format(new Date(day.date), "MM/dd");
+    day.isAboveThreshold = day.deficit > day.threshold;
+    day.color = day.isAboveThreshold ? "red" : "green";
+    return day;
+  });
 
-  const results = reverse(
-    field.data.slice(idxMinusFourDays, idxPlus2Days).map(day => {
-      const isAboveThreshold = day.deficit > day.threshold;
-      day.yAxis =
-        day.date === format(new Date(), "MM/dd/yyyy")
-          ? "TODAY"
-          : format(new Date(day.date), "MM/dd");
-      day.color = isAboveThreshold ? "red" : "green";
-      day.suggestion = isAboveThreshold ? "water" : "";
-      return day;
-    })
-  );
-
+  // console.log(results);
   return results;
 };
 
@@ -50,16 +48,56 @@ function BarChartDeficit({ field }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const results = reversedLastDays(field);
+  // State ----------------------------------------
+  const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
 
-  const watered = index => {
+  const watered = (dayIdx, dayObj) => {
+    console.log(dayIdx);
+    const copyField = { ...field };
+
+    const pcpns = copyField.data.map(d => d.pcpn);
+    const waterAppliedByUserArr = copyField.data.map(d => d.waterAppliedByUser);
+    const pets = copyField.data.map(d => d.pet);
+
+    // add the amount of water the user has applied on the lawn to precipitation
+    const sumWaterAmount = pcpns.map(
+      (num, idx) => num + waterAppliedByUserArr[idx]
+    );
+    // console.log(sumWaterAmount);
+    // recalculating deficit with new precipitation array
+    const reCalculatedValues = runWaterDeficitModel(sumWaterAmount, pets);
+    // console.log(copyField.data);
+
+    const isZero = copyField.data[dayIdx].waterAppliedByUser === 0;
+    const rate = field.sprinkler.waterFlow * field.sprinkler.minutes;
+    copyField.data[dayIdx].waterAppliedByUser = isZero ? rate : 0;
+    console.log(isZero, rate, copyField.data[dayIdx].waterAppliedByUser);
+
+    // rebuilding field's data array
+    copyField.data = copyField.data.map((day, i) => {
+      let p = { ...day };
+      p.deficit = reCalculatedValues.deficitDaily[i];
+      p.pcpn = reCalculatedValues.precipDaily[i];
+      p.pet = reCalculatedValues.petDaily[i];
+      return p;
+    });
+
+    console.log(reversedLastDays(copyField));
+    setLastDays(reversedLastDays(copyField));
+
+    // update local storage ---------------------------------
     const localStorageRef = JSON.parse(
       window.localStorage.getItem("lawn-irrigation-tool")
     );
-    console.log(index, localStorageRef);
-  };
 
-  // console.log(results);
+    const fieldIdx = localStorageRef.findIndex(f => f.id === field.id);
+    localStorageRef[fieldIdx] = copyField;
+
+    window.localStorage.setItem(
+      "lawn-irrigation-tool",
+      JSON.stringify(localStorageRef)
+    );
+  };
 
   const XaxisTick = props => {
     const { x, y, payload } = props;
@@ -98,22 +136,28 @@ function BarChartDeficit({ field }) {
   };
 
   const CustomizedLabel = props => {
-    const { y, index } = props;
+    console.log(props);
+    const { y, index, results } = props;
     return (
-      <svg width={20} height={20} x={window.innerWidth - 32} y={y}>
-        {results[index].suggestion === "WATER!" ? (
-          <FontAwesomeIcon
-            icon="check-square"
-            size="1x"
-            color={theme.palette.secondary.main}
-            onClick={() => watered(results[index])}
-          />
-        ) : (
+      <svg
+        width={24}
+        height={24}
+        x={window.innerWidth - 40}
+        y={y}
+        style={{ backgroundColor: "pink", padding: 16 }}
+      >
+        {results[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
             icon="square"
             size="1x"
             color={theme.palette.text.secondary}
-            onClick={() => watered(results[index])}
+            onClick={() => watered(index, results[index])}
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon="check-square"
+            color={theme.palette.secondary.main}
+            onClick={() => watered(index, results[index])}
           />
         )}
       </svg>
@@ -125,11 +169,11 @@ function BarChartDeficit({ field }) {
       <BarChart
         layout="vertical"
         width={window.innerWidth}
-        height={window.innerHeight - 120}
-        data={results}
+        height={window.innerHeight - 180}
+        data={lastDays}
         maxBarSize={20}
         // stackOffset="sign"
-        margin={{ top: 24, right: 64, left: 16, bottom: 32 }}
+        margin={{ top: 0, right: 64, left: 16, bottom: 8 }}
         // style={{ background: "pink" }}
       >
         <XAxis type="number" tick={<XaxisTick />} />
@@ -152,10 +196,11 @@ function BarChartDeficit({ field }) {
           dataKey="deficit"
           // fill={theme.palette.secondary.main}
           // stackId="stack"
+          minPointSize={1}
           radius={[0, 20, 20, 0]}
-          label={<CustomizedLabel results={results} />}
+          label={<CustomizedLabel results={lastDays} />}
         >
-          {results.map(day => {
+          {lastDays.map(day => {
             return <Cell key={day.date} fill={day.color} opacity={0.5} />;
           })}
         </Bar>

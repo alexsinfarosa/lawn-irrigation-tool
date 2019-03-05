@@ -174,7 +174,7 @@ function SprinklerTypePage() {
 
     // get data from Brian's call --------------------------------
     field.data = await currentModelMainFunction(field.lat, field.lng, year);
-
+    console.log(field.data);
     // Brian's call is updated at noon
     if (year !== new Date().getFullYear() && new Date().getHours() > 11) {
       field.data = field.data.slice(0, -1);

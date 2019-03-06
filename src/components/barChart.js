@@ -214,16 +214,14 @@ function BarChartDeficit({ field }) {
           tick={<XaxisLabel />}
           tickCount={2}
           ticks={domain(lastDays)}
-          // tickLine={false}
           stroke={theme.palette.grey["400"]}
-          // domain={[dataMin => Math.abs(field.threshold), dataMax => dataMax]}
           domain={domain(lastDays)}
         />
+
         {/* Left dates */}
         <YAxis
           dataKey="date"
           type="category"
-          // yAxisId="left"
           orientation="left"
           tickLine={false}
           axisLine={false}
@@ -243,18 +241,12 @@ function BarChartDeficit({ field }) {
 
         <ReferenceLine x={0} stroke={theme.palette.grey["400"]} />
 
-        <Bar
-          dataKey="barDeficit"
-          minPointSize={0}
-          radius={[0, 20, 20, 0]}
-          // label={<RightIconButtons lastDays={lastDays} />}
-        >
+        <Bar dataKey="barDeficit" minPointSize={0} radius={[0, 20, 20, 0]}>
           {lastDays.map(day => {
             return (
               <Cell
                 key={day.date}
                 fill={day.barDeficit >= 0 ? "#0197F6" : "#F79824"}
-                // opacity={0.9}
               />
             );
           })}

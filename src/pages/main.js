@@ -15,7 +15,11 @@ const MainPage = () => {
   console.log("MainPage");
 
   // STATE ---------------------------------------------
-  const [mainPageIdx, setMainPageIdx] = React.useState(1);
+  const [mainPageIdx, changeMainPageIdx] = React.useState(1);
+
+  const setMainPageIdx = (current, previous) => {
+    changeMainPageIdx(current);
+  };
 
   // fields -------------------------------------------------------
   const initialFields = () => {

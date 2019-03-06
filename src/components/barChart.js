@@ -11,7 +11,8 @@ import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
 import reverse from "lodash.reverse";
 import format from "date-fns/format";
 import isAfter from "date-fns/isAfter";
-
+import subDays from "date-fns/subDays";
+import addDays from "date-fns/addDays";
 // import { runWaterDeficitModel } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
@@ -112,8 +113,7 @@ function BarChartDeficit({ field }) {
   // };
 
   const XaxisLabel = props => {
-    const { x, y, index, payload } = props;
-    console.log(props);
+    const { x, y, index } = props;
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -133,25 +133,67 @@ function BarChartDeficit({ field }) {
 
   const YaxisLabel = props => {
     const { x, y, payload } = props;
-    // const today = new Date();
-    // const tomorrow = today.setDate(today.getDate() + 1);
-    // const yesterday = today.setDate(today.getDate() - 1);
-    return (
-      <g>
-        <text x={x - 84} y={y} dy={5} fill="#666">
-          {format(new Date(), "MM/dd/yyyy") === payload.value ? (
+    const date = payload.value;
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+    const yesterday = subDays(today, 1);
+    const formatted = date => format(date, "MM/dd/yyyy");
+
+    let day = "";
+    if (date === formatted(tomorrow)) day = "tomorrow";
+    if (date === formatted(today)) day = "today";
+    if (date === formatted(yesterday)) day = "yesterday";
+
+    const text = day => {
+      switch (day) {
+        case "tomorrow":
+          return <tspan fontSize="0.9rem">Tomorrow</tspan>;
+        case "today":
+          return (
             <tspan fontWeight="bold" fill="red" fontSize="1.1rem">
               TODAY
             </tspan>
-          ) : (
-            <tspan fontSize="0.9rem">
-              {format(new Date(payload.value), "E do")}
-            </tspan>
-          )}
+          );
+        case "yesterday":
+          return <tspan fontSize="0.9rem">Yesterday</tspan>;
+        default:
+          return (
+            <tspan fontSize="0.9rem">{format(new Date(date), "E do")}</tspan>
+          );
+      }
+    };
+
+    return (
+      <g>
+        <text x={x - 84} y={y} dy={5} fill="#666">
+          {text(day)}
         </text>
       </g>
     );
   };
+
+  // const YaxisLabel = props => {
+  //   const { x, y, payload } = props;
+  //   // const today = new Date();
+  //   // const tomorrow = today.setDate(today.getDate() + 1);
+  //   // const yesterday = today.setDate(today.getDate() - 1);
+  //   const formatted = (date) => format(date, 'MM/dd/yyyyy')
+  //   return (
+  //     <g>
+  //       <text x={x - 84} y={y} dy={5} fill="#666">
+  //         {format(new Date(), "MM/dd/yyyy") === payload.value ? (
+  //           <tspan fontWeight="bold" fill="red" fontSize="1.1rem">
+  //             TODAY
+  //           </tspan>
+  //         ) : (
+  //           <tspan fontSize="0.9rem">
+  //             {format(new Date(payload.value), "E do")}
+  //           </tspan>
+  //         )}
+  //       </text>
+  //     </g>
+  //   );
+  // };
 
   const RightIconButtons = props => {
     const { y, index, lastDays } = props;

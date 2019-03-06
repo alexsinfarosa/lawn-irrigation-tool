@@ -1,8 +1,6 @@
 import React from "react";
 
 import { makeStyles, useTheme } from "@material-ui/styles";
-// import Typography from "@material-ui/core/Typography";
-// import Checkbox from "@material-ui/core/Checkbox";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
@@ -40,9 +38,7 @@ function BarChartDeficit({ field }) {
   const theme = useTheme();
 
   // State ----------------------------------------
-  const [lastDays] = React.useState(reversedLastDays(field));
-  console.log(lastDays);
-  console.log(field);
+  const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
 
   const domain = lastDays => {
     const min = Math.min(...lastDays.map(d => d.barDeficit));
@@ -54,15 +50,14 @@ function BarChartDeficit({ field }) {
     const domain = Math.max(absMin, absMax).toFixed(2);
     const start = Number(domain) * -1;
     const end = Number(domain);
-    console.log([start, end]);
     return [start, end];
   };
 
   React.useEffect(() => {
-    console.log("CALLED!!!!!!!!!!!!!!!!");
-    reversedLastDays(field);
+    setLastDays(reversedLastDays(field));
     domain(lastDays);
-  }, [field.address]);
+  }, [field.id]);
+
   // const watered = (dayIdx, dayObj) => {
   //   console.log(dayIdx);
   //   const copyField = { ...field };

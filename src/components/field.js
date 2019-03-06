@@ -35,7 +35,6 @@ const Field = ({ setMainPageIdx, field }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
-  console.log(field);
 
   return (
     <div className={classes.root}>

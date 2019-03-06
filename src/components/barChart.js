@@ -164,7 +164,7 @@ function BarChartDeficit({ field }) {
 
     return (
       <g>
-        <text x={x - 64} y={y} dy={5} fill="#666">
+        <text x={x - 60} y={y} dy={5} fill="#666">
           {text(day)}
         </text>
       </g>
@@ -174,25 +174,25 @@ function BarChartDeficit({ field }) {
   const RightIconButtons = props => {
     const { y, index, lastDays } = props;
     return (
-      <svg width={24} height={24} x={window.innerWidth - 40} y={y}>
+      <svg width={24} height={24} x={window.innerWidth - 40} y={y - 16}>
         {isAfter(new Date(lastDays[index].date), new Date()) ? (
           <FontAwesomeIcon
             icon="cloud-sun"
             size="1x"
             color={theme.palette.text.secondary}
-            // onClick={() => watered(index, lastDays[index])}
+            onClick={() => console.log(index, lastDays[index])}
           />
         ) : lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
             icon="tint"
             color={theme.palette.grey["300"]}
-            // onClick={() => watered(index, lastDays[index])}
+            onClick={() => console.log(index, lastDays[index])}
           />
         ) : (
           <FontAwesomeIcon
             icon="tint"
             color={theme.palette.secondary.main}
-            // onClick={() => watered(index, lastDays[index])}
+            onClick={() => console.log(index, lastDays[index])}
           />
         )}
       </svg>
@@ -204,10 +204,10 @@ function BarChartDeficit({ field }) {
       <BarChart
         layout="vertical"
         width={window.innerWidth}
-        height={window.innerHeight - 180}
+        height={window.innerHeight - 140}
         data={lastDays}
         maxBarSize={20}
-        margin={{ top: 0, right: 80, left: 30, bottom: 8 }}
+        margin={{ top: 0, right: 20, left: 30, bottom: 8 }}
       >
         <XAxis
           type="number"
@@ -219,20 +219,35 @@ function BarChartDeficit({ field }) {
           // domain={[dataMin => Math.abs(field.threshold), dataMax => dataMax]}
           domain={domain(lastDays)}
         />
+        {/* Left dates */}
         <YAxis
           dataKey="date"
           type="category"
+          // yAxisId="left"
+          orientation="left"
           tickLine={false}
           axisLine={false}
           tick={<YaxisLabel />}
         />
+
+        {/* RIght Icons */}
+        <YAxis
+          dataKey="date"
+          yAxisId="right"
+          type="category"
+          orientation="right"
+          tickLine={false}
+          axisLine={false}
+          tick={<RightIconButtons lastDays={lastDays} />}
+        />
+
         <ReferenceLine x={0} stroke={theme.palette.grey["400"]} />
 
         <Bar
           dataKey="barDeficit"
           minPointSize={0}
           radius={[0, 20, 20, 0]}
-          label={<RightIconButtons lastDays={lastDays} />}
+          // label={<RightIconButtons lastDays={lastDays} />}
         >
           {lastDays.map(day => {
             return (

@@ -122,10 +122,10 @@ function BarChartDeficit({ field }) {
           dy={16}
           textAnchor={index === 0 ? "start" : "end"}
           fill={index === 0 ? "#F79824" : "#0197F6"}
-          ticks={domain(lastDays)}
-          // transform="rotate(-15)"
+          fontSize="0.8rem"
+          fontWeight="bold"
         >
-          {payload.value}
+          {index === 0 ? "DRY" : "WET"}
         </text>
       </g>
     );
@@ -195,6 +195,7 @@ function BarChartDeficit({ field }) {
           type="number"
           tick={<XaxisLabel />}
           tickCount={2}
+          ticks={domain(lastDays)}
           // tickLine={false}
           stroke={theme.palette.grey["400"]}
           // domain={[dataMin => Math.abs(field.threshold), dataMax => dataMax]}
@@ -210,7 +211,7 @@ function BarChartDeficit({ field }) {
         <ReferenceLine x={0} stroke={theme.palette.grey["400"]} />
 
         <Bar
-          dataKey="deficit"
+          dataKey="barDeficit"
           minPointSize={0}
           radius={[0, 20, 20, 0]}
           label={<RightIconButtons lastDays={lastDays} />}
@@ -219,7 +220,7 @@ function BarChartDeficit({ field }) {
             return (
               <Cell
                 key={day.date}
-                fill={day.deficit >= 0 ? "#0197F6" : "#F79824"}
+                fill={day.barDeficit >= 0 ? "#0197F6" : "#F79824"}
                 // opacity={0.9}
               />
             );

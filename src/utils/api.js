@@ -46,9 +46,9 @@ export const currentModelMainFunction = field => {
         p.pet = +pets[i];
         p.pcpn = +pcpns[i];
         p.waterAppliedByUser = 0;
-        p.threshold = 2 * sprinkler.waterFlow * sprinkler.minutes;
+        p.threshold = 2 * sprinkler.waterFlow * sprinkler.minutes * -1;
         p.barDeficit =
-          p.deficit >= 0 ? p.deficit + p.threshold : p.deficit - p.threshold;
+          p.deficit >= 0 ? p.deficit - p.threshold : p.deficit - p.threshold;
         return p;
       });
 

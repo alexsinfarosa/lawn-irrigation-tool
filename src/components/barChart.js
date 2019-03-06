@@ -27,12 +27,11 @@ const reversedLastDays = field => {
   const irrigationDateIdx = field.data.findIndex(
     d => d.date === field.irrigationDate
   );
-  const idxMinusFourDays =
-    irrigationDateIdx - 4 < 0 ? 0 : irrigationDateIdx - 4;
+  const idxMinusSixDays = irrigationDateIdx - 6 < 0 ? 0 : irrigationDateIdx - 6;
   const idxPlus2Days = irrigationDateIdx + 3;
 
   // console.log(results);
-  return reverse(field.data.slice(idxMinusFourDays, idxPlus2Days));
+  return reverse(field.data.slice(idxMinusSixDays, idxPlus2Days));
 };
 
 function BarChartDeficit({ field }) {
@@ -165,35 +164,12 @@ function BarChartDeficit({ field }) {
 
     return (
       <g>
-        <text x={x - 84} y={y} dy={5} fill="#666">
+        <text x={x - 64} y={y} dy={5} fill="#666">
           {text(day)}
         </text>
       </g>
     );
   };
-
-  // const YaxisLabel = props => {
-  //   const { x, y, payload } = props;
-  //   // const today = new Date();
-  //   // const tomorrow = today.setDate(today.getDate() + 1);
-  //   // const yesterday = today.setDate(today.getDate() - 1);
-  //   const formatted = (date) => format(date, 'MM/dd/yyyyy')
-  //   return (
-  //     <g>
-  //       <text x={x - 84} y={y} dy={5} fill="#666">
-  //         {format(new Date(), "MM/dd/yyyy") === payload.value ? (
-  //           <tspan fontWeight="bold" fill="red" fontSize="1.1rem">
-  //             TODAY
-  //           </tspan>
-  //         ) : (
-  //           <tspan fontSize="0.9rem">
-  //             {format(new Date(payload.value), "E do")}
-  //           </tspan>
-  //         )}
-  //       </text>
-  //     </g>
-  //   );
-  // };
 
   const RightIconButtons = props => {
     const { y, index, lastDays } = props;
@@ -231,7 +207,7 @@ function BarChartDeficit({ field }) {
         height={window.innerHeight - 180}
         data={lastDays}
         maxBarSize={20}
-        margin={{ top: 0, right: 80, left: 50, bottom: 8 }}
+        margin={{ top: 0, right: 80, left: 30, bottom: 8 }}
       >
         <XAxis
           type="number"

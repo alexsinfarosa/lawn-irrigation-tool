@@ -31,7 +31,7 @@ export const currentModelMainFunction = field => {
   return axios
     .get(url)
     .then(res => {
-      // console.log(`BrianCALL`, res.data);
+      console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       const pcpns = [...res.data.precip, ...res.data.precip_fcst];
       const pets = [...res.data.pet, ...res.data.pet_fcst];

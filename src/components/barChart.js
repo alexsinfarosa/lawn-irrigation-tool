@@ -51,6 +51,9 @@ function BarChartDeficit({ field, setField }) {
     const domain = Math.max(absMin, absMax).toFixed(2);
     const start = Number(domain) * -1;
     const end = Number(domain);
+    if (start === 0 && end === 0) {
+      return [-1, 1];
+    }
     return [start, end];
   };
 
@@ -64,36 +67,39 @@ function BarChartDeficit({ field, setField }) {
     const index = copy.data.findIndex(d => d.date === date);
     const water = copy.sprinkler.waterFlow * copy.sprinkler.minutes;
     const day = copy.data[index];
-
+    console.log(copy.data);
     day.waterAppliedByUser = day.waterAppliedByUser === 0 ? water : 0;
     day.waterAppliedByUser === 0
-      ? (day.pcpn = day.pcpn + water)
-      : (day.pcpn = day.pcpn - water);
-
+      ? (day.pcpn = day.pcpn - water * 6)
+      : (day.pcpn = day.pcpn + water * 6);
+    console.log(day.pcpn);
     const pcpns = copy.data.map(d => d.pcpn);
     const pets = copy.data.map(d => d.pet);
     const updatedDeficit = runWaterDeficitModel(pcpns, pets);
 
     const updatedData = copy.data.map((day, i) => {
       let p = { ...day };
-      p.deficit = updatedDeficit.deficitDaily[i];
+      p.deficit = +updatedDeficit.deficitDaily[i].toFixed(2);
       p.pcpn = updatedDeficit.precipDaily[i];
       p.pet = updatedDeficit.petDaily[i];
+      p.barDeficit =
+        p.deficit >= 0 ? p.deficit - p.threshold : p.deficit - p.threshold;
       return p;
     });
     copy.data = updatedData;
 
+    console.log(copy.data);
     setLastDays(reversedLastDays(copy));
 
-    const localStorageRef = JSON.parse(
-      window.localStorage.getItem("lawn-irrigation-tool")
-    );
-    const fieldIdx = localStorageRef.findIndex(f => (f.id = copy.id));
-    localStorageRef[fieldIdx] = copy;
-    window.localStorage.setItem(
-      "lawn-irrigation-tool",
-      JSON.stringify(localStorageRef)
-    );
+    // const localStorageRef = JSON.parse(
+    //   window.localStorage.getItem("lawn-irrigation-tool")
+    // );
+    // const fieldIdx = localStorageRef.findIndex(f => (f.id = copy.id));
+    // localStorageRef[fieldIdx] = copy;
+    // window.localStorage.setItem(
+    //   "lawn-irrigation-tool",
+    //   JSON.stringify(localStorageRef)
+    // );
   };
 
   const XaxisLabel = props => {

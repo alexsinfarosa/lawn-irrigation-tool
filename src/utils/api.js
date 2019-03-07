@@ -38,6 +38,10 @@ export const currentModelMainFunction = field => {
 
       const results = runWaterDeficitModel(pcpns, pets);
 
+      const min = Math.min(...results.deficitDaily);
+      const max = Math.max(...results.deficitDaily);
+      // console.log(min, max);
+
       // console.log(results.deficitDaily);
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
@@ -46,7 +50,7 @@ export const currentModelMainFunction = field => {
         p.pet = +pets[i];
         p.pcpn = +pcpns[i];
         p.waterAppliedByUser = 0;
-        p.threshold = 2 * sprinkler.waterFlow * sprinkler.minutes * -1;
+        p.threshold = sprinkler.waterFlow * sprinkler.minutes * -1;
         p.barDeficit =
           p.deficit >= 0 ? p.deficit - p.threshold : p.deficit - p.threshold;
         return p;

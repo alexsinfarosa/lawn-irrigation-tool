@@ -35,25 +35,25 @@ const sprinklers = [
   {
     name: "Spray Sprinkler",
     img: SpraySprinkler,
-    waterFlow: 0.024, // inches of water
+    waterFlow: 0.005, // inches of water
     minutes: 1
   },
   {
     name: "Single Stream Rotor",
     img: SingleStreamRotor,
-    waterFlow: 0.012,
+    waterFlow: 0.008,
     minutes: 1
   },
   {
     name: "Multiple Stream Rotor",
     img: MultipleStreamRotor,
-    waterFlow: 0.055,
+    waterFlow: 0.01,
     minutes: 1
   },
   {
     name: "Moveable Sprinkler",
     img: MoveableSprinkler,
-    waterFlow: 0.044,
+    waterFlow: 0.022,
     minutes: 1
   }
 ];
@@ -173,7 +173,7 @@ function SprinklerTypePage() {
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
     // THRESHOLD is negative because we are adding water ---------
-    field.threshold = -2 * state.waterFlow * state.minutes; // inches
+    field.threshold = -1 * state.waterFlow * state.minutes; // inches
 
     // get data from Brian's call --------------------------------
     field.data = await currentModelMainFunction(field);

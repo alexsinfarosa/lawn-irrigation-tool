@@ -11,7 +11,7 @@ import format from "date-fns/format";
 import isAfter from "date-fns/isAfter";
 import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
-// import { runWaterDeficitModel } from "../utils/api";
+import { runWaterDeficitModel } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,20 +25,21 @@ const reversedLastDays = field => {
   const irrigationDateIdx = field.data.findIndex(
     d => d.date === field.irrigationDate
   );
-  const idxMinusSixDays = irrigationDateIdx - 6 < 0 ? 0 : irrigationDateIdx - 6;
+  const idxMinusSevenDays =
+    irrigationDateIdx - 7 < 0 ? 0 : irrigationDateIdx - 7;
   const idxPlus2Days = irrigationDateIdx + 3;
 
   // console.log(results);
-  return reverse(field.data.slice(idxMinusSixDays, idxPlus2Days));
+  return reverse(field.data.slice(idxMinusSevenDays, idxPlus2Days));
 };
 
-function BarChartDeficit({ field }) {
+function BarChartDeficit({ field, setField }) {
   console.log("BarChart");
   const classes = useStyles();
   const theme = useTheme();
 
   // State ----------------------------------------
-  const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
+  const [lastDays, setLastDays] = React.useState([]);
 
   const domain = lastDays => {
     const min = Math.min(...lastDays.map(d => d.barDeficit));
@@ -54,57 +55,36 @@ function BarChartDeficit({ field }) {
   };
 
   React.useEffect(() => {
+    console.log("useEffect field.id");
     setLastDays(reversedLastDays(field));
-    domain(lastDays);
   }, [field.id]);
 
-  // const watered = (dayIdx, dayObj) => {
-  //   console.log(dayIdx);
-  //   const copyField = { ...field };
+  const watered = date => {
+    const copy = { ...field };
+    const index = copy.data.findIndex(d => d.date === date);
+    const water = copy.sprinkler.waterFlow * copy.sprinkler.minutes;
+    const day = copy.data[index];
 
-  //   const pcpns = copyField.data.map(d => d.pcpn);
-  //   const waterAppliedByUserArr = copyField.data.map(d => d.waterAppliedByUser);
-  //   const pets = copyField.data.map(d => d.pet);
+    day.waterAppliedByUser = day.waterAppliedByUser === 0 ? water : 0;
+    day.waterAppliedByUser === 0
+      ? (day.pcpn = day.pcpn + water)
+      : (day.pcpn = day.pcpn - water);
 
-  //   // add the amount of water the user has applied on the lawn to precipitation
-  //   const sumWaterAmount = pcpns.map(
-  //     (num, idx) => num + waterAppliedByUserArr[idx]
-  //   );
-  //   // console.log(sumWaterAmount);
-  //   // recalculating deficit with new precipitation array
-  //   const reCalculatedValues = runWaterDeficitModel(sumWaterAmount, pets);
-  //   // console.log(copyField.data);
+    const pcpns = copy.data.map(d => d.pcpn);
+    const pets = copy.data.map(d => d.pet);
+    const updatedDeficit = runWaterDeficitModel(pcpns, pets);
 
-  //   const isZero = copyField.data[dayIdx].waterAppliedByUser === 0;
-  //   const rate = field.sprinkler.waterFlow * field.sprinkler.minutes;
-  //   copyField.data[dayIdx].waterAppliedByUser = isZero ? rate : 0;
-  //   console.log(isZero, rate, copyField.data[dayIdx].waterAppliedByUser);
+    const updatedData = copy.data.map((day, i) => {
+      let p = { ...day };
+      p.deficit = updatedDeficit.deficitDaily[i];
+      p.pcpn = updatedDeficit.precipDaily[i];
+      p.pet = updatedDeficit.petDaily[i];
+      return p;
+    });
+    copy.data = updatedData;
 
-  //   // rebuilding field's data array
-  //   copyField.data = copyField.data.map((day, i) => {
-  //     let p = { ...day };
-  //     p.deficit = reCalculatedValues.deficitDaily[i];
-  //     p.pcpn = reCalculatedValues.precipDaily[i];
-  //     p.pet = reCalculatedValues.petDaily[i];
-  //     return p;
-  //   });
-
-  //   console.log(reversedLastDays(copyField));
-  //   setLastDays(reversedLastDays(copyField));
-
-  //   // update local storage ---------------------------------
-  //   const localStorageRef = JSON.parse(
-  //     window.localStorage.getItem("lawn-irrigation-tool")
-  //   );
-
-  //   const fieldIdx = localStorageRef.findIndex(f => f.id === field.id);
-  //   localStorageRef[fieldIdx] = copyField;
-
-  //   window.localStorage.setItem(
-  //     "lawn-irrigation-tool",
-  //     JSON.stringify(localStorageRef)
-  //   );
-  // };
+    setLastDays(reversedLastDays(copy));
+  };
 
   const XaxisLabel = props => {
     const { x, y, index } = props;
@@ -167,7 +147,7 @@ function BarChartDeficit({ field }) {
   };
 
   const RightIconButtons = props => {
-    const { y, index, lastDays } = props;
+    const { y, index, payload } = props;
     return (
       <svg width={24} height={24} x={window.innerWidth - 40} y={y - 16}>
         {isAfter(new Date(lastDays[index].date), new Date()) ? (
@@ -175,19 +155,19 @@ function BarChartDeficit({ field }) {
             icon="cloud-sun"
             size="1x"
             color={theme.palette.text.secondary}
-            onClick={() => console.log(index, lastDays[index])}
+            onClick={() => watered(index, payload.value)}
           />
         ) : lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
             icon="tint"
             color={theme.palette.grey["300"]}
-            onClick={() => console.log(index, lastDays[index])}
+            onClick={() => watered(payload.value)}
           />
         ) : (
           <FontAwesomeIcon
             icon="tint"
-            color={theme.palette.secondary.main}
-            onClick={() => console.log(index, lastDays[index])}
+            color={"#0197F6"}
+            onClick={() => watered(payload.value)}
           />
         )}
       </svg>

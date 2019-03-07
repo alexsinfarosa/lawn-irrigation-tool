@@ -69,7 +69,11 @@ const MainPage = () => {
             address={field.address}
           />
 
-          <Field setMainPageIdx={setMainPageIdx} field={field} />
+          <Field
+            setMainPageIdx={setMainPageIdx}
+            field={field}
+            setField={setField}
+          />
           <Fields
             setMainPageIdx={setMainPageIdx}
             fields={fields}

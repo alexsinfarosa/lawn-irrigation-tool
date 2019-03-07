@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Field = ({ setMainPageIdx, field }) => {
+const Field = ({ setMainPageIdx, field, setField }) => {
   console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
@@ -75,7 +75,7 @@ const Field = ({ setMainPageIdx, field }) => {
               </Typography>
             )}
         </div>
-        <BarChart field={field} />
+        <BarChart field={field} setField={setField} />
       </main>
     </div>
   );

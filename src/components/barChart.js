@@ -84,6 +84,16 @@ function BarChartDeficit({ field, setField }) {
     copy.data = updatedData;
 
     setLastDays(reversedLastDays(copy));
+
+    const localStorageRef = JSON.parse(
+      window.localStorage.getItem("lawn-irrigation-tool")
+    );
+    const fieldIdx = localStorageRef.findIndex(f => (f.id = copy.id));
+    localStorageRef[fieldIdx] = copy;
+    window.localStorage.setItem(
+      "lawn-irrigation-tool",
+      JSON.stringify(localStorageRef)
+    );
   };
 
   const XaxisLabel = props => {
@@ -155,7 +165,6 @@ function BarChartDeficit({ field, setField }) {
             icon="cloud-sun"
             size="1x"
             color={theme.palette.text.secondary}
-            onClick={() => watered(index, payload.value)}
           />
         ) : lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon

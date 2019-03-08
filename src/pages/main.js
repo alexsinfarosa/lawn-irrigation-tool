@@ -22,12 +22,9 @@ const MainPage = () => {
   };
 
   // fields -------------------------------------------------------
-  const initialFields = () => {
-    console.log("initialField in mainPage called!");
-    return (
-      JSON.parse(window.localStorage.getItem("lawn-irrigation-tool")) || []
-    );
-  };
+  const initialFields =
+    JSON.parse(window.localStorage.getItem("lawn-irrigation-tool")) || [];
+
   const [fields, setFields] = React.useState(initialFields);
 
   // field --------------------------------------------------------
@@ -73,6 +70,7 @@ const MainPage = () => {
             setMainPageIdx={setMainPageIdx}
             field={field}
             setField={setField}
+            setFields={setFields}
           />
           <Fields
             setMainPageIdx={setMainPageIdx}

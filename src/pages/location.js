@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   footer: {
     padding: theme.spacing(2),
     paddingTop: theme.spacing(0),
-    paddingBottom: theme.spacing(7)
+    paddingBottom: theme.spacing(5)
   },
   btnBig: {
     paddingTop: theme.spacing(2),

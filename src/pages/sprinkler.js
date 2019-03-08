@@ -36,25 +36,25 @@ const sprinklers = [
     name: "Spray Sprinkler",
     img: SpraySprinkler,
     waterFlow: 0.005, // inches of water
-    minutes: 1
+    minutes: 10
   },
   {
     name: "Single Stream Rotor",
     img: SingleStreamRotor,
     waterFlow: 0.008,
-    minutes: 1
+    minutes: 10
   },
   {
     name: "Multiple Stream Rotor",
     img: MultipleStreamRotor,
     waterFlow: 0.01,
-    minutes: 1
+    minutes: 10
   },
   {
     name: "Moveable Sprinkler",
     img: MoveableSprinkler,
     waterFlow: 0.022,
-    minutes: 1
+    minutes: 10
   }
 ];
 
@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   footer: {
     padding: theme.spacing(2),
     paddingTop: theme.spacing(0),
-    paddingBottom: theme.spacing(7)
+    paddingBottom: theme.spacing(4)
   },
   btnBig: {
     paddingTop: theme.spacing(2),
@@ -125,7 +125,7 @@ const initialState = () => {
     name: "",
     img: null,
     waterFlow: 0.05,
-    minutes: 1
+    minutes: 10
   };
 };
 
@@ -143,7 +143,7 @@ function reducer(state, action) {
     case "setMinutes":
       return { ...state, minutes: action.minutes };
     case "reset":
-      return { name: "", img: null, waterFlow: 0, minutes: 1 };
+      return { name: "", img: null, waterFlow: 0, minutes: 10 };
     default:
       throw new Error();
   }
@@ -162,12 +162,11 @@ function SprinklerTypePage() {
     setLoading(true);
     const location = JSON.parse(window.localStorage.getItem("LIT_location"));
     let irrigationDate = window.localStorage.getItem("LIT_irrigationDate");
-    const dateArr = irrigationDate.split("-");
-    irrigationDate = `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
 
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
-    field.year = dateArr[0];
+    field.updated = Date.now();
+    field.year = new Date(irrigationDate).getFullYear();
 
     // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
@@ -251,11 +250,8 @@ function SprinklerTypePage() {
 
           <br />
           <Typography variant="caption" align="justify">
-            As different types of sprinkler heads can deliver different volumes
-            of water please choose the type of sprinkler heads that you have.
-            <br />
-            If none is selected, it defaults to the most commonly sold type in
-            the region.
+            Note: If none is selected, it defaults to the most commonly sold
+            type in the region.
           </Typography>
         </div>
 
@@ -290,18 +286,25 @@ function SprinklerTypePage() {
         </div>
 
         <div style={{ padding: theme.spacing(2, 4) }}>
-          <Typography variant="body2" align="center" gutterBottom>
-            How long is the sprinkler running?
+          <Typography variant="body1" align="center" gutterBottom>
+            The sprinkler runs for {state.minutes}{" "}
+            {state.minutes > 1 ? "minutes" : "minute"}
           </Typography>
 
           <br />
-          <div style={{ width: 300, marginTop: theme.spacing(3) }}>
+          <div
+            style={{
+              width: "90%",
+              margin: "0 auto",
+              marginTop: theme.spacing(3)
+            }}
+          >
             <SliderWithTooltip
               // dots
               // activeDotStyle={{ borderColor: theme.palette.primary.light }}
-              min={1}
-              step={5}
-              max={121}
+              min={0}
+              step={1}
+              max={60}
               tipFormatter={e => `${e} min`}
               // tipProps={{ overlayClassName: "tipSlider" }}
               defaultValue={state.minutes}

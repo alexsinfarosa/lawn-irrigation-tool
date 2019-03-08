@@ -90,7 +90,7 @@ const IndexPage = () => {
 
         <Typography
           color="inherit"
-          variant="caption"
+          variant="body2"
           align="center"
           className={classes.smallTextTop}
         >
@@ -99,7 +99,7 @@ const IndexPage = () => {
 
         <Typography
           // color="inherit"
-          variant="caption"
+          variant="body2"
           align="center"
           className={classes.smallTextBottom}
         >

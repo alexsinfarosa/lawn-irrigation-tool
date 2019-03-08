@@ -25,44 +25,51 @@ const reversedLastDays = field => {
   const irrigationDateIdx = field.data.findIndex(
     d => d.date === field.irrigationDate
   );
-  const idxMinus7Days = irrigationDateIdx - 7 < 0 ? 0 : irrigationDateIdx - 7;
+  const idxMinusSevenDays =
+    irrigationDateIdx - 7 < 0 ? 0 : irrigationDateIdx - 7;
   const idxPlus2Days = irrigationDateIdx + 3;
 
   // console.log(results);
-  return reverse(field.data.slice(idxMinus7Days, idxPlus2Days));
+  return reverse(field.data.slice(idxMinusSevenDays, idxPlus2Days));
 };
 
-const determineDomain = lastDays => {
-  const min = Math.min(...lastDays.map(d => d.barDeficit));
-  const max = Math.max(...lastDays.map(d => d.barDeficit));
-
-  const absMin = Math.abs(min);
-  const absMax = Math.abs(max);
-
-  let start = -1;
-  let end = 1;
-  const domain = Math.max(absMin, absMax).toFixed(2);
-  start = Number(domain) * -1;
-  end = Number(domain);
-
-  // console.log(start, end);
-  return [start, end];
-};
-
-function BarChartDeficit({ field, setField, setFields }) {
+function BarChartDeficit({ field, setFields }) {
   console.log("BarChart");
   const classes = useStyles();
   const theme = useTheme();
 
-  const [lastUpdate, setLastUpdate] = React.useState(field.updated);
-  const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
+  // State ----------------------------------------
+  const [lastDays, setLastDays] = React.useState([]);
+
+  const domain = lastDays => {
+    const min = Math.min(...lastDays.map(d => d.barDeficit));
+    const max = Math.max(...lastDays.map(d => d.barDeficit));
+
+    const absMin = Math.abs(min);
+    const absMax = Math.abs(max);
+
+    const domain = Math.max(absMin, absMax).toFixed(2);
+    const start = Number(domain) * -1;
+    const end = Number(domain);
+    if (start === 0 && end === 0) {
+      return [-1, 1];
+    }
+    return [start, end];
+  };
+
+  React.useEffect(() => {
+    console.log("useEffect field.id");
+    setLastDays(reversedLastDays(field));
+  }, [field.id]);
 
   const watered = date => {
     const copy = { ...field };
     const index = copy.data.findIndex(d => d.date === date);
     const water = copy.sprinkler.waterFlow * copy.sprinkler.minutes;
     const day = copy.data[index];
+
     day.waterAppliedByUser = day.waterAppliedByUser === 0 ? water : 0;
+
     day.waterAppliedByUser === 0
       ? (day.pcpn = day.pcpn - water)
       : (day.pcpn = day.pcpn + water);
@@ -79,9 +86,7 @@ function BarChartDeficit({ field, setField, setFields }) {
       return p;
     });
     copy.data = updatedData;
-    copy.updated = Date.now();
-    setLastUpdate(copy.updated);
-    setField(copy);
+
     setLastDays(reversedLastDays(copy));
 
     const localStorageRef = JSON.parse(
@@ -89,7 +94,7 @@ function BarChartDeficit({ field, setField, setFields }) {
     );
     const fieldIdx = localStorageRef.findIndex(f => (f.id = copy.id));
     localStorageRef[fieldIdx] = copy;
-    setFields(localStorageRef);
+    console.log(localStorageRef);
     // setFields(localStorageRef);
     window.localStorage.setItem(
       "lawn-irrigation-tool",
@@ -145,25 +150,25 @@ function BarChartDeficit({ field, setField, setFields }) {
     const text = day => {
       switch (day) {
         case "tomorrow":
-          return <tspan fontSize="1rem">Tomorrow</tspan>;
+          return <tspan fontSize="0.9rem">Tomorrow</tspan>;
         case "today":
           return (
-            <tspan fontWeight="bold" fill="red" fontSize="1.2rem">
+            <tspan fontWeight="bold" fill="red" fontSize="1.1rem">
               TODAY
             </tspan>
           );
         case "yesterday":
-          return <tspan fontSize="1rem">Yesterday</tspan>;
+          return <tspan fontSize="0.9rem">Yesterday</tspan>;
         default:
           return (
-            <tspan fontSize="1rem">{format(new Date(date), "E do")}</tspan>
+            <tspan fontSize="0.9rem">{format(new Date(date), "E do")}</tspan>
           );
       }
     };
 
     return (
       <g>
-        <text x={x - 80} y={y} dy={5} fill="#666">
+        <text x={x - 60} y={y} dy={5} fill="#666">
           {text(day)}
         </text>
       </g>
@@ -173,7 +178,7 @@ function BarChartDeficit({ field, setField, setFields }) {
   const RightIconButtons = props => {
     const { y, index, payload } = props;
     return (
-      <svg width={30} height={30} x={window.innerWidth - 50} y={y - 16}>
+      <svg width={24} height={24} x={window.innerWidth - 40} y={y - 16}>
         {isAfter(new Date(lastDays[index].date), new Date()) ? (
           <FontAwesomeIcon
             icon="cloud-sun"
@@ -205,15 +210,15 @@ function BarChartDeficit({ field, setField, setFields }) {
         height={window.innerHeight - 150}
         data={lastDays}
         maxBarSize={20}
-        margin={{ top: 0, right: 40, left: 50, bottom: 8 }}
+        margin={{ top: 0, right: 20, left: 30, bottom: 8 }}
       >
         <XAxis
           type="number"
           tick={<XaxisLabel />}
           tickCount={2}
-          ticks={determineDomain(lastDays)}
-          stroke={theme.palette.grey["300"]}
-          domain={determineDomain(lastDays)}
+          ticks={domain(lastDays)}
+          stroke={theme.palette.grey["400"]}
+          domain={domain(lastDays)}
         />
 
         {/* Left dates */}
@@ -237,7 +242,7 @@ function BarChartDeficit({ field, setField, setFields }) {
           tick={<RightIconButtons lastDays={lastDays} />}
         />
 
-        <ReferenceLine x={0} stroke={theme.palette.grey["300"]} />
+        <ReferenceLine x={0} stroke={theme.palette.grey["400"]} />
 
         <Bar dataKey="barDeficit" minPointSize={0} radius={[0, 20, 20, 0]}>
           {lastDays.map(day => {

@@ -70,6 +70,10 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
     }
   };
 
+  // React.useEffect(() => {
+  //   console.log("fields rerendered");
+  // }, [fields]);
+
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -90,7 +94,7 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
 
       <main className={classes.main}>
         {fields.map(field => {
-          const isAbove = field.deficit > field.threshold;
+          const isBarDeficit = field.dayOfIrrigation.barDeficit < 0;
           return (
             <Paper key={field.id} className={classes.paper} elevation={1}>
               <List component="nav" style={{ paddingTop: 22 }}>
@@ -100,22 +104,11 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
                     setMainPageIdx(1);
                   }}
                 >
-                  <div style={{ marginLeft: -32 }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      style={{
-                        width: 75,
-                        minHeight: 35,
-                        background: isAbove
-                          ? theme.palette.secondary.main
-                          : "#0197F6"
-                      }}
-                    >
-                      {isAbove ? "water" : ""}
-                    </Button>
-                  </div>
+                  {isBarDeficit ? (
+                    <FontAwesomeIcon icon="tint" color={"#F79824"} size="2x" />
+                  ) : (
+                    <FontAwesomeIcon icon="tint" color={"#0197F6"} size="2x" />
+                  )}
 
                   <ListItemText
                     primary={field.address}

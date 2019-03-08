@@ -38,8 +38,8 @@ export const currentModelMainFunction = field => {
 
       const results = runWaterDeficitModel(pcpns, pets);
 
-      const min = Math.min(...results.deficitDaily);
-      const max = Math.max(...results.deficitDaily);
+      // const min = Math.min(...results.deficitDaily);
+      // const max = Math.max(...results.deficitDaily);
       // console.log(min, max);
 
       // console.log(results.deficitDaily);

@@ -5,6 +5,9 @@ import { install } from "@material-ui/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import theme from "./.cache/theme";
 
+import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import DateFnsUtils from "@date-io/date-fns";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
@@ -56,5 +59,9 @@ export const onInitialClientRender = () => {
 };
 
 export const wrapRootElement = ({ element }) => {
-  return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <ThemeProvider theme={theme}>{element}</ThemeProvider>
+    </MuiPickersUtilsProvider>
+  );
 };

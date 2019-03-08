@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     // height: 50,
     alignItems: "center"
+  },
+  forecastList: {
+    marginBottom: theme.spacing(4)
   }
 }));
 
@@ -56,13 +59,13 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
           </header>
 
           <main className={classes.main}>
-            <Typography
+            {/*<Typography
               variant="h6"
               align="center"
               style={{ margin: theme.spacing(2, 0) }}
             >
               {address}
-            </Typography>
+            </Typography> */}
 
             <div
               style={{

@@ -3,12 +3,12 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Link from "../components/Link";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 
 import ButtonGLink from "../components/buttonGLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import format from "date-fns/format";
+import format from "date-fns/format";
+import { InlineDatePicker } from "material-ui-pickers";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   footer: {
     padding: theme.spacing(2),
     paddingTop: theme.spacing(0),
-    paddingBottom: theme.spacing(7)
+    paddingBottom: theme.spacing(5)
   },
   btnBig: {
     paddingTop: theme.spacing(2),
@@ -48,17 +48,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Initial State ---------------------------------------------
-const initialState = () => new Date().toString();
 
 function IrrigationDatePage() {
   console.log("IrrigationDatePage");
   const classes = useStyles();
 
   // State ---------------------------------------------------
-  const [irrigationDate, setIrrigationDate] = React.useState(initialState);
-
+  const [irrigationDate, setIrrigationDate] = React.useState(new Date());
   React.useEffect(() => {
-    window.localStorage.setItem("LIT_irrigationDate", irrigationDate);
+    const date = format(new Date(irrigationDate), "MM/dd/yyyy");
+    window.localStorage.setItem("LIT_irrigationDate", date);
   }, [irrigationDate]);
 
   return (
@@ -84,22 +83,17 @@ function IrrigationDatePage() {
         </Typography>
 
         <br />
-        <form className={classes.container} noValidate>
-          <TextField
-            id="irrigationDate"
-            label="Irrigation Date"
-            type="date"
-            variant="outlined"
-            format="MM/dd/yyyy"
-            // defaultValue={format(new Date(irrigationDate), "yyyy-MM-dd")}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true
-            }}
-            onChange={e => setIrrigationDate(e.target.value)}
-          />
-        </form>
+        <InlineDatePicker
+          onlyCalendar
+          variant="outlined"
+          disableFuture
+          minDate={`03/01/${new Date().getFullYear()}`}
+          minDateMessage="Data is only available after March 1st."
+          format={format(new Date(irrigationDate), "MM/dd/yyyy")}
+          label="Irrigation Date"
+          value={irrigationDate}
+          onChange={setIrrigationDate}
+        />
       </main>
 
       <footer className={classes.footer}>

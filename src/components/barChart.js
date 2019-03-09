@@ -29,9 +29,9 @@ const reversedLastDays = field => {
   const idxMinus7Days = irrigationDateIdx - 7 < 0 ? 0 : irrigationDateIdx - 7;
   const idxPlus2Days = irrigationDateIdx + 3;
 
-  console.log(field);
+  // console.log(field);
   const forecast3Days = field.forecast.daily.data.slice(0, 3);
-  console.log(forecast3Days);
+  // console.log(forecast3Days);
   let data = field.data.slice(idxMinus7Days, idxPlus2Days);
   if (field.year === new Date().getFullYear()) {
     data = data.map((d, i) => {
@@ -48,7 +48,7 @@ const reversedLastDays = field => {
       return p;
     });
   }
-  console.log(data);
+  // console.log(data);
   return reverse(data);
 };
 
@@ -74,7 +74,7 @@ function BarChartDeficit({ field, setField, setFields }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [lastUpdate, setLastUpdate] = React.useState(field.updated);
+  // const [lastUpdate, setLastUpdate] = React.useState(field.updated);
   const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
 
   React.useEffect(() => {
@@ -104,7 +104,7 @@ function BarChartDeficit({ field, setField, setFields }) {
     });
     copy.data = updatedData;
     copy.updated = Date.now();
-    setLastUpdate(copy.updated);
+    // setLastUpdate(copy.updated);
     setField(copy);
     setLastDays(reversedLastDays(copy));
 

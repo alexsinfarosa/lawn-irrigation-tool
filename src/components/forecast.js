@@ -39,9 +39,6 @@ const Forecast = ({ setMainPageIdx, forecast }) => {
   console.log("Forecast");
   const classes = useStyles();
   const theme = useTheme();
-  forecast.daily.data.map(d =>
-    console.log(new Date(d.time * 1000), d.icon, mapIcon(d.icon))
-  );
 
   return (
     <>

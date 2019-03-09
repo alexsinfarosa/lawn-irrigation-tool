@@ -13,10 +13,11 @@ import subDays from "date-fns/subDays";
 import addDays from "date-fns/addDays";
 import { runWaterDeficitModel } from "../utils/api";
 
+// import { mapIcon } from "../utils/mapIcon";
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2, 0)
-    // background: "pink"
   }
 }));
 
@@ -28,8 +29,27 @@ const reversedLastDays = field => {
   const idxMinus7Days = irrigationDateIdx - 7 < 0 ? 0 : irrigationDateIdx - 7;
   const idxPlus2Days = irrigationDateIdx + 3;
 
-  // console.log(results);
-  return reverse(field.data.slice(idxMinus7Days, idxPlus2Days));
+  console.log(field);
+  const forecast3Days = field.forecast.daily.data.slice(0, 3);
+  console.log(forecast3Days);
+  let data = field.data.slice(idxMinus7Days, idxPlus2Days);
+  if (field.year === new Date().getFullYear()) {
+    data = data.map((d, i) => {
+      let p = { ...d };
+      if (i === 7) {
+        p.forecast = forecast3Days[0];
+      }
+      if (i === 8) {
+        p.forecast = forecast3Days[1];
+      }
+      if (i === 9) {
+        p.forecast = forecast3Days[2];
+      }
+      return p;
+    });
+  }
+  console.log(data);
+  return reverse(data);
 };
 
 const determineDomain = lastDays => {
@@ -56,6 +76,10 @@ function BarChartDeficit({ field, setField, setFields }) {
 
   const [lastUpdate, setLastUpdate] = React.useState(field.updated);
   const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
+
+  React.useEffect(() => {
+    setLastDays(reversedLastDays(field));
+  }, [field]);
 
   const watered = date => {
     const copy = { ...field };
@@ -97,35 +121,40 @@ function BarChartDeficit({ field, setField, setFields }) {
     );
   };
 
-  // const XaxisLabel = props => {
-  //   const { x, y, index } = props;
-  //   return (
-  //     <g transform={`translate(${x},${y})`}>
-  //       <text
-  //         x={0}
-  //         y={0}
-  //         dy={16}
-  //         textAnchor={index === 0 ? "start" : "end"}
-  //         fill={index === 0 ? "#F79824" : "#0197F6"}
-  //         fontSize="0.8rem"
-  //         fontWeight="bold"
-  //       >
-  //         {index === 0 ? "DRY" : "WET"}
-  //       </text>
-  //     </g>
-  //   );
-  // };
-
   const XaxisLabel = props => {
     const { x, y, index } = props;
     return (
-      <svg width={20} height={20} x={x - 10} y={y + 3}>
+      <>
         {index === 0 ? (
-          <FontAwesomeIcon icon="tint" color={theme.palette.grey["300"]} />
+          <g transform={`translate(${x - 10},${y + 3})`}>
+            <text
+              x={20}
+              y={15}
+              fontSize="0.7rem"
+              fill={theme.palette.grey["600"]}
+            >
+              DRY
+            </text>
+            <svg width={20} height={20} x={0} y={0}>
+              <FontAwesomeIcon icon="tint" color={"#F79824"} />
+            </svg>
+          </g>
         ) : (
-          <FontAwesomeIcon icon="tint" color={"#0197F6"} />
+          <g transform={`translate(${x - 10},${y + 3})`}>
+            <text
+              x={-27}
+              y={15}
+              fontSize="0.7rem"
+              fill={theme.palette.grey["600"]}
+            >
+              WET
+            </text>
+            <svg width={20} height={20} x={0} y={0}>
+              <FontAwesomeIcon icon="tint" color={"#0197F6"} />
+            </svg>
+          </g>
         )}
-      </svg>
+      </>
     );
   };
 
@@ -171,24 +200,35 @@ function BarChartDeficit({ field, setField, setFields }) {
   };
 
   const RightIconButtons = props => {
-    const { y, index, payload } = props;
+    const { y, index, payload, lastDays } = props;
     return (
-      <svg width={30} height={30} x={window.innerWidth - 50} y={y - 16}>
+      <svg width={100} height={30} x={window.innerWidth - 90} y={y - 16}>
         {isAfter(new Date(lastDays[index].date), new Date()) ? (
-          <FontAwesomeIcon
-            icon="cloud-sun"
-            size="1x"
-            color={theme.palette.text.secondary}
-          />
+          <g transform={`translate(${-18},${0})`}>
+            <text
+              x={74}
+              y={16}
+              fontSize="0.8rem"
+              fill={theme.palette.grey["600"]}
+            >
+              {lastDays[index].forecast.precipProbability * 100}%
+            </text>
+            <svg width={20} x={50}>
+              <FontAwesomeIcon
+                icon={["fal", "cloud-rain"]}
+                color={theme.palette.grey["600"]}
+              />
+            </svg>
+          </g>
         ) : lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
-            icon="tint"
+            icon={["fal", "tint"]}
             color={theme.palette.grey["300"]}
             onClick={() => watered(payload.value)}
           />
         ) : (
           <FontAwesomeIcon
-            icon="tint"
+            icon={["fas", "tint"]}
             color={"#0197F6"}
             onClick={() => watered(payload.value)}
           />
@@ -202,7 +242,7 @@ function BarChartDeficit({ field, setField, setFields }) {
       <BarChart
         layout="vertical"
         width={window.innerWidth}
-        height={window.innerHeight - 150}
+        height={window.innerHeight < 500 ? 500 : window.innerHeight - 150}
         data={lastDays}
         maxBarSize={20}
         margin={{ top: 0, right: 40, left: 50, bottom: 8 }}

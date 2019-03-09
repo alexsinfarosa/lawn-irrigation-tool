@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 
-import { weatherIcons } from "../utils/weatherIcons";
+import { mapIcon } from "../utils/mapIcon";
 import format from "date-fns/format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -27,18 +27,21 @@ const useStyles = makeStyles(theme => ({
   forecastRow: {
     display: "flex",
     justifyContent: "space-between",
-    // height: 50,
-    alignItems: "center"
+    alignItems: "center",
+    padding: theme.spacing(1, 0)
   },
   forecastList: {
     marginBottom: theme.spacing(4)
   }
 }));
 
-const Forecast = ({ setMainPageIdx, forecast, address }) => {
+const Forecast = ({ setMainPageIdx, forecast }) => {
   console.log("Forecast");
   const classes = useStyles();
   const theme = useTheme();
+  forecast.daily.data.map(d =>
+    console.log(new Date(d.time * 1000), d.icon, mapIcon(d.icon))
+  );
 
   return (
     <>
@@ -59,14 +62,6 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
           </header>
 
           <main className={classes.main}>
-            {/*<Typography
-              variant="h6"
-              align="center"
-              style={{ margin: theme.spacing(2, 0) }}
-            >
-              {address}
-            </Typography> */}
-
             <div
               style={{
                 display: "flex",
@@ -90,9 +85,10 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                     height: 60
                   }}
                 >
-                  <img
-                    src={weatherIcons[forecast.daily.data[0].icon]}
-                    alt="daily forecast icon"
+                  <FontAwesomeIcon
+                    icon={mapIcon(forecast.currently.icon)}
+                    color={theme.palette.grey["700"]}
+                    size="xs"
                     style={{
                       width: 60,
                       height: 60,
@@ -104,7 +100,7 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                   {Math.round(forecast.currently.temperature, 2)}˚
                 </Typography>
               </div>
-              <Typography variant="caption">
+              <Typography variant="body2">
                 {forecast.currently.summary}
               </Typography>
             </div>
@@ -145,22 +141,20 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                     <Typography
                       variant="body1"
                       align="left"
-                      style={{ width: 40, fontWeight: "bold" }}
+                      style={{ width: 50, fontWeight: "bold" }}
                     >
                       {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
                     </Typography>
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "center",
                         alignItems: "center"
                       }}
                     >
                       <FontAwesomeIcon
-                        icon="cloud-rain"
+                        icon="raindrops"
                         style={{ marginRight: 4 }}
-                        color={theme.palette.text.secondary}
-                        size="xs"
+                        color={"#0197F6"}
                       />
                       <Typography variant="caption" align="left">
                         {`${Math.round(day.precipProbability * 100)}%`}
@@ -168,13 +162,11 @@ const Forecast = ({ setMainPageIdx, forecast, address }) => {
                     </div>
                   </div>
 
-                  <img
-                    src={weatherIcons[day.icon]}
-                    alt={day.summary}
-                    style={{
-                      width: 24,
-                      marginTop: 21
-                    }}
+                  <FontAwesomeIcon
+                    icon={mapIcon(day.icon)}
+                    // style={{ marginRight: 4 }}
+                    color={theme.palette.text.secondary}
+                    size="lg"
                   />
 
                   <Typography variant="body1">{`${Math.round(

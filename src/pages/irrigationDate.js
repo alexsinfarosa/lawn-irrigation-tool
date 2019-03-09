@@ -87,7 +87,8 @@ function IrrigationDatePage() {
           onlyCalendar
           variant="outlined"
           disableFuture
-          minDate={`03/01/${new Date().getFullYear()}`}
+          useKeyboard
+          // minDate={`03/01/${new Date().getFullYear()}`}
           minDateMessage="Data is only available after March 1st."
           format={format(new Date(irrigationDate), "MM/dd/yyyy")}
           label="Irrigation Date"

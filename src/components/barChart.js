@@ -211,7 +211,7 @@ function BarChartDeficit({ field, setField, setFields }) {
               fontSize="0.8rem"
               fill={theme.palette.grey["600"]}
             >
-              {lastDays[index].forecast.precipProbability * 100}%
+              {(lastDays[index].forecast.precipProbability * 100).toFixed(0)}%
             </text>
             <svg width={20} x={50}>
               <FontAwesomeIcon

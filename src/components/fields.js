@@ -20,6 +20,8 @@ import Link from "../components/Link";
 // utils ------------
 import format from "date-fns/format";
 
+import ButtonGLink from "../components/buttonGLink";
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
@@ -36,7 +38,8 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     overflow: "auto",
-    height: "calc(100vh - 80px)"
+    height: "calc(100vh - 80px)",
+    textAlign: "center"
   },
   paper: {
     margin: theme.spacing(2, 4),
@@ -93,6 +96,9 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
       </header>
 
       <main className={classes.main}>
+        <ButtonGLink to="/moreInfo" variant="outlined" color="secondary">
+          MORE INFO
+        </ButtonGLink>
         {fields.map(field => {
           const isBarDeficit = field.dayOfIrrigation.barDeficit < 0;
           return (

@@ -318,9 +318,7 @@ function SprinklerTypePage() {
                 backgroundColor: theme.palette.primary.light
               }}
               // railStyle={{ backgroundColor: "red", height: 10 }}
-              onAfterChange={minutes =>
-                dispatch({ type: "setMinutes", minutes })
-              }
+              onChange={minutes => dispatch({ type: "setMinutes", minutes })}
             />
           </div>
         </div>

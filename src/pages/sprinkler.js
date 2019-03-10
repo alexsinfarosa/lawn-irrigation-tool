@@ -180,6 +180,9 @@ function SprinklerTypePage() {
     // irrigationDate ---------------------------------------------
     field.dayOfIrrigation = field.data.find(day => day.date === irrigationDate);
 
+    // Nassau ordinance (even/odd street numbers) ------------------
+    console.log(field);
+
     // Brian's call is updated at noon -----------------------------
     if (field.year !== new Date().getFullYear() && new Date().getHours() > 11) {
       field.data = field.data.slice(0, -1);

@@ -132,49 +132,52 @@ const Forecast = ({ setMainPageIdx, forecast }) => {
             </div>
 
             <div className={classes.forecastList}>
-              {forecast.daily.data.map(day => (
-                <div key={day.time} className={classes.forecastRow}>
-                  <div>
-                    <Typography
-                      variant="body1"
-                      align="left"
-                      style={{ width: 50, fontWeight: "bold" }}
-                    >
-                      {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
-                    </Typography>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center"
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon="raindrops"
-                        style={{ marginRight: 4 }}
-                        color={"#0197F6"}
-                      />
-                      <Typography variant="caption" align="left">
-                        {`${Math.round(day.precipProbability * 100)}%`}
+              {forecast.daily.data.map(day => {
+                console.log(day.icon);
+                return (
+                  <div key={day.time} className={classes.forecastRow}>
+                    <div>
+                      <Typography
+                        variant="body1"
+                        align="left"
+                        style={{ width: 50, fontWeight: "bold" }}
+                      >
+                        {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
                       </Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center"
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon="raindrops"
+                          style={{ marginRight: 4 }}
+                          color={"#0197F6"}
+                        />
+                        <Typography variant="caption" align="left">
+                          {`${Math.round(day.precipProbability * 100)}%`}
+                        </Typography>
+                      </div>
                     </div>
+
+                    <FontAwesomeIcon
+                      icon={mapIcon(day.icon)}
+                      // style={{ marginRight: 4 }}
+                      color={theme.palette.text.secondary}
+                      size="lg"
+                    />
+
+                    <Typography variant="body1">{`${Math.round(
+                      day.temperatureLow,
+                      1
+                    )}˚`}</Typography>
+                    <Typography variant="body1">
+                      {`${Math.round(day.temperatureHigh, 1)}˚`}
+                    </Typography>
                   </div>
-
-                  <FontAwesomeIcon
-                    icon={mapIcon(day.icon)}
-                    // style={{ marginRight: 4 }}
-                    color={theme.palette.text.secondary}
-                    size="lg"
-                  />
-
-                  <Typography variant="body1">{`${Math.round(
-                    day.temperatureLow,
-                    1
-                  )}˚`}</Typography>
-                  <Typography variant="body1">
-                    {`${Math.round(day.temperatureHigh, 1)}˚`}
-                  </Typography>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </main>
         </div>

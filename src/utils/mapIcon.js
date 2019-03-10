@@ -17,7 +17,7 @@ export const mapIcon = icon => {
     case "sleet":
       return "sleet";
     case "snow":
-      return "snow";
+      return "snowflakes";
     case "wind":
       return "wind";
     default:

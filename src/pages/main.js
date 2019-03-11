@@ -12,7 +12,7 @@ import Field from "../components/field";
 import Fields from "../components/fields";
 
 const MainPage = () => {
-  console.log("MainPage");
+  // console.log("MainPage");
 
   // STATE ---------------------------------------------
   const [mainPageIdx, changeMainPageIdx] = React.useState(1);

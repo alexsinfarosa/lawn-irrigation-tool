@@ -32,9 +32,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Field = ({ setMainPageIdx, field, setField, setFields }) => {
-  console.log("Field");
+  // console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
+  console.log(field);
 
   return (
     <div className={classes.root}>

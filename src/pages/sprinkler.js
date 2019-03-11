@@ -35,13 +35,13 @@ const sprinklers = [
   {
     name: "Spray Sprinkler",
     img: SpraySprinkler,
-    waterFlow: 0.005, // inches of water
+    waterFlow: 0.02, // inches of water
     minutes: 10
   },
   {
     name: "Single Stream Rotor",
     img: SingleStreamRotor,
-    waterFlow: 0.008,
+    waterFlow: 0.01,
     minutes: 10
   },
   {
@@ -165,14 +165,14 @@ function SprinklerTypePage() {
 
     let field = { ...location, irrigationDate, sprinkler: { ...state } };
     field.id = Date.now();
-    field.updated = Date.now();
+    // field.updated = Date.now();
     field.year = new Date(irrigationDate).getFullYear();
 
     // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
     // THRESHOLD is negative because we are adding water ---------
-    field.threshold = -1 * state.waterFlow * state.minutes; // inches
+    field.threshold = -2 * state.waterFlow * state.minutes; // inches
 
     // get data from Brian's call --------------------------------
     field.data = await currentModelMainFunction(field);
@@ -181,10 +181,11 @@ function SprinklerTypePage() {
     field.dayOfIrrigation = field.data.find(day => day.date === irrigationDate);
 
     // Nassau ordinance (even/odd street numbers) ------------------
-    console.log(field);
+    // console.log(field);
 
     // Brian's call is updated at noon -----------------------------
     if (field.year !== new Date().getFullYear() && new Date().getHours() > 11) {
+      console.log("Cutting...");
       field.data = field.data.slice(0, -1);
     }
 

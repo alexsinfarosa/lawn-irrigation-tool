@@ -856,13 +856,6 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.15"
 
-"@fortawesome/free-solid-svg-icons@^5.7.2":
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.7.2.tgz#9ec2ed353d630092a8e19cc8aae2f716572963e5"
-  integrity sha512-iujcXMyAvIbWM8W3jkOLpvJbR+rPpdN1QyqhZeJaLRdHPH4JmuovIAYP4vx5Sa1csZVXfRD1eDWqVZ/jGM620A==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.15"
-
 "@fortawesome/pro-light-svg-icons@^5.7.2":
   version "5.7.2"
   resolved "https://npm.fontawesome.com/@fortawesome/pro-light-svg-icons/-/pro-light-svg-icons-5.7.2.tgz#e2832b2e495e291741b058f29651092818334969"
@@ -7274,11 +7267,6 @@ lodash.reverse@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.reverse/-/lodash.reverse-4.0.1.tgz#1f2afedace2e16e660f3aa7c59d3300a6f25d13c"
   integrity sha1-Hyr+2s4uFuZg86p8WdMwCm8l0Tw=
-
-lodash.takeright@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.takeright/-/lodash.takeright-4.1.1.tgz#c98d84aa9b80e4d2ff675335a62e02e9a65bb210"
-  integrity sha1-yY2EqpuA5NL/Z1M1pi4C6aZbshA=
 
 lodash.template@^4.4.0:
   version "4.4.0"

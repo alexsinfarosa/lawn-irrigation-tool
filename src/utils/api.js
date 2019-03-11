@@ -31,18 +31,13 @@ export const currentModelMainFunction = field => {
   return axios
     .get(url)
     .then(res => {
-      console.log(`BrianCALL`, res.data);
+      // console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       const pcpns = [...res.data.precip, ...res.data.precip_fcst];
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
       const results = runWaterDeficitModel(pcpns, pets);
 
-      // const min = Math.min(...results.deficitDaily);
-      // const max = Math.max(...results.deficitDaily);
-      // console.log(min, max);
-
-      // console.log(results.deficitDaily);
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
         p.date = `${dates[i]}/${year}`;
@@ -50,7 +45,7 @@ export const currentModelMainFunction = field => {
         p.pet = +pets[i];
         p.pcpn = +pcpns[i];
         p.waterAppliedByUser = 0;
-        p.threshold = sprinkler.waterFlow * sprinkler.minutes * -1;
+        p.threshold = sprinkler.waterFlow * sprinkler.minutes * -2;
         p.barDeficit =
           p.deficit >= 0 ? p.deficit - p.threshold : p.deficit - p.threshold;
         return p;

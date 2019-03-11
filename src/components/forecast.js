@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Forecast = ({ setMainPageIdx, forecast }) => {
-  console.log("Forecast");
+  // console.log("Forecast");
   const classes = useStyles();
   const theme = useTheme();
 
@@ -133,7 +133,7 @@ const Forecast = ({ setMainPageIdx, forecast }) => {
 
             <div className={classes.forecastList}>
               {forecast.daily.data.map(day => {
-                console.log(day.icon);
+                // console.log(day.icon);
                 return (
                   <div key={day.time} className={classes.forecastRow}>
                     <div>

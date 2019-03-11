@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
-  console.log("Fields");
+  // console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
 

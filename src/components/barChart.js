@@ -52,34 +52,35 @@ const reversedLastDays = field => {
   return reverse(data);
 };
 
-const determineDomain = lastDays => {
-  const min = Math.min(...lastDays.map(d => d.barDeficit));
-  const max = Math.max(...lastDays.map(d => d.barDeficit));
-
-  const absMin = Math.abs(min);
-  const absMax = Math.abs(max);
-
-  let start = -1;
-  let end = 1;
-  const domain = Math.max(absMin, absMax).toFixed(2);
-  start = Number(domain) * -1;
-  end = Number(domain);
-
-  // console.log(start, end);
-  return [start, end];
-};
-
 function BarChartDeficit({ field, setField, setFields }) {
-  console.log("BarChart");
+  // console.log("BarChart");
   const classes = useStyles();
   const theme = useTheme();
 
   // const [lastUpdate, setLastUpdate] = React.useState(field.updated);
   const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
+  const [domain, setDomain] = React.useState(1);
+
+  const determineDomain = lastDays => {
+    const min = Math.min(...lastDays.map(d => d.barDeficit));
+    const max = Math.max(...lastDays.map(d => d.barDeficit));
+
+    const absMin = Math.abs(min);
+    const absMax = Math.abs(max);
+
+    const newDomain = Math.max(absMin, absMax);
+    const maxDomain = Math.max(domain, newDomain);
+    // console.log(maxDomain);
+    setDomain(maxDomain);
+  };
 
   React.useEffect(() => {
     setLastDays(reversedLastDays(field));
   }, [field]);
+
+  React.useEffect(() => {
+    determineDomain(lastDays);
+  }, [lastDays]);
 
   const watered = date => {
     const copy = { ...field };
@@ -103,7 +104,7 @@ function BarChartDeficit({ field, setField, setFields }) {
       return p;
     });
     copy.data = updatedData;
-    copy.updated = Date.now();
+    // copy.updated = Date.now();
     // setLastUpdate(copy.updated);
     setField(copy);
     setLastDays(reversedLastDays(copy));
@@ -111,7 +112,7 @@ function BarChartDeficit({ field, setField, setFields }) {
     const localStorageRef = JSON.parse(
       window.localStorage.getItem("lawn-irrigation-tool")
     );
-    const fieldIdx = localStorageRef.findIndex(f => (f.id = copy.id));
+    const fieldIdx = localStorageRef.findIndex(f => f.id === copy.id);
     localStorageRef[fieldIdx] = copy;
     setFields(localStorageRef);
     // setFields(localStorageRef);
@@ -128,7 +129,7 @@ function BarChartDeficit({ field, setField, setFields }) {
         {index === 0 ? (
           <g transform={`translate(${x - 10},${y + 3})`}>
             <text
-              x={20}
+              x={22}
               y={15}
               fontSize="0.7rem"
               fill={theme.palette.grey["600"]}
@@ -142,7 +143,7 @@ function BarChartDeficit({ field, setField, setFields }) {
         ) : (
           <g transform={`translate(${x - 10},${y + 3})`}>
             <text
-              x={-27}
+              x={-30}
               y={15}
               fontSize="0.7rem"
               fill={theme.palette.grey["600"]}
@@ -202,7 +203,13 @@ function BarChartDeficit({ field, setField, setFields }) {
   const RightIconButtons = props => {
     const { y, index, payload, lastDays } = props;
     return (
-      <svg width={100} height={30} x={window.innerWidth - 90} y={y - 16}>
+      <svg
+        width={100}
+        height={30}
+        x={window.innerWidth - 90}
+        y={y - 16}
+        style={{ filter: "brightness(0.5) sepia(1) " }}
+      >
         {isAfter(new Date(lastDays[index].date), new Date()) ? (
           <g transform={`translate(${-18},${0})`}>
             <text
@@ -222,7 +229,7 @@ function BarChartDeficit({ field, setField, setFields }) {
           </g>
         ) : lastDays[index].waterAppliedByUser === 0 ? (
           <FontAwesomeIcon
-            icon={["fal", "tint"]}
+            icon={["fa", "tint"]}
             color={theme.palette.grey["300"]}
             onClick={() => watered(payload.value)}
           />
@@ -251,9 +258,9 @@ function BarChartDeficit({ field, setField, setFields }) {
           type="number"
           tick={<XaxisLabel />}
           tickCount={2}
-          ticks={determineDomain(lastDays)}
+          ticks={[-1 * domain, domain]}
           stroke={theme.palette.grey["300"]}
-          domain={determineDomain(lastDays)}
+          domain={[-1 * domain, domain]}
         />
 
         {/* Left dates */}

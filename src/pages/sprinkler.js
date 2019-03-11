@@ -181,7 +181,6 @@ function SprinklerTypePage() {
       field.forecast.daily.data[2].precipProbability;
     if (inTwoDaysPrecipProbability > 0.6) isInTwoDaysAbove = true;
 
-    console.log(tomorrowPrecipProbability, inTwoDaysPrecipProbability);
     // THRESHOLD is negative because we are adding water ---------
     field.threshold = -2 * state.waterFlow * state.minutes; // inches
 

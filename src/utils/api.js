@@ -38,9 +38,13 @@ export const currentModelMainFunction = (
       // console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       let pcpns = [...res.data.precip, ...res.data.precip_fcst];
+
+      console.log(field.year === new Date().getFullYear());
       // only if probability of precipitation is above 60% we include the amount of precipitation, otherwise is zero
-      if (!isTomorrowAbove) pcpns[pcpns.length - 3] = 0;
-      if (!isInTwoDaysAbove) pcpns[pcpns.length - 2] = 0;
+      if (field.year === new Date().getFullYear()) {
+        if (!isTomorrowAbove) pcpns[pcpns.length - 3] = 0;
+        if (!isInTwoDaysAbove) pcpns[pcpns.length - 2] = 0;
+      }
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
       const results = runWaterDeficitModel(pcpns, pets);

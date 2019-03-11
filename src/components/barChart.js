@@ -72,7 +72,6 @@ function BarChartDeficit({ field, setField, setFields }) {
     return dom + dom * 0.4;
   };
   const [domain, setDomain] = React.useState(initialDomain);
-
   const determineDomain = lastDays => {
     const min = Math.min(...lastDays.map(d => d.barDeficit));
     const max = Math.max(...lastDays.map(d => d.barDeficit));
@@ -87,10 +86,12 @@ function BarChartDeficit({ field, setField, setFields }) {
   };
 
   React.useEffect(() => {
+    console.log("change field");
     setLastDays(reversedLastDays(field));
   }, [field]);
 
   React.useEffect(() => {
+    console.log("change domain");
     determineDomain(lastDays);
   }, [lastDays]);
 
@@ -271,9 +272,10 @@ function BarChartDeficit({ field, setField, setFields }) {
           type="number"
           tick={<XaxisLabel />}
           tickCount={2}
-          ticks={[-1 * domain, domain]}
+          ticks={[+domain.toFixed(2) * -1, +domain.toFixed(2)]}
+          interval="preserveStartEnd"
           stroke={theme.palette.grey["300"]}
-          domain={[-1 * domain, domain]}
+          domain={[-domain, domain]}
         />
 
         {/* Left dates */}

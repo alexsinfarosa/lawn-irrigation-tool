@@ -48,7 +48,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
+const Fields = ({
+  setMainPageIdx,
+  fields,
+  setField,
+  setFields,
+  selectedField
+}) => {
   // console.log("Fields");
   const classes = useStyles();
   const theme = useTheme();
@@ -103,9 +109,14 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
 
       <main className={classes.main}>
         {fields.map(field => {
+          const isSelected = field.id === selectedField.id;
           const isBarDeficit = field.dayOfIrrigation.barDeficit < 0;
           return (
-            <Paper key={field.id} className={classes.paper} elevation={1}>
+            <Paper
+              key={field.id}
+              className={classes.paper}
+              elevation={isSelected ? 8 : 0}
+            >
               <List component="nav" style={{ paddingTop: 22 }}>
                 <ListItem
                   onClick={() => {

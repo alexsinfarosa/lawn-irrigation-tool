@@ -35,7 +35,7 @@ export const currentModelMainFunction = (
   return axios
     .get(url)
     .then(res => {
-      // console.log(`BrianCALL`, res.data);
+      console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       let pcpns = [...res.data.precip, ...res.data.precip_fcst];
 
@@ -48,7 +48,7 @@ export const currentModelMainFunction = (
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
       const results = runWaterDeficitModel(pcpns, pets);
-
+      console.log(results);
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
         p.date = `${dates[i]}/${year}`;

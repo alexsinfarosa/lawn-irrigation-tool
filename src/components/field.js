@@ -35,7 +35,7 @@ const Field = ({ setMainPageIdx, field, setField, setFields }) => {
   // console.log("Field");
   const classes = useStyles();
   const theme = useTheme();
-  console.log(field);
+  // console.log(field);
 
   return (
     <div className={classes.root}>
@@ -59,24 +59,35 @@ const Field = ({ setMainPageIdx, field, setField, setFields }) => {
 
       <main className={classes.main}>
         <div>
-          {+field.year === new Date().getFullYear() &&
-          field.dayOfIrrigation.barDeficit < 0 ? (
+          {field.dayOfIrrigation.barDeficit < 0 ? (
             <Typography
               variant="subtitle1"
               align="center"
               style={{
-                background: theme.palette.secondary.light,
-                color: "#fff"
+                background: "#F79824",
+                color: "#fff",
+                marginBottom: 8
               }}
             >
-              Today you should water!
+              Water!
             </Typography>
           ) : (
-            <Typography variant="subtitle1" align="center">
-              {field.address}
+            <Typography
+              variant="subtitle1"
+              align="center"
+              style={{
+                background: "#0197F6",
+                color: "#fff",
+                marginBottom: 8
+              }}
+            >
+              Do not water!
             </Typography>
           )}
         </div>
+        <Typography variant="subtitle2" align="center" color="textSecondary">
+          {field.address}
+        </Typography>
         <BarChart field={field} setField={setField} setFields={setFields} />
       </main>
     </div>

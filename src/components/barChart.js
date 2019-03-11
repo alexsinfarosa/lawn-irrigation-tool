@@ -264,10 +264,10 @@ function BarChartDeficit({ field, setField, setFields }) {
       <BarChart
         layout="vertical"
         width={window.innerWidth}
-        height={window.innerHeight < 500 ? 500 : window.innerHeight - 150}
+        height={window.innerHeight < 500 ? 500 : window.innerHeight - 165}
         data={lastDays}
         maxBarSize={16}
-        margin={{ top: 0, right: 40, left: 50, bottom: 8 }}
+        margin={{ top: 10, right: 40, left: 50, bottom: 8 }}
       >
         <XAxis
           type="number"

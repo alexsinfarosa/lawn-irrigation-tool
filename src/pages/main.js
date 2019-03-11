@@ -75,6 +75,7 @@ const MainPage = () => {
           <Fields
             setMainPageIdx={setMainPageIdx}
             fields={fields}
+            selectedField={field}
             setField={setField}
             setFields={setFields}
           />

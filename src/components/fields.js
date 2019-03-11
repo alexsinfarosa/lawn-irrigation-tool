@@ -25,7 +25,7 @@ import ButtonGLink from "../components/buttonGLink";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "grid",
-    gridTemplateRows: "80px auto",
+    gridTemplateRows: "80px 50px auto",
     height: "100vh"
   },
   header: {
@@ -38,8 +38,9 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     overflow: "auto",
-    height: "calc(100vh - 80px)",
-    textAlign: "center"
+    height: "calc(100vh - 130px)",
+    textAlign: "center",
+    marginTop: 8
   },
   paper: {
     margin: theme.spacing(2, 4),
@@ -73,10 +74,6 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
     }
   };
 
-  // React.useEffect(() => {
-  //   console.log("fields rerendered");
-  // }, [fields]);
-
   return (
     <div className={classes.root}>
       <header className={classes.header}>
@@ -95,10 +92,16 @@ const Fields = ({ setMainPageIdx, fields, setField, setFields }) => {
         </Link>
       </header>
 
+      <ButtonGLink
+        to="/moreInfo"
+        variant="outlined"
+        color="secondary"
+        style={{ width: 200, margin: "0 auto" }}
+      >
+        MORE INFO
+      </ButtonGLink>
+
       <main className={classes.main}>
-        <ButtonGLink to="/moreInfo" variant="outlined" color="secondary">
-          MORE INFO
-        </ButtonGLink>
         {fields.map(field => {
           const isBarDeficit = field.dayOfIrrigation.barDeficit < 0;
           return (

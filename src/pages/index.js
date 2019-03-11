@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const IndexPage = () => {
-  console.log("IndexPage");
+  // console.log("IndexPage");
   const classes = useStyles();
 
   const localStorage = window.localStorage.getItem("lawn-irrigation-tool");

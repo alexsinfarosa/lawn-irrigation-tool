@@ -86,12 +86,12 @@ function BarChartDeficit({ field, setField, setFields }) {
   };
 
   React.useEffect(() => {
-    console.log("change field");
+    // console.log("change field");
     setLastDays(reversedLastDays(field));
   }, [field]);
 
   React.useEffect(() => {
-    console.log("change domain");
+    // console.log("change domain");
     determineDomain(lastDays);
   }, [lastDays]);
 
@@ -143,7 +143,7 @@ function BarChartDeficit({ field, setField, setFields }) {
         {index === 0 ? (
           <g transform={`translate(${x - 10},${y + 3})`}>
             <text
-              x={22}
+              x={24}
               y={15}
               fontSize="0.7rem"
               fill={theme.palette.grey["600"]}
@@ -200,7 +200,7 @@ function BarChartDeficit({ field, setField, setFields }) {
           return <tspan fontSize="1rem">Yesterday</tspan>;
         default:
           return (
-            <tspan fontSize="1rem">{format(new Date(date), "E do")}</tspan>
+            <tspan fontSize="1rem">{format(new Date(date), "MMM do")}</tspan>
           );
       }
     };
@@ -214,13 +214,14 @@ function BarChartDeficit({ field, setField, setFields }) {
     );
   };
 
+  const isThisYear = field.year === new Date().getFullYear();
   const RightIconButtons = props => {
     const { y, index, payload, lastDays } = props;
     return (
       <svg
         width={100}
         height={30}
-        x={window.innerWidth - 95}
+        x={isThisYear ? window.innerWidth - 93 : window.innerWidth - 80}
         y={y - 16}
         style={{ filter: "brightness(0.5) sepia(1) " }}
       >

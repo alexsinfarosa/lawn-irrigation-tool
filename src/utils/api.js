@@ -18,7 +18,11 @@ export const fetchForecastData = (latitude, longitude) => {
 };
 
 // -----------------------------------------------------------
-export const currentModelMainFunction = field => {
+export const currentModelMainFunction = (
+  field,
+  isTomorrowAbove,
+  isInTwoDaysAbove
+) => {
   const { lat, lng, year, sprinkler } = field;
   // console.log(currentModelMainFunction CALLED!)
 
@@ -33,7 +37,10 @@ export const currentModelMainFunction = field => {
     .then(res => {
       // console.log(`BrianCALL`, res.data);
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
-      const pcpns = [...res.data.precip, ...res.data.precip_fcst];
+      let pcpns = [...res.data.precip, ...res.data.precip_fcst];
+      // only if probability of precipitation is above 60% we include the amount of precipitation, otherwise is zero
+      if (!isTomorrowAbove) pcpns[pcpns.length - 3] = 0;
+      if (!isInTwoDaysAbove) pcpns[pcpns.length - 2] = 0;
       const pets = [...res.data.pet, ...res.data.pet_fcst];
 
       const results = runWaterDeficitModel(pcpns, pets);

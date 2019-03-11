@@ -59,7 +59,19 @@ function BarChartDeficit({ field, setField, setFields }) {
 
   // const [lastUpdate, setLastUpdate] = React.useState(field.updated);
   const [lastDays, setLastDays] = React.useState(reversedLastDays(field));
-  const [domain, setDomain] = React.useState(1);
+
+  // The domain needs to be as big as possible related to the deficit
+  const initialDomain = () => {
+    const min = Math.min(...lastDays.map(d => d.barDeficit));
+    const max = Math.max(...lastDays.map(d => d.barDeficit));
+
+    const absMin = Math.abs(min);
+    const absMax = Math.abs(max);
+
+    const dom = Math.max(absMin, absMax);
+    return dom + dom * 0.4;
+  };
+  const [domain, setDomain] = React.useState(initialDomain);
 
   const determineDomain = lastDays => {
     const min = Math.min(...lastDays.map(d => d.barDeficit));
@@ -70,7 +82,7 @@ function BarChartDeficit({ field, setField, setFields }) {
 
     const newDomain = Math.max(absMin, absMax);
     const maxDomain = Math.max(domain, newDomain);
-    // console.log(maxDomain);
+
     setDomain(maxDomain);
   };
 
@@ -84,6 +96,7 @@ function BarChartDeficit({ field, setField, setFields }) {
 
   const watered = date => {
     const copy = { ...field };
+
     const index = copy.data.findIndex(d => d.date === date);
     const water = copy.sprinkler.waterFlow * copy.sprinkler.minutes;
     const day = copy.data[index];
@@ -206,7 +219,7 @@ function BarChartDeficit({ field, setField, setFields }) {
       <svg
         width={100}
         height={30}
-        x={window.innerWidth - 90}
+        x={window.innerWidth - 95}
         y={y - 16}
         style={{ filter: "brightness(0.5) sepia(1) " }}
       >
@@ -251,7 +264,7 @@ function BarChartDeficit({ field, setField, setFields }) {
         width={window.innerWidth}
         height={window.innerHeight < 500 ? 500 : window.innerHeight - 150}
         data={lastDays}
-        maxBarSize={20}
+        maxBarSize={16}
         margin={{ top: 0, right: 40, left: 50, bottom: 8 }}
       >
         <XAxis

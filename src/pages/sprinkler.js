@@ -171,11 +171,26 @@ function SprinklerTypePage() {
     // get forecast data -----------------------------------------
     field.forecast = await fetchForecastData(field.lat, field.lng);
 
+    const tomorrowPrecipProbability =
+      field.forecast.daily.data[1].precipProbability;
+    let isTomorrowAbove = false;
+    if (tomorrowPrecipProbability > 0.6) isTomorrowAbove = true;
+
+    let isInTwoDaysAbove = false;
+    const inTwoDaysPrecipProbability =
+      field.forecast.daily.data[2].precipProbability;
+    if (inTwoDaysPrecipProbability > 0.6) isInTwoDaysAbove = true;
+
+    console.log(tomorrowPrecipProbability, inTwoDaysPrecipProbability);
     // THRESHOLD is negative because we are adding water ---------
     field.threshold = -2 * state.waterFlow * state.minutes; // inches
 
     // get data from Brian's call --------------------------------
-    field.data = await currentModelMainFunction(field);
+    field.data = await currentModelMainFunction(
+      field,
+      isTomorrowAbove,
+      isInTwoDaysAbove
+    );
 
     // irrigationDate ---------------------------------------------
     field.dayOfIrrigation = field.data.find(day => day.date === irrigationDate);
@@ -306,7 +321,7 @@ function SprinklerTypePage() {
             <SliderWithTooltip
               // dots
               // activeDotStyle={{ borderColor: theme.palette.primary.light }}
-              min={0}
+              min={1}
               step={1}
               max={60}
               tipFormatter={e => `${e} min`}

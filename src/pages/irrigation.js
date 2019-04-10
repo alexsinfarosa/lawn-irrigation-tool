@@ -8,16 +8,16 @@ import Header from "../components/header"
 import ButtonLink from "../components/styled/buttonLink"
 import { GridContainer } from "../components/styled/sharedComponents"
 
-const SprinklerPage = () => (
+const IrrigationPage = () => (
   <Layout>
     <SEO title="Location" />
 
     <GridContainer>
-      <Header icon="chevron-left" title="Sprinkler Type - (step 3/3)" />
+      <Header icon="chevron-left" title="Irrigation Date - (step 2/3)" />
 
       <Box mb={1}>
         <Typography variant="h4" gutterBottom>
-          Sprinkler Type
+          Irrigation Date
         </Typography>
 
         <Typography paragraph>
@@ -29,12 +29,12 @@ const SprinklerPage = () => (
       </Box>
 
       <Box mx={-2} height="80px">
-        <ButtonLink to="/lawn" variant="contained" color="primary">
-          Create Entry
+        <ButtonLink to="/sprinkler" variant="contained" color="primary">
+          Continue &rarr;
         </ButtonLink>
       </Box>
     </GridContainer>
   </Layout>
 )
 
-export default SprinklerPage
+export default IrrigationPage

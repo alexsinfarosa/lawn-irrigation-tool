@@ -1,46 +1,38 @@
 {
-  "name": "irrigation-tool",
+  "name": "lawn-irrigation-tool",
   "private": true,
-  "description": "NRCC Irrigation Tool",
+  "description": "Lawn Irrigation Tool",
   "version": "0.1.0",
-  "author": "@alexsinfarosa",
+  "author": "Alex Sinfarosa",
   "dependencies": {
-    "@date-io/date-fns": "^1.1.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.15",
-    "@fortawesome/pro-light-svg-icons": "^5.7.2",
-    "@fortawesome/pro-regular-svg-icons": "^5.7.2",
-    "@fortawesome/pro-solid-svg-icons": "^5.7.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/pro-light-svg-icons": "^5.8.1",
+    "@fortawesome/pro-regular-svg-icons": "^5.8.1",
+    "@fortawesome/pro-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@material-ui/core": "^4.0.0-alpha.1",
-    "@material-ui/icons": "^4.0.0-alpha.1",
-    "@material-ui/styles": "^4.0.0-alpha.1",
-    "axios": "^0.18.0",
-    "classnames": "^2.2.6",
-    "clsx": "^1.0.3",
-    "date-fns": "^2.0.0-alpha.27",
-    "gatsby": "^2.1.16",
-    "gatsby-image": "^2.0.29",
-    "gatsby-plugin-manifest": "^2.0.18",
-    "gatsby-plugin-material-ui": "^1.2.4",
-    "gatsby-plugin-offline": "^2.0.24",
-    "gatsby-plugin-react-helmet": "^3.0.6",
-    "gatsby-plugin-react-svg": "^2.1.0",
-    "gatsby-plugin-sharp": "^2.0.21",
-    "gatsby-source-filesystem": "^2.0.22",
-    "gatsby-transformer-sharp": "^2.1.14",
-    "gh-pages": "^2.0.1",
-    "hide-virtual-keyboard": "^1.0.1",
-    "lodash.reverse": "^4.0.1",
-    "material-ui-pickers": "^2.2.4",
+    "@material-ui/core": "^4.0.0-alpha.7",
+    "@material-ui/styles": "^4.0.0-alpha.7",
+    "babel-plugin-styled-components": "^1.10.0",
+    "browser-monads": "^1.0.0",
+    "formol": "^2.5.10",
+    "gatsby": "^2.3.16",
+    "gatsby-image": "^2.0.37",
+    "gatsby-plugin-manifest": "^2.0.26",
+    "gatsby-plugin-offline": "^2.0.25",
+    "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-react-svg": "^2.1.1",
+    "gatsby-plugin-sharp": "^2.0.32",
+    "gatsby-plugin-styled-components": "^3.0.7",
+    "gatsby-source-filesystem": "^2.0.29",
+    "gatsby-transformer-sharp": "^2.1.17",
     "prop-types": "^15.7.2",
-    "rc-slider": "^8.6.6",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
-    "react-places-autocomplete": "^7.2.1",
-    "react-spinners": "^0.5.1",
-    "react-swipeable-views": "^0.13.1",
-    "recharts": "^1.5.0"
+    "styled-components": "^4.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.16.4"
   },
   "keywords": [
     "gatsby"
@@ -50,15 +42,10 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run develop",
-    "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+    "serve": "gatsby serve"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexsinfarosa/irrigation-tool-v2"
-  },
-  "devDependencies": {
-    "@fortawesome/fontawesome-pro": "^5.7.2"
+    "url": "https://alexsinfarosa.github.io/irrigation-tool-v2/"
   }
 }

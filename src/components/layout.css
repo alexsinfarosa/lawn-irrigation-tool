@@ -1,11 +1,12 @@
-font-family: sans-serif;
 html {
+  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 body {
   margin: 0;
-  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 article,
 aside,
@@ -190,6 +191,8 @@ html {
 }
 * {
   box-sizing: inherit;
+  /* Alex */
+  -webkit-overflow-scrolling: touch;
 }
 *:before {
   box-sizing: inherit;
@@ -209,9 +212,13 @@ body {
   font-feature-settings: "kern", "liga", "clig", "calt";
 
   /* Alex */
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  overflow: hidden;
 }
 img {
   max-width: 100%;

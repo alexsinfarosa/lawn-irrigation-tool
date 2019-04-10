@@ -1,51 +1,52 @@
 module.exports = {
-  pathPrefix: "/irrigation-tool-v2",
+  pathPrefix: "/lawn-irrigation-tool",
   siteMetadata: {
     title: `Lawn Irrigation Tool`,
-    description: `Lawn Irrigation Tool`,
-    author: `@alexsinfarosa`
+    description: `Lawn irrigation tool`,
+    author: `Alex Sinfarosa - @alexsinfarosa`,
   },
   plugins: [
+    "gatsby-plugin-top-layout",
+    {
+      resolve: "gatsby-plugin-material-ui",
+      options: {
+        stylesProvider: {
+          injectFirst: true,
+        },
+      },
+    },
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`
-      }
+        path: `${__dirname}/src/images`,
+      },
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-plugin-manifest`,
-      options: {
-        name: `Lawn Irrigation Tool`,
-        short_name: `Lawn Irrigation Tool`,
-        start_url: `/`,
-        // This is used on splash screen when app is launched
-        background_color: `#663399`,
-        // Web app theme color
-        theme_color: `#663399`,
-        display: `standalone`,
-        icon: `src/images/gatsby-icon.png` // This path is relative to the root of the site.
-      }
-    },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.app/offline
-    {
-      resolve: `gatsby-plugin-material-ui`,
-      options: {
-        pathToTheme: "src/utils/theme.js"
-      }
-    },
-    {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: "/images/weatherIcons"
-        }
-      }
+          include: /assets/,
+        },
+      },
     },
-    "gatsby-plugin-offline"
-  ]
-};
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `lawn-irrigation-tool`,
+        short_name: `LawnIrriTool`,
+        start_url: `/`,
+        background_color: `#556cd6`,
+        theme_color: `#556cd6`,
+        display: `standalone`,
+        icon: `src/images/sprinkler.png`,
+        // crossOrigin: `use-credentials`,
+      },
+    },
+    `gatsby-plugin-offline`,
+  ],
+}

@@ -40,6 +40,7 @@ import {
   faSun,
   faCloudRain,
   faRaindrops,
+  faPlus,
 } from "@fortawesome/pro-solid-svg-icons"
 library.add(
   faHome,
@@ -54,6 +55,7 @@ library.add(
   falCloud,
   faTrash,
   falTrash,
+  faPlus,
   faPlusCircle,
   fasMoon,
   fasFog,

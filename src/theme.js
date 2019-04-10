@@ -23,6 +23,12 @@ const theme = createMuiTheme({
       default: "#fff",
     },
   },
+  deficit: {
+    color: "#F79824",
+  },
+  noDeficit: {
+    color: "#0197F6",
+  },
 })
 
 export default theme

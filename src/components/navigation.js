@@ -3,6 +3,7 @@ import { Link } from "gatsby"
 import styled from "styled-components"
 import Typography from "@material-ui/core/Typography"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { window } from "browser-monads"
 
 const Nav = styled.nav`
   display: flex;

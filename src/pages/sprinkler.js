@@ -28,6 +28,8 @@ import RotaryNozzle from "../images/rotaryNozzle-spr.png"
 import Slider from "rc-slider"
 import "rc-slider/assets/index.css"
 
+import AppContext from "../appContext"
+
 // SPRINKLERS -----------------------------
 const sprinklers = [
   {
@@ -91,6 +93,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SprinklerPage = () => {
+  const { dispatchLawn } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -106,7 +109,6 @@ const SprinklerPage = () => {
   // State --------------------------------------------
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const [isCustom, setIsCustom] = React.useState(false)
-  console.log(state)
   return (
     <Layout>
       <SEO title="Location" />
@@ -240,7 +242,12 @@ const SprinklerPage = () => {
         </Box>
 
         <Box mx={-2} height="80px">
-          <ButtonLink to="/lawn" variant="contained" color="primary">
+          <ButtonLink
+            to="/lawn"
+            variant="contained"
+            color="primary"
+            onClick={() => dispatchLawn({ type: "setSprinkler", ...state })}
+          >
             Create Entry
           </ButtonLink>
         </Box>

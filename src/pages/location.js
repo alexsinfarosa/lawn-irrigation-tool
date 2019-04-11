@@ -24,6 +24,8 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete"
 import hideVirtualKeyboard from "hide-virtual-keyboard"
 
+import AppContext from "../appContext"
+
 // Initial State --------------------------------------------------
 const initialState = {
   address: "",
@@ -66,6 +68,9 @@ function reducer(state, action) {
 const LocationPage = () => {
   // console.log("LocationPage")
   const theme = useTheme()
+
+  // CONTEXT -----------------------------------------------
+  const { dispatchLawn } = React.useContext(AppContext)
 
   // STATE ------------------------------------------------
   const [state, dispatch] = React.useReducer(reducer, initialState)
@@ -254,6 +259,7 @@ const LocationPage = () => {
             variant="contained"
             color="primary"
             disabled={state.lat ? false : true}
+            onClick={() => dispatchLawn({ type: "setLocation", ...state })}
           >
             Continue &rarr;
           </ButtonLink>

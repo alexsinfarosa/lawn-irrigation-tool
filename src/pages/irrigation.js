@@ -10,8 +10,12 @@ import { GridContainer } from "../components/styled/sharedComponents"
 
 import { DatePicker } from "material-ui-pickers"
 
+import AppContext from "../appContext"
+
 const IrrigationPage = () => {
+  const { dispatchLawn } = React.useContext(AppContext)
   const [selectedDate, handleDateChange] = React.useState(null)
+
   return (
     <Layout>
       <SEO title="Location" />
@@ -45,7 +49,20 @@ const IrrigationPage = () => {
         </Box>
 
         <Box mx={-2} height="80px">
-          <ButtonLink to="/sprinkler" variant="contained" color="primary">
+          <ButtonLink
+            to="/sprinkler"
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              dispatchLawn({
+                type: "setDate",
+                selectedDate:
+                  selectedDate === null
+                    ? null
+                    : selectedDate.toLocaleDateString(),
+              })
+            }
+          >
             Continue &rarr;
           </ButtonLink>
         </Box>

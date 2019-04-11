@@ -22,7 +22,6 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete"
-import hideVirtualKeyboard from "hide-virtual-keyboard"
 
 // Initial State --------------------------------------------------
 const initialState = {
@@ -44,10 +43,7 @@ function reducer(state, action) {
       return { ...state, streetNumber: action.streetNumber }
     case "toggleIsStreetNumberRequired":
       return {
-        address: "",
-        lat: null,
-        lng: null,
-        streetNumber: null,
+        ...state,
         isStreetNumberRequired: !state.isStreetNumberRequired,
       }
     case "reset":
@@ -64,11 +60,12 @@ function reducer(state, action) {
 }
 
 const LocationPage = () => {
-  // console.log("LocationPage")
+  console.log("LocationPage")
   const theme = useTheme()
-
   // STATE ------------------------------------------------
   const [state, dispatch] = React.useReducer(reducer, initialState)
+  console.log(state)
+
   const [errorMessage, setErrorMessage] = React.useState("")
 
   // Handle address change --------------------------------
@@ -102,7 +99,7 @@ const LocationPage = () => {
           setErrorMessage("ZERO_RESULTS")
         } else {
           dispatch({ type: "setLatLng", lat, lng })
-          hideVirtualKeyboard()
+          // hideVirtualKeyboard()
         }
       })
       .catch(error => console.error("Error", error))
@@ -123,7 +120,7 @@ const LocationPage = () => {
         <Header icon="chevron-left" title="Create Location - (step 1/3)" />
 
         <Box mb={1}>
-          <Box mb={4}>
+          <Box mb={2}>
             <Typography variant="h6" gutterBottom align="center">
               Enter Your Location
             </Typography>
@@ -134,11 +131,9 @@ const LocationPage = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={state.isStreetNumberRequired}
+                    checked={true}
                     color="primary"
-                    onChange={() =>
-                      dispatch({ type: "toggleIsStreetNumberRequired" })
-                    }
+                    // onChange={}
                   />
                 }
                 label="My street number follows the odd/even irrigation ordinance"
@@ -188,23 +183,23 @@ const LocationPage = () => {
                       {...getInputProps({ className: "location-search-input" })}
                     />
                   </form>
-
-                  {/* SUGGESTIONS */}
-                  <div>
+                  <div className="autocomplete-dropdown-container">
                     {loading && (
-                      <Box align="center">
-                        <Typography variant="caption">Loading...</Typography>
-                      </Box>
+                      <Typography variant="caption" align="center">
+                        Loading...
+                      </Typography>
                     )}
 
                     {!loading &&
                       state.address.length > 0 &&
                       errorMessage === "ZERO_RESULTS" && (
-                        <Box align="center">
-                          <Typography variant="caption" color="error">
-                            Address is not valid
-                          </Typography>
-                        </Box>
+                        <Typography
+                          variant="caption"
+                          align="center"
+                          color="error"
+                        >
+                          Address is not valid
+                        </Typography>
                       )}
 
                     {suggestions.map(suggestion => {

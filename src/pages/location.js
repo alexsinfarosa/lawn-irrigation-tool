@@ -122,9 +122,9 @@ const LocationPage = () => {
       <GridContainer>
         <Header icon="chevron-left" title="Create Location - (step 1/3)" />
 
-        <Box mb={1}>
-          <Box mb={4}>
-            <Typography variant="h6" gutterBottom align="center">
+        <Box my={2}>
+          <Box mb={4} align="center">
+            <Typography variant="h6" gutterBottom>
               Enter Your Location
             </Typography>
           </Box>
@@ -249,7 +249,12 @@ const LocationPage = () => {
         </Box>
 
         <Box mx={-2}>
-          <ButtonLink to="/irrigation" variant="contained" color="primary">
+          <ButtonLink
+            to="/irrigation"
+            variant="contained"
+            color="primary"
+            disabled={state.lat ? false : true}
+          >
             Continue &rarr;
           </ButtonLink>
         </Box>

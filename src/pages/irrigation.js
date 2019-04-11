@@ -8,33 +8,50 @@ import Header from "../components/header"
 import ButtonLink from "../components/styled/buttonLink"
 import { GridContainer } from "../components/styled/sharedComponents"
 
-const IrrigationPage = () => (
-  <Layout>
-    <SEO title="Location" />
+import { DatePicker } from "material-ui-pickers"
 
-    <GridContainer>
-      <Header icon="chevron-left" title="Irrigation Date - (step 2/3)" />
+const IrrigationPage = () => {
+  const [selectedDate, handleDateChange] = React.useState(null)
+  return (
+    <Layout>
+      <SEO title="Location" />
 
-      <Box mb={1}>
-        <Typography variant="h4" gutterBottom>
-          Irrigation Date
-        </Typography>
+      <GridContainer>
+        <Header icon="chevron-left" title="Irrigation Date - (step 2/3)" />
 
-        <Typography paragraph>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam
-          aliquid vel perspiciatis nesciunt laudantium exercitationem sunt
-          tempora amet incidunt distinctio quae, possimus est perferendis atque
-          mollitia! Id dolorum excepturi soluta!
-        </Typography>
-      </Box>
+        <Box my={2}>
+          <Box mb={4} align="center">
+            <Typography variant="h6" gutterBottom>
+              Select the date of last irrigation, othewise continue.
+            </Typography>
+          </Box>
 
-      <Box mx={-2} height="80px">
-        <ButtonLink to="/sprinkler" variant="contained" color="primary">
-          Continue &rarr;
-        </ButtonLink>
-      </Box>
-    </GridContainer>
-  </Layout>
-)
+          <Box align="center">
+            <DatePicker
+              autoOk
+              allowKeyboardControl
+              disableFuture
+              clearable
+              format="MM/dd/yyyy"
+              label="Irrigation Date"
+              showTodayButton
+              minDate={`03/01/${new Date().getFullYear()}`}
+              value={selectedDate}
+              onChange={handleDateChange}
+              animateYearScrolling
+              style={{ width: 300 }}
+            />
+          </Box>
+        </Box>
+
+        <Box mx={-2} height="80px">
+          <ButtonLink to="/sprinkler" variant="contained" color="primary">
+            Continue &rarr;
+          </ButtonLink>
+        </Box>
+      </GridContainer>
+    </Layout>
+  )
+}
 
 export default IrrigationPage

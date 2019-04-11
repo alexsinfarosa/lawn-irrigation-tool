@@ -5,6 +5,9 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import { ThemeProvider } from "@material-ui/styles"
 import theme from "../../src/theme"
 
+import { MuiPickersUtilsProvider } from "material-ui-pickers"
+import DateFnsUtils from "@date-io/date-fns"
+
 export default function TopLayout(props) {
   return (
     <React.Fragment>
@@ -20,7 +23,10 @@ export default function TopLayout(props) {
       </Helmet>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {props.children}
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {props.children}
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </React.Fragment>
   )

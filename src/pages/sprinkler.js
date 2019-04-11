@@ -1,5 +1,14 @@
 import React from "react"
+
+import { makeStyles, useTheme } from "@material-ui/styles"
+import GridList from "@material-ui/core/GridList"
+import GridListTile from "@material-ui/core/GridListTile"
+import GridListTileBar from "@material-ui/core/GridListTileBar"
+import IconButton from "@material-ui/core/IconButton"
+import Checkbox from "@material-ui/core/Checkbox"
 import Typography from "@material-ui/core/Typography"
+import FormGroup from "@material-ui/core/FormGroup"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Box from "@material-ui/core/Box"
 
 import Layout from "../components/layout"
@@ -8,33 +17,236 @@ import Header from "../components/header"
 import ButtonLink from "../components/styled/buttonLink"
 import { GridContainer } from "../components/styled/sharedComponents"
 
-const SprinklerPage = () => (
-  <Layout>
-    <SEO title="Location" />
+import ImageSprinkler from "../components/imgSprinkler"
 
-    <GridContainer>
-      <Header icon="chevron-left" title="Sprinkler Type - (step 3/3)" />
+// SPRINKER IMAGES------------------------
+import FixedSpray from "../images/fixedSpray-spr.png"
+import KcRotor from "../images/kcRotor-spr.png"
+import RotaryNozzle from "../images/rotaryNozzle-spr.png"
 
-      <Box mb={1}>
-        <Typography variant="h4" gutterBottom>
-          Sprinkler Type
-        </Typography>
+// SLIDER ---------------------------------
+import Slider from "rc-slider"
+import "rc-slider/assets/index.css"
 
-        <Typography paragraph>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam
-          aliquid vel perspiciatis nesciunt laudantium exercitationem sunt
-          tempora amet incidunt distinctio quae, possimus est perferendis atque
-          mollitia! Id dolorum excepturi soluta!
-        </Typography>
-      </Box>
+// SPRINKLERS -----------------------------
+const sprinklers = [
+  {
+    name: "Fixed Spray",
+    img: FixedSpray,
+    rate: 1.4, // in/hr
+    minutes: 20,
+    isSelected: false,
+  },
+  {
+    name: "KC Rotor",
+    img: KcRotor,
+    rate: 0.9, // in/hr
+    minutes: 20,
+    isSelected: false,
+  },
+  {
+    name: "Rotary Nozzle",
+    img: RotaryNozzle,
+    rate: 0.35, // in/hr
+    minutes: 40,
+    isSelected: false,
+  },
+]
 
-      <Box mx={-2} height="80px">
-        <ButtonLink to="/lawn" variant="contained" color="primary">
-          Create Entry
-        </ButtonLink>
-      </Box>
-    </GridContainer>
-  </Layout>
-)
+// Initial state ---------------------------
+const initialState = sprinklers[0]
+
+// REDUCER ---------------------------------
+function reducer(state, action) {
+  switch (action.type) {
+    case "setSprinkler":
+      return {
+        name: action.name,
+        img: action.img,
+        rate: action.rate,
+        minutes: action.minutes,
+        isSelected: action.isSelected,
+      }
+    case "setName":
+      return { ...state, img: null, name: action.name }
+    case "setMinutes":
+      return { ...state, minutes: action.minutes }
+    case "setRate":
+      return { ...state, rate: action.rate }
+    case "setIsSelected":
+      return { ...state, isSelected: !state.isSelected }
+    case "reset":
+      return initialState
+    default:
+      throw new Error()
+  }
+}
+
+const useStyles = makeStyles(theme => ({
+  gridList: {
+    flexWrap: "nowrap",
+    width: "100%",
+    height: 240,
+  },
+}))
+
+const SprinklerPage = () => {
+  const classes = useStyles()
+  const theme = useTheme()
+
+  const sliderStyles = {
+    borderColor: theme.palette.primary.main,
+    height: 28,
+    width: 28,
+    marginLeft: -14,
+    marginTop: -12,
+    backgroundColor: theme.palette.primary.main,
+  }
+
+  // State --------------------------------------------
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const [isCustom, setIsCustom] = React.useState(false)
+  console.log(state)
+  return (
+    <Layout>
+      <SEO title="Location" />
+
+      <GridContainer>
+        <Header icon="chevron-left" title="Sprinkler Type - (step 3/3)" />
+
+        {/* Text */}
+        <Box my={2}>
+          <Box
+            mb={2}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">Type: {state.name}</Typography>
+          </Box>
+
+          {/* Images */}
+          <Box display="flex" mx={-2} height="220px" mb={4}>
+            <GridList className={classes.gridList} cols={1.3}>
+              {sprinklers.map(sprinkler => {
+                const { name, img, isSelected } = sprinkler
+                return (
+                  <GridListTile key={name} style={{ height: "220px" }}>
+                    <ImageSprinkler src={img} />
+                    <GridListTileBar
+                      title={name}
+                      actionIcon={
+                        <IconButton>
+                          <Checkbox
+                            checked={state.name === name}
+                            onChange={() => {
+                              dispatch({
+                                type: "setSprinkler",
+                                ...sprinkler,
+                                isSelected: !isSelected,
+                              })
+                              setIsCustom(false)
+                            }}
+                            value={name}
+                            style={{ color: "#fff" }}
+                          />
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                )
+              })}
+            </GridList>
+          </Box>
+
+          <Box my={4} border={1} px={1} borderRadius={8}>
+            <FormGroup row>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isCustom}
+                    color="primary"
+                    onChange={() => {
+                      setIsCustom(!isCustom)
+                      dispatch({ type: "setMinutes", minutes: 0 })
+                      dispatch({ type: "setRate", rate: 0 })
+                      isCustom
+                        ? dispatch({ type: "setSprinkler", ...sprinklers[0] })
+                        : dispatch({ type: "setName", name: "Custom" })
+                    }}
+                  />
+                }
+                label="Custom Values"
+              />
+            </FormGroup>
+          </Box>
+
+          {/* Minutes Slider */}
+          <Box
+            mb={6}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box flexGrow={1}>
+              <Typography variant="h6">Time: </Typography>
+            </Box>
+            <Box flexGrow={6}>
+              <Slider
+                min={0}
+                step={1}
+                max={120}
+                value={state.minutes}
+                onChange={minutes => dispatch({ type: "setMinutes", minutes })}
+                trackStyle={{ backgroundColor: theme.palette.primary.main }}
+                handleStyle={sliderStyles}
+              />
+            </Box>
+            <Box flexGrow={1}>
+              <Typography variant="subtitle1" color="secondary" align="right">
+                {state.minutes} <small>min</small>
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Rate Slider */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box flexGrow={1}>
+              <Typography variant="h6">Rate: </Typography>
+            </Box>
+
+            <Box flexGrow={6}>
+              <Slider
+                disabled={isCustom ? false : true}
+                min={0}
+                step={0.05}
+                max={2}
+                value={state.rate}
+                onChange={rate => dispatch({ type: "setRate", rate })}
+                trackStyle={{ backgroundColor: theme.palette.primary.main }}
+                handleStyle={sliderStyles}
+              />
+            </Box>
+            <Box flexGrow={1}>
+              <Typography variant="subtitle1" color="secondary" align="right">
+                {state.rate.toFixed(2)} <small>in/hr</small>
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box mx={-2} height="80px">
+          <ButtonLink to="/lawn" variant="contained" color="primary">
+            Create Entry
+          </ButtonLink>
+        </Box>
+      </GridContainer>
+    </Layout>
+  )
+}
 
 export default SprinklerPage

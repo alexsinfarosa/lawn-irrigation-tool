@@ -1,4 +1,4 @@
-import React, { createContext } from "react"
+import React, { createContext, useState, useReducer } from "react"
 
 const AppContext = createContext({})
 
@@ -39,23 +39,33 @@ function reducer(state, action) {
         sprinklerMinutes: action.minutes,
       }
     case "reset":
-      return {
-        address: "",
-        lat: null,
-        lng: null,
-        streetNumber: null,
-        isStreetNumberRequired: false,
-      }
+      return initialLawn
     default:
       throw new Error()
   }
 }
 
 const AppProvider = ({ children }) => {
-  const [lawn, dispatchLawn] = React.useReducer(reducer, initialLawn)
+  const [lawns, setLawns] = useState([])
+
+  // ADD Lawn -------------------------
+  function addLawn(newLawn) {
+    const newLawns = [newLawn, ...lawns]
+    setLawns(newLawns)
+  }
+
+  // DELETE Lawn ----------------------
+  function deleteLawn(id) {
+    const newLawns = lawns.filter(l => l.id !== id)
+    setLawns(newLawns)
+  }
+  console.log(lawns)
+  const [lawn, dispatchLawn] = useReducer(reducer, initialLawn)
   console.log(lawn)
   return (
-    <AppContext.Provider value={{ lawn, dispatchLawn }}>
+    <AppContext.Provider
+      value={{ lawn, dispatchLawn, lawns, setLawns, addLawn, deleteLawn }}
+    >
       {children}
     </AppContext.Provider>
   )

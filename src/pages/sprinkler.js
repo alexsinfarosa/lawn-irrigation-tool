@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SprinklerPage = () => {
-  const { dispatchLawn } = React.useContext(AppContext)
+  const { lawn, addLawn } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -246,7 +246,17 @@ const SprinklerPage = () => {
             to="/lawn"
             variant="contained"
             color="primary"
-            onClick={() => dispatchLawn({ type: "setSprinkler", ...state })}
+            onClick={() => {
+              const updatedLawn = {
+                ...lawn,
+                sprinklerType: state.name,
+                sprinklerRate: state.rate,
+                sprinklerMinutes: state.minutes,
+                id: Date.now(),
+                updated: Date.now(),
+              }
+              addLawn(updatedLawn)
+            }}
           >
             Create Entry
           </ButtonLink>

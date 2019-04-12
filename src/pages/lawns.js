@@ -121,7 +121,6 @@ const LawnsPage = () => {
           onClose={() => setIsDialog(false)}
           aria-labelledby="alert-dialog-delete-lawn"
           aria-describedby="alert-dialog-delete-selected-lawn"
-          // hideBackdrop={true}
         >
           <DialogTitle id="alert-dialog-title">
             <Typography variant="body2">

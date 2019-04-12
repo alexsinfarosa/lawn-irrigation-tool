@@ -41,6 +41,7 @@ import {
   faCloudRain,
   faRaindrops,
   faPlus,
+  faEllipsisV,
 } from "@fortawesome/pro-solid-svg-icons"
 library.add(
   faHome,
@@ -80,5 +81,6 @@ library.add(
   faRaindrops,
   faQuestionCircle,
   faInfo,
-  falInfo
+  falInfo,
+  faEllipsisV
 )

@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SprinklerPage = () => {
-  const { lawn, addLawn } = React.useContext(AppContext)
+  const { dispatchLawn, lawn, addLawn } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -256,6 +256,7 @@ const SprinklerPage = () => {
                 updated: Date.now(),
               }
               addLawn(updatedLawn)
+              dispatchLawn({ type: "setSprinkler", ...state })
             }}
           >
             Create Entry

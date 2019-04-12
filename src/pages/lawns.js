@@ -10,57 +10,98 @@ import { MainContainer } from "../components/styled/sharedComponents"
 import CompaniesLogos from "../components/companiesLogos"
 
 import { useTheme } from "@material-ui/styles"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
 import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
 import Fab from "@material-ui/core/Fab"
-import Button from "@material-ui/core/Button"
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
-import IconButton from "@material-ui/core/IconButton"
+import Button from "@material-ui/core/Button"
+import Switch from "@material-ui/core/Switch"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Box from "@material-ui/core/Box"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Loading from "../components/loading"
 
+// SLIDER ---------------------------------
+import Slider from "rc-slider"
+import "rc-slider/assets/index.css"
+
 import AppContext from "../appContext"
 
+// REDUCER ---------------------------------
+function reducer(state, action) {
+  switch (action.type) {
+    case "setMinutes":
+      return { ...state, sprinklerMinutes: action.minutes }
+    case "setRate":
+      return { ...state, sprinklerRate: action.rate }
+    case "setLawn":
+      return { ...action.lawn }
+    default:
+      throw new Error()
+  }
+}
+
 const Primary = ({ address }) => {
-  return <Typography variant="body1">{address}</Typography>
+  return <Typography variant="subtitle1">{address}</Typography>
 }
 
 const Secondary = ({ type, rate, time }) => {
   return (
-    <>
+    <Box display="flex" flexDirection="column" ml={1}>
       <Typography variant="caption" color="textSecondary">
         Type: {type}
       </Typography>
-      <br />
+
       <Typography variant="caption" color="textSecondary">
         Rate: {rate} in/hr
       </Typography>
-      <br />
+
       <Typography variant="caption" color="textSecondary">
         Time: {time} min
       </Typography>
-    </>
+    </Box>
   )
 }
 
 const LawnsPage = () => {
   const theme = useTheme()
+
+  const sliderStyles = {
+    borderColor: theme.palette.primary.main,
+    height: 28,
+    width: 28,
+    marginLeft: -14,
+    marginTop: -12,
+    backgroundColor: theme.palette.primary.main,
+  }
+
+  // Context -------------------------------------------
   const { loading, lawns, deleteLawn, dispatchLawn } = React.useContext(
     AppContext
   )
-  const [lawnId, setLawnId] = React.useState(0)
 
   // STATE ----------------------------------------------
-  const [isDialog, setIsDialog] = React.useState(false)
+  const [state, dispatch] = React.useReducer(reducer, {})
+  const [isDeleteDialog, setIsDeleteDialog] = React.useState(false)
+  const [lawnId, setLawnId] = React.useState(0)
+  const [expanded, setExpanded] = React.useState(false)
+  const [isEdit, setIsEdit] = React.useState(false)
 
+  const handleChange = panel => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  const handleSwitch = event => {
+    setIsEdit(event.target.checked)
+  }
+  console.log(state)
+  // Loading --------------------------------------------
   if (loading) return <Loading />
 
   return (
@@ -69,85 +110,94 @@ const LawnsPage = () => {
       <MainContainer>
         <CompaniesLogos />
 
-        <Box textAlign="center" mb={2}>
+        <Box mb={4} display="flex" justifyContent="space-around">
           <Link to="/location">
-            <Fab color="primary" aria-label="Add Lawn">
+            <Fab
+              color="primary"
+              aria-label="Add Lawn"
+              style={{ marginRight: 16 }}
+            >
               <FontAwesomeIcon icon="plus" size="lg" color="#fff" />
             </Fab>
           </Link>
+          <FormControlLabel
+            control={<Switch checked={isEdit} onChange={handleSwitch} />}
+            label="Edit Lawn Parameters"
+          />
         </Box>
 
-        <List component="nav">
-          {lawns.map(lawn => {
-            return (
-              <div key={lawn.id}>
-                <ListItem
-                  button
-                  onClick={() => {
-                    dispatchLawn({ type: "setLawn", lawn })
+        {lawns.map(lawn => {
+          return (
+            <div key={lawn.id}>
+              {isEdit ? (
+                <ExpansionPanel
+                  expanded={expanded === lawn.id}
+                  onChange={() => {
+                    dispatch({ type: "setLawn", lawn })
+                    handleChange(lawn.id)
+                  }}
+                  elevation={0}
+                >
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`${lawn.address}-content`}
+                    id={`${lawn.address}-header`}
+                    onClick={() => dispatch({ type: "setLawn", lawn })}
+                  >
+                    <ExpansionHeader lawn={lawn} theme={theme} />
+                  </ExpansionPanelSummary>
+
+                  <ExpansionPanelDetails>
+                    {state.sprinklerRate && (
+                      <EditComponent
+                        state={state}
+                        dispatch={dispatch}
+                        theme={theme}
+                        sliderStyles={sliderStyles}
+                        setIsEdit={setIsEdit}
+                      />
+                    )}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              ) : (
+                <ExpansionPanel
+                  onChange={() => {
+                    dispatch({ type: "setLawn", lawn })
                     navigate("/lawn")
                   }}
-                  style={{ borderRadius: 8 }}
+                  elevation={0}
                 >
-                  <FontAwesomeIcon
-                    icon="tint"
-                    color={theme.palette.deficit.color}
-                    size="2x"
-                  />
-                  <ListItemText
-                    primary={<Primary address={lawn.address} />}
-                    secondary={
-                      <Secondary
-                        type={lawn.sprinklerType}
-                        rate={lawn.sprinklerRate}
-                        time={lawn.sprinklerMinutes}
-                      />
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="delete lawn"
-                      onClick={() => {
-                        setLawnId(lawn.id)
-                        setIsDialog(true)
-                      }}
-                      style={{ padding: 24 }}
-                    >
-                      <FontAwesomeIcon
-                        icon={["fa", "trash"]}
-                        size="sm"
-                        color={theme.palette.grey[600]}
-                      />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <Divider variant="inset" />
-              </div>
-            )
-          })}
-        </List>
+                  <ExpansionPanelSummary
+                    aria-controls={`${lawn.address}-content`}
+                    id={`${lawn.address}-header`}
+                  >
+                    <ExpansionHeader lawn={lawn} theme={theme} />
+                  </ExpansionPanelSummary>
+                </ExpansionPanel>
+              )}
+            </div>
+          )
+        })}
 
-        {/* DIALOG -----------------------------*/}
+        {/* DELETE DIALOG -----------------------------*/}
         <Dialog
-          open={isDialog}
-          onClose={() => setIsDialog(false)}
+          open={isDeleteDialog}
+          onClose={() => setIsDeleteDialog(false)}
           aria-labelledby="alert-dialog-delete-lawn"
           aria-describedby="alert-dialog-delete-selected-lawn"
         >
-          <DialogTitle id="alert-dialog-title">
-            <Typography variant="body2">
-              Are you sure you want to delete it?
-            </Typography>
+          <DialogTitle id="alert-delete-dialog-title">
+            Are you sure you want to delete it?
           </DialogTitle>
 
           <DialogActions>
-            <Button onClick={() => setIsDialog(false)} color="secondary">
+            <Button onClick={() => setIsDeleteDialog(false)} color="secondary">
               Undo
             </Button>
             <Button
               onClick={() => {
                 deleteLawn(lawnId)
-                setIsDialog(false)
+                setIsDeleteDialog(false)
               }}
               color="secondary"
               autoFocus
@@ -162,6 +212,112 @@ const LawnsPage = () => {
         <Navigation />
       </Box>
     </Layout>
+  )
+}
+
+const ExpansionHeader = ({ lawn, theme }) => {
+  return (
+    <Box display="flex" flexDirection="column">
+      <Primary address={lawn.address} />
+
+      <Box display="flex" mt={1} alignItems="center">
+        <FontAwesomeIcon
+          icon="tint"
+          color={theme.palette.deficit.color}
+          size="2x"
+          style={{ marginRight: 16 }}
+        />
+        <Secondary
+          type={lawn.sprinklerType}
+          rate={lawn.sprinklerRate}
+          time={lawn.sprinklerMinutes}
+        />
+      </Box>
+    </Box>
+  )
+}
+
+const EditComponent = ({ state, dispatch, theme, sliderStyles, setIsEdit }) => {
+  console.log("bello...")
+  return (
+    <>
+      {/* Minutes Slider */}
+      <Box width="100%">
+        <Box display="flex" alignItems="center" mb={4}>
+          <Box flexGrow={1}>
+            <Typography variant="h6">Time: </Typography>
+          </Box>
+          <Box flexGrow={6}>
+            <Slider
+              min={0}
+              step={1}
+              max={120}
+              value={state.sprinklerMinutes}
+              onChange={minutes => dispatch({ type: "setMinutes", minutes })}
+              trackStyle={{
+                backgroundColor: theme.palette.primary.main,
+              }}
+              handleStyle={sliderStyles}
+            />
+          </Box>
+          <Box flexGrow={1}>
+            <Typography variant="subtitle1" color="secondary" align="right">
+              {state.sprinklerMinutes} <small>min</small>
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Rate Slider */}
+
+        <Box display="flex" alignItems="center" mb={4}>
+          <Box flexGrow={1}>
+            <Typography variant="h6">Rate: </Typography>
+          </Box>
+
+          <Box flexGrow={6}>
+            <Slider
+              disabled={state.sprinklerType === "Custom" ? false : true}
+              min={0}
+              step={0.05}
+              max={2}
+              value={state.sprinklerRate}
+              onChange={rate => dispatch({ type: "setRate", rate })}
+              trackStyle={{
+                backgroundColor: theme.palette.primary.main,
+              }}
+              handleStyle={sliderStyles}
+            />
+          </Box>
+          <Box flexGrow={1}>
+            <Typography variant="subtitle1" color="secondary" align="right">
+              {state.sprinklerRate.toFixed(2)} <small>in/hr</small>
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box display="flex" justifyContent="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginRight: 16 }}
+            onClick={() => {
+              setIsEdit(false)
+            }}
+          >
+            DELETE
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setIsEdit(false)
+            }}
+          >
+            SAVE
+          </Button>
+        </Box>
+      </Box>
+    </>
   )
 }
 

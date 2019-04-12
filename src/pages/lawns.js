@@ -33,9 +33,13 @@ const Primary = ({ address }) => {
   return <Typography variant="body1">{address}</Typography>
 }
 
-const Secondary = ({ rate, time }) => {
+const Secondary = ({ type, rate, time }) => {
   return (
     <>
+      <Typography variant="caption" color="textSecondary">
+        Type: {type}
+      </Typography>
+      <br />
       <Typography variant="caption" color="textSecondary">
         Rate: {rate} in/hr
       </Typography>
@@ -63,13 +67,13 @@ const LawnsPage = () => {
       <MainContainer>
         <CompaniesLogos />
 
-        <Link to="/location">
-          <Box textAlign="center" mb={2}>
+        <Box textAlign="center" mb={2}>
+          <Link to="/location">
             <Fab color="primary" aria-label="Add Lawn">
               <FontAwesomeIcon icon="plus" size="lg" color="#fff" />
             </Fab>
-          </Box>
-        </Link>
+          </Link>
+        </Box>
 
         <List component="nav">
           {lawns.map(lawn => {
@@ -90,6 +94,7 @@ const LawnsPage = () => {
                     primary={<Primary address={lawn.address} />}
                     secondary={
                       <Secondary
+                        type={lawn.sprinklerType}
                         rate={lawn.sprinklerRate}
                         time={lawn.sprinklerMinutes}
                       />

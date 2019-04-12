@@ -53,7 +53,9 @@ const Secondary = ({ type, rate, time }) => {
 
 const LawnsPage = () => {
   const theme = useTheme()
-  const { loading, lawns, deleteLawn } = React.useContext(AppContext)
+  const { loading, lawns, deleteLawn, dispatchLawn } = React.useContext(
+    AppContext
+  )
   const [lawnId, setLawnId] = React.useState(0)
 
   // STATE ----------------------------------------------
@@ -77,17 +79,19 @@ const LawnsPage = () => {
 
         <List component="nav">
           {lawns.map(lawn => {
-            console.log(lawn)
             return (
               <div key={lawn.id}>
                 <ListItem
                   button
-                  onClick={() => navigate("/lawn")}
+                  onClick={() => {
+                    dispatchLawn({ type: "setLawn", lawn })
+                    navigate("/lawn")
+                  }}
                   style={{ borderRadius: 8 }}
                 >
                   <FontAwesomeIcon
                     icon="tint"
-                    color={theme.deficit.color}
+                    color={theme.palette.deficit.color}
                     size="2x"
                   />
                   <ListItemText

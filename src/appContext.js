@@ -44,6 +44,8 @@ function reducer(state, action) {
       }
     case "setForecast":
       return { ...state, updated: Date.now(), forecast: action.forecast }
+    case "setLawn":
+      return { ...action.lawn }
     case "reset":
       return initialLawn
     default:

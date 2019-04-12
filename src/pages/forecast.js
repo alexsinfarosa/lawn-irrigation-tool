@@ -46,16 +46,24 @@ const ForecastPage = () => {
           </Box>
 
           <Typography variant="subtitle2">{currently.summary}</Typography>
-        </Box>
-
-        <Box bgcolor={theme.palette.primary.main} color="#fff" p={1} mb={2}>
-          <Typography variant="h6" color="inherit">
-            Next 7 Days
+          <Typography variant="caption" color="textSecondary">
+            {lawn.address}
           </Typography>
         </Box>
 
-        <Box mb={2} textAlign="center">
-          <Typography variant="caption">{daily.summary}</Typography>
+        <Box
+          mb={2}
+          style={{ borderLeft: `4px solid ${theme.palette.secondary.main}` }}
+        >
+          <Box pl={1}>
+            <Typography variant="h6" color="secondary">
+              Next 7 Days
+            </Typography>
+          </Box>
+
+          <Box pl={1}>
+            <Typography variant="caption">{daily.summary}</Typography>
+          </Box>
         </Box>
 
         <Box>
@@ -64,12 +72,11 @@ const ForecastPage = () => {
               <Box
                 key={day.time}
                 mb={1}
-                py={0.5}
+                py={0.2}
                 display="flex"
-                justifyContent="space-between"
                 alignItems="center"
               >
-                <Box flexGrowth={1}>
+                <Box flexGrow={1} textAlign="center">
                   <Typography style={{ fontWeight: "bold" }}>
                     {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
                   </Typography>
@@ -77,27 +84,33 @@ const ForecastPage = () => {
                     <FontAwesomeIcon
                       icon={["fa", "raindrops"]}
                       style={{ marginRight: 4 }}
-                      color={"#0197F6"}
+                      color={theme.palette.noDeficit.color}
                     />
                     <Typography variant="caption">
                       {`${Math.round(day.precipProbability * 100)}%`}
                     </Typography>
                   </Box>
                 </Box>
-                <Box flexGrowth={1}>
+
+                {/* ICON */}
+                <Box flexGrow={1} textAlign="center">
                   <FontAwesomeIcon
                     icon={["fal", mapIcon(day.icon)]}
                     color={theme.palette.text.primary}
                     size="2x"
                   />
                 </Box>
-                <Box flexGrowth={1}>
+
+                {/* MIN TEMP */}
+                <Box flexGrow={1} textAlign="center">
                   <Typography>{`${Math.round(
                     day.temperatureLow,
                     1
                   )}˚`}</Typography>
                 </Box>
-                <Box flexGrowth={1}>
+
+                {/* MAX TEMP */}
+                <Box flexGrow={1} textAlign="center">
                   <Typography>
                     {`${Math.round(day.temperatureHigh, 1)}˚`}
                   </Typography>

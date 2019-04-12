@@ -1,5 +1,8 @@
 import React, { createContext, useState, useReducer } from "react"
 
+// UTILS ---------------------------------
+// import { fetchForecastData } from "./utils/api"
+
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -34,10 +37,13 @@ function reducer(state, action) {
     case "setSprinkler":
       return {
         ...state,
+        id: action.id,
         sprinklerType: action.name,
         sprinklerRate: action.rate,
         sprinklerMinutes: action.minutes,
       }
+    case "setForecast":
+      return { ...state, updated: Date.now(), forecast: action.forecast }
     case "reset":
       return initialLawn
     default:
@@ -46,10 +52,11 @@ function reducer(state, action) {
 }
 
 const AppProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false)
   const [lawns, setLawns] = useState([])
 
   // ADD Lawn -------------------------
-  function addLawn(newLawn) {
+  async function addLawn(newLawn) {
     const newLawns = [newLawn, ...lawns]
     setLawns(newLawns)
   }
@@ -59,12 +66,21 @@ const AppProvider = ({ children }) => {
     const newLawns = lawns.filter(l => l.id !== id)
     setLawns(newLawns)
   }
-  console.log(lawns)
+
   const [lawn, dispatchLawn] = useReducer(reducer, initialLawn)
   console.log(lawn)
   return (
     <AppContext.Provider
-      value={{ lawn, dispatchLawn, lawns, setLawns, addLawn, deleteLawn }}
+      value={{
+        lawn,
+        dispatchLawn,
+        lawns,
+        setLawns,
+        addLawn,
+        deleteLawn,
+        loading,
+        setLoading,
+      }}
     >
       {children}
     </AppContext.Provider>

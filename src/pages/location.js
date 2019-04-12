@@ -24,6 +24,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete"
 import hideVirtualKeyboard from "hide-virtual-keyboard"
 
+// UTILS ---------------------------------
+import { fetchForecastData } from "../utils/api"
+
 import AppContext from "../appContext"
 
 // Initial State --------------------------------------------------
@@ -70,7 +73,7 @@ const LocationPage = () => {
   const theme = useTheme()
 
   // CONTEXT -----------------------------------------------
-  const { dispatchLawn } = React.useContext(AppContext)
+  const { setLoading, dispatchLawn } = React.useContext(AppContext)
 
   // STATE ------------------------------------------------
   const [state, dispatch] = React.useReducer(reducer, initialState)
@@ -259,7 +262,13 @@ const LocationPage = () => {
             variant="contained"
             color="primary"
             disabled={state.lat ? false : true}
-            onClick={() => dispatchLawn({ type: "setLocation", ...state })}
+            onClick={async () => {
+              setLoading(true)
+              const forecast = await fetchForecastData(state.lat, state.lng)
+              dispatchLawn({ type: "setLocation", ...state })
+              dispatchLawn({ type: "setForecast", forecast })
+              setLoading(false)
+            }}
           >
             Continue &rarr;
           </ButtonLink>

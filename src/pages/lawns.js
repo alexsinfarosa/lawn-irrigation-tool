@@ -25,6 +25,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Box from "@material-ui/core/Box"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Loading from "../components/loading"
 
 import AppContext from "../appContext"
 
@@ -48,11 +49,13 @@ const Secondary = ({ rate, time }) => {
 
 const LawnsPage = () => {
   const theme = useTheme()
-  const { lawns, deleteLawn } = React.useContext(AppContext)
+  const { loading, lawns, deleteLawn } = React.useContext(AppContext)
   const [lawnId, setLawnId] = React.useState(0)
 
   // STATE ----------------------------------------------
   const [isDialog, setIsDialog] = React.useState(false)
+
+  if (loading) return <Loading />
 
   return (
     <Layout>

@@ -30,6 +30,9 @@ import "rc-slider/assets/index.css"
 
 import AppContext from "../appContext"
 
+// UTILS ---------------------------------
+// import { fetchForecastData } from "../utils/api"
+
 // SPRINKLERS -----------------------------
 const sprinklers = [
   {
@@ -243,20 +246,21 @@ const SprinklerPage = () => {
 
         <Box mx={-2} height="80px">
           <ButtonLink
-            to="/lawn"
+            to="/forecast"
             variant="contained"
             color="primary"
             onClick={() => {
+              const now = Date.now()
               const updatedLawn = {
                 ...lawn,
                 sprinklerType: state.name,
                 sprinklerRate: state.rate,
                 sprinklerMinutes: state.minutes,
-                id: Date.now(),
-                updated: Date.now(),
+                id: now,
+                updated: now,
               }
+              dispatchLawn({ type: "setSprinkler", id: now, ...state })
               addLawn(updatedLawn)
-              dispatchLawn({ type: "setSprinkler", ...state })
             }}
           >
             Create Entry

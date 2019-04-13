@@ -25,7 +25,7 @@ import PlacesAutocomplete, {
 import hideVirtualKeyboard from "hide-virtual-keyboard"
 
 // UTILS ---------------------------------
-import { fetchForecastData } from "../utils/api"
+import { fetchForecastData, fetchPETData } from "../utils/api"
 
 import AppContext from "../appContext"
 
@@ -265,8 +265,10 @@ const LocationPage = () => {
             onClick={async () => {
               setLoading(true)
               const forecast = await fetchForecastData(state.lat, state.lng)
+              const petData = await fetchPETData(state.lat, state.lng)
               globalDispatch({ type: "setLocation", ...state })
               globalDispatch({ type: "setForecast", forecast })
+              globalDispatch({ type: "setPETData", petData })
               setLoading(false)
             }}
           >

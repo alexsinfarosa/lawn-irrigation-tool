@@ -1,8 +1,4 @@
 import React, { createContext, useState, useReducer } from "react"
-
-// UTILS ---------------------------------
-// import { fetchForecastData } from "./utils/api"
-
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -43,7 +39,9 @@ function reducer(state, action) {
         sprinklerMinutes: action.minutes,
       }
     case "setForecast":
-      return { ...state, updated: Date.now(), forecast: action.forecast }
+      return { ...state, forecast: action.forecast }
+    case "setPETData":
+      return { ...state, updated: Date.now(), data: action.petData }
     case "setLawn":
       return { ...state, ...action.lawn }
     case "reset":
@@ -78,6 +76,7 @@ const AppProvider = ({ children }) => {
   }
 
   const [lawn, globalDispatch] = useReducer(reducer, initialLawn)
+
   return (
     <AppContext.Provider
       value={{

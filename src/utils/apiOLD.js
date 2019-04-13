@@ -1,10 +1,10 @@
 import axios from "axios"
 
 // Fetch forecast data -------------------------------
-export const fetchForecastData = (lat, lng) => {
+export const fetchForecastData = (latitude, longitude) => {
   const url = `${
     process.env.GATSBY_PROXYDARKSKY
-  }/${lat},${lng}?exclude=flags,minutely,alerts,hourly`
+  }/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`
   return axios
     .get(url)
     .then(res => {
@@ -17,33 +17,57 @@ export const fetchForecastData = (lat, lng) => {
     })
 }
 
-export const fetchPETData = async (lat, lng) => {
+// -----------------------------------------------------------
+export const currentModelMainFunction = (
+  field,
+  isTomorrowAbove,
+  isInTwoDaysAbove
+) => {
+  const { lat, lng, sprinklerRate, sprinklerMinutes, isThisYear } = field
+  // console.log(currentModelMainFunction CALLED!)
   const year = new Date().getFullYear()
-
-  // the first date is 03/01 of the selected year.
-  // It goes up to today (plus 3 days forecast)
+  // the first date is 03/01 of the selected year. It goes up to today plus 3 days forecast
   const url = `${process.env.GATSBY_PROXYIRRIGATION}?lat=${lat.toFixed(
     4
   )}&lon=${lng.toFixed(4)}&year=${year}`
 
-  return await axios.get(url).then(res => {
-    const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst]
-    let pcpns = [...res.data.precip, ...res.data.precip_fcst]
-    const pets = [...res.data.pet, ...res.data.pet_fcst]
+  // console.log(url);
+  return axios
+    .get(url)
+    .then(res => {
+      // console.log(`BrianCALL`, res.data);
+      const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst]
+      let pcpns = [...res.data.precip, ...res.data.precip_fcst]
 
-    return dates.map((date, i) => {
-      return {
-        date,
-        pcpn: pcpns[i],
-        pet: pets[i],
+      // only if probability of precipitation is above 60% we include the amount of precipitation, otherwise is zero
+      if (isThisYear) {
+        if (!isTomorrowAbove) pcpns[pcpns.length - 3] = 0
+        if (!isInTwoDaysAbove) pcpns[pcpns.length - 2] = 0
       }
-    })
-  })
-}
+      const pets = [...res.data.pet, ...res.data.pet_fcst]
 
-// -----------------------------------------------------------
-export const currentModelMainFunction = data => {
-  return data
+      const results = runWaterDeficitModel(pcpns, pets)
+      const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
+
+      const data = results.deficitDaily.map((val, i) => {
+        let p = {}
+
+        p.date = new Date(`${dates[i]}/${year}`).toLocaleDateString()
+        p.deficit = +val.toFixed(2)
+        p.pet = +pets[i]
+        p.pcpn = +pcpns[i]
+        p.waterAppliedByUser = 0
+        p.threshold = threshold
+        p.barDeficit = +val - threshold
+        return p
+      })
+
+      // console.log(data);
+      return data
+    })
+    .catch(err => {
+      console.log("Failed to fetch PET data", err)
+    })
 }
 
 ////////////////////////////////////////////////////////////////////////////

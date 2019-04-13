@@ -30,9 +30,6 @@ import "rc-slider/assets/index.css"
 
 import AppContext from "../appContext"
 
-// UTILS ---------------------------------
-// import { fetchForecastData } from "../utils/api"
-
 // SPRINKLERS -----------------------------
 const sprinklers = [
   {

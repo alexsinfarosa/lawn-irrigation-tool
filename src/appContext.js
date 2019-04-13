@@ -70,7 +70,7 @@ const AppProvider = ({ children }) => {
   }
 
   // UPDATE Lawn -----------------------
-  function updateLawns(lawn) {
+  function updateLawn(lawn) {
     let lawnsCopy = [...lawns]
     const idx = lawns.findIndex(l => l.id === lawn.id)
     lawnsCopy[idx] = lawn
@@ -89,7 +89,7 @@ const AppProvider = ({ children }) => {
         deleteLawn,
         loading,
         setLoading,
-        updateLawns,
+        updateLawn,
       }}
     >
       {children}

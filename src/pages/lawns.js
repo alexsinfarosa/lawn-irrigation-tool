@@ -98,7 +98,7 @@ const LawnsPage = () => {
     lawns,
     deleteLawn,
     dispatchLawn,
-    updateLawns,
+    updateLawn,
     lawn,
   } = React.useContext(AppContext)
 
@@ -275,7 +275,7 @@ const LawnsPage = () => {
                             setEditing(false)
                             localDispatch({ type: "setLawn", lawn: state })
                             dispatchLawn({ type: "setLawn", lawn: state })
-                            updateLawns(state)
+                            updateLawn(state)
                           }}
                         >
                           UPDATE

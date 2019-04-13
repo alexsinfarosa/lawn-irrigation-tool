@@ -13,7 +13,7 @@ import { DatePicker } from "material-ui-pickers"
 import AppContext from "../appContext"
 
 const IrrigationPage = () => {
-  const { dispatchLawn } = React.useContext(AppContext)
+  const { globalDispatch } = React.useContext(AppContext)
   const [selectedDate, handleDateChange] = React.useState(null)
 
   return (
@@ -54,7 +54,7 @@ const IrrigationPage = () => {
             variant="contained"
             color="primary"
             onClick={() =>
-              dispatchLawn({
+              globalDispatch({
                 type: "setDate",
                 selectedDate:
                   selectedDate === null

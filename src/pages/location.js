@@ -73,15 +73,15 @@ const LocationPage = () => {
   const theme = useTheme()
 
   // CONTEXT -----------------------------------------------
-  const { setLoading, dispatchLawn } = React.useContext(AppContext)
+  const { setLoading, globalDispatch } = React.useContext(AppContext)
 
   // STATE ------------------------------------------------
-  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const [state, localDispatch] = React.useReducer(reducer, initialState)
   const [errorMessage, setErrorMessage] = React.useState("")
 
   // Handle address change --------------------------------
   const handleAddressChange = address => {
-    dispatch({ type: "setAddress", address })
+    localDispatch({ type: "setAddress", address })
     setErrorMessage("")
   }
 
@@ -90,13 +90,13 @@ const LocationPage = () => {
     const arr = address.split(" ")
     const streetNumber = +arr[0]
     if (!isNaN(streetNumber)) {
-      dispatch({ type: "setStreetNumber", streetNumber })
+      localDispatch({ type: "setStreetNumber", streetNumber })
     }
   }
 
   // Click on one of the suggested addresses of the list
   const handleSelectAddress = address => {
-    dispatch({ type: "setAddress", address })
+    localDispatch({ type: "setAddress", address })
     geocodeByAddress(address)
       .then(results => {
         const formattedAddress = results[0].formatted_address
@@ -109,7 +109,7 @@ const LocationPage = () => {
         if (!(lat >= 37.2 && lat <= 47.6) || !(lng >= -82.7 && lng <= -66.1)) {
           setErrorMessage("ZERO_RESULTS")
         } else {
-          dispatch({ type: "setLatLng", lat, lng })
+          localDispatch({ type: "setLatLng", lat, lng })
           hideVirtualKeyboard()
         }
       })
@@ -145,7 +145,7 @@ const LocationPage = () => {
                     checked={state.isStreetNumberRequired}
                     color="primary"
                     onChange={() =>
-                      dispatch({ type: "toggleIsStreetNumberRequired" })
+                      localDispatch({ type: "toggleIsStreetNumberRequired" })
                     }
                   />
                 }
@@ -186,7 +186,7 @@ const LocationPage = () => {
                           <InputAdornment position="end">
                             <IconButton
                               aria-label="delete typed address"
-                              onClick={() => dispatch({ type: "reset" })}
+                              onClick={() => localDispatch({ type: "reset" })}
                             >
                               <small>&#10005;</small>
                             </IconButton>
@@ -265,8 +265,8 @@ const LocationPage = () => {
             onClick={async () => {
               setLoading(true)
               const forecast = await fetchForecastData(state.lat, state.lng)
-              dispatchLawn({ type: "setLocation", ...state })
-              dispatchLawn({ type: "setForecast", forecast })
+              globalDispatch({ type: "setLocation", ...state })
+              globalDispatch({ type: "setForecast", forecast })
               setLoading(false)
             }}
           >

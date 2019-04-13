@@ -96,7 +96,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SprinklerPage = () => {
-  const { dispatchLawn, lawn, addLawn } = React.useContext(AppContext)
+  const { globalDispatch, lawn, addLawn } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -110,7 +110,7 @@ const SprinklerPage = () => {
   }
 
   // State --------------------------------------------
-  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const [state, localDispatch] = React.useReducer(reducer, initialState)
   const [isCustom, setIsCustom] = React.useState(false)
   return (
     <Layout>
@@ -145,7 +145,7 @@ const SprinklerPage = () => {
                           <Checkbox
                             checked={state.name === name}
                             onChange={() => {
-                              dispatch({
+                              localDispatch({
                                 type: "setSprinkler",
                                 ...sprinkler,
                                 isSelected: !isSelected,
@@ -173,11 +173,14 @@ const SprinklerPage = () => {
                     color="primary"
                     onChange={() => {
                       setIsCustom(!isCustom)
-                      dispatch({ type: "setMinutes", minutes: 0 })
-                      dispatch({ type: "setRate", rate: 0 })
+                      localDispatch({ type: "setMinutes", minutes: 0 })
+                      localDispatch({ type: "setRate", rate: 0 })
                       isCustom
-                        ? dispatch({ type: "setSprinkler", ...sprinklers[0] })
-                        : dispatch({ type: "setName", name: "Custom" })
+                        ? localDispatch({
+                            type: "setSprinkler",
+                            ...sprinklers[0],
+                          })
+                        : localDispatch({ type: "setName", name: "Custom" })
                     }}
                   />
                 }
@@ -202,7 +205,9 @@ const SprinklerPage = () => {
                 step={1}
                 max={120}
                 value={state.minutes}
-                onChange={minutes => dispatch({ type: "setMinutes", minutes })}
+                onChange={minutes =>
+                  localDispatch({ type: "setMinutes", minutes })
+                }
                 trackStyle={{ backgroundColor: theme.palette.primary.main }}
                 handleStyle={sliderStyles}
               />
@@ -231,7 +236,7 @@ const SprinklerPage = () => {
                 step={0.05}
                 max={2}
                 value={state.rate}
-                onChange={rate => dispatch({ type: "setRate", rate })}
+                onChange={rate => localDispatch({ type: "setRate", rate })}
                 trackStyle={{ backgroundColor: theme.palette.primary.main }}
                 handleStyle={sliderStyles}
               />
@@ -259,7 +264,7 @@ const SprinklerPage = () => {
                 id: now,
                 updated: now,
               }
-              dispatchLawn({ type: "setSprinkler", id: now, ...state })
+              globalDispatch({ type: "setSprinkler", id: now, ...state })
               addLawn(updatedLawn)
             }}
           >

@@ -77,19 +77,19 @@ const AppProvider = ({ children }) => {
     setLawns(lawnsCopy)
   }
 
-  const [lawn, dispatchLawn] = useReducer(reducer, initialLawn)
+  const [lawn, globalDispatch] = useReducer(reducer, initialLawn)
   return (
     <AppContext.Provider
       value={{
         lawn,
-        dispatchLawn,
+        globalDispatch,
         lawns,
         setLawns,
         addLawn,
+        updateLawn,
         deleteLawn,
         loading,
         setLoading,
-        updateLawn,
       }}
     >
       {children}

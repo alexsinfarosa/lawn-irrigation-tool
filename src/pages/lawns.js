@@ -97,7 +97,7 @@ const LawnsPage = () => {
     loading,
     lawns,
     deleteLawn,
-    dispatchLawn,
+    globalDispatch,
     updateLawn,
     lawn,
   } = React.useContext(AppContext)
@@ -114,7 +114,7 @@ const LawnsPage = () => {
     if (editing) {
       setExpanded(isExpanded ? panel : false)
     } else {
-      dispatchLawn({ type: "setLawn", lawn: selectedLawn })
+      globalDispatch({ type: "setLawn", lawn: selectedLawn })
       navigate("/lawn")
     }
   }
@@ -274,7 +274,7 @@ const LawnsPage = () => {
                           onClick={() => {
                             setEditing(false)
                             localDispatch({ type: "setLawn", lawn: state })
-                            dispatchLawn({ type: "setLawn", lawn: state })
+                            globalDispatch({ type: "setLawn", lawn: state })
                             updateLawn(state)
                           }}
                         >
@@ -329,12 +329,7 @@ const LawnsPage = () => {
 
 const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
   return (
-    <Box
-      display="fle
-    expanded={expanded}x"
-      flexDirection="column"
-      color={unselected && "grey.400"}
-    >
+    <Box display="flex" flexDirection="column" color={unselected && "grey.400"}>
       <Primary
         address={lawn.address}
         stateId={stateId}

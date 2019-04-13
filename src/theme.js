@@ -21,12 +21,8 @@ const theme = createMuiTheme({
     },
     background: {
       default: "#fff",
-    },
-    deficit: {
-      color: "#F79824",
-    },
-    noDeficit: {
-      color: "#0197F6",
+      deficit: "#F79824",
+      noDeficit: "#0197F6",
     },
   },
 })

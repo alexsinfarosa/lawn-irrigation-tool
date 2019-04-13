@@ -1,26 +1,26 @@
 import React from "react"
-import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Navigation from "../components/navigation"
 import { MainContainer } from "../components/styled/sharedComponents"
+import Loading from "../components/loading"
+import LawnGraph from "../components/lawnGraph"
 
-import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
 import AppContext from "../appContext"
 
 const LawnPage = () => {
-  const { lawn } = React.useContext(AppContext)
-  console.log(lawn)
+  const { loading } = React.useContext(AppContext)
+
+  if (loading) return <Loading />
   return (
     <Layout>
       <SEO title="Lawn Page" />
-      <MainContainer>
-        <Typography variant="h4">{lawn.address}</Typography>
 
-        <Link to="/">HOME</Link>
+      <MainContainer>
+        <LawnGraph />
       </MainContainer>
 
       <Box mx={-2}>

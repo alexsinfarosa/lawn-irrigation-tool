@@ -28,6 +28,7 @@ import RotaryNozzle from "../images/rotaryNozzle-spr.png"
 import Slider from "rc-slider"
 import "rc-slider/assets/index.css"
 
+// CONTEXT -------------------------------
 import AppContext from "../appContext"
 
 // SPRINKLERS -----------------------------

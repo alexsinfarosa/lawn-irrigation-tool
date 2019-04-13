@@ -26,24 +26,59 @@ export const fetchPETData = async (lat, lng) => {
     4
   )}&lon=${lng.toFixed(4)}&year=${year}`
 
-  return await axios.get(url).then(res => {
-    const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst]
-    let pcpns = [...res.data.precip, ...res.data.precip_fcst]
-    const pets = [...res.data.pet, ...res.data.pet_fcst]
+  return await axios
+    .get(url)
+    .then(res => {
+      console.log(res.data)
+      const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst]
+      let pcpns = [...res.data.precip, ...res.data.precip_fcst]
+      const pets = [...res.data.pet, ...res.data.pet_fcst]
+      const hasUserWatered = new Array(dates.length).fill(false)
 
-    return dates.map((date, i) => {
-      return {
-        date,
-        pcpn: pcpns[i],
-        pet: pets[i],
-      }
+      return { dates, pcpns, pets, hasUserWatered }
     })
-  })
+    .catch(err => {
+      console.log("Failed to load PET data", err)
+    })
 }
 
-// -----------------------------------------------------------
-export const currentModelMainFunction = data => {
-  return data
+export const addRemoveWater = (lawn, idx) => {
+  let lawnCopy = { ...lawn }
+  let { sprinklerMinutes, sprinklerRate } = lawnCopy
+  let { pcpns, hasUserWatered } = lawnCopy.data
+
+  const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
+
+  if (hasUserWatered[idx] === false) {
+    hasUserWatered[idx] = true
+    pcpns[idx] = pcpns[idx] + threshold
+  } else {
+    hasUserWatered[idx] = false
+    pcpns[idx] = pcpns[idx] - threshold
+  }
+
+  console.log(lawnCopy)
+  return lawnCopy
+}
+
+export const mainFunction = lawn => {
+  const { sprinklerRate, sprinklerMinutes } = lawn
+  const { dates, pcpns, pets, hasUserWatered } = lawn.data
+
+  const res = runWaterDeficitModel(pcpns, pets)
+  const { deficitDaily } = res
+
+  const year = new Date().getFullYear()
+  const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
+  return dates.map((date, i) => {
+    return {
+      date: new Date(`${date}/${year}`).toLocaleDateString(),
+      deficit: +deficitDaily[i].toFixed(2),
+      threshold: +threshold.toFixed(2),
+      shouldWater: deficitDaily[i] < threshold,
+      hasUserWatered: hasUserWatered[i],
+    }
+  })
 }
 
 ////////////////////////////////////////////////////////////////////////////

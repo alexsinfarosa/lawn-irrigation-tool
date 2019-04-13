@@ -341,7 +341,9 @@ const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
         <FontAwesomeIcon
           icon="tint"
           color={
-            unselected ? theme.palette.grey[400] : theme.palette.deficit.color
+            unselected
+              ? theme.palette.grey[400]
+              : theme.palette.background.deficit
           }
           size="2x"
           style={{ marginRight: 16 }}

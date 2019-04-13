@@ -33,19 +33,28 @@ const ForecastPage = () => {
           justifyContent="center"
           mb={2}
         >
-          <Box display="flex" mb={1}>
-            <FontAwesomeIcon
-              icon={mapIcon(currently.icon)}
-              size="4x"
-              style={{ marginRight: 8 }}
-            />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={1}
+          >
+            <Box mr={1}>
+              <FontAwesomeIcon
+                icon={mapIcon(currently.icon)}
+                size="4x"
+                style={{ marginRight: 8 }}
+              />
+            </Box>
 
-            <Typography variant="h3">
-              {Math.round(currently.temperature, 2)}˚
-            </Typography>
+            <Box textAlign="left">
+              <Typography variant="h3">
+                {Math.round(currently.temperature, 2)}˚
+              </Typography>
+              <Typography variant="subtitle2">{currently.summary}</Typography>
+            </Box>
           </Box>
 
-          <Typography variant="subtitle2">{currently.summary}</Typography>
           <Typography variant="caption" color="textSecondary">
             {lawn.address}
           </Typography>

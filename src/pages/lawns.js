@@ -4,6 +4,7 @@ import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Navigation from "../components/navigation"
 
 import { MainContainer } from "../components/styled/sharedComponents"
 import CompaniesLogos from "../components/companiesLogos"
@@ -48,24 +49,33 @@ function reducer(state, action) {
   }
 }
 
-const Primary = ({ address }) => {
-  return <Typography variant="subtitle1">{address}</Typography>
+const Primary = ({ address, stateId, lawnId, theme }) => {
+  return (
+    <Box display="flex" alignItems="center">
+      <FontAwesomeIcon
+        icon={["fa", "check"]}
+        size="xs"
+        color={stateId === lawnId ? theme.palette.primary.main : "#fff"}
+        style={{ marginRight: 3 }}
+      />
+      <Typography variant="subtitle1" color="inherit">
+        {address}
+      </Typography>
+    </Box>
+  )
 }
 
-const Secondary = ({ type, rate, time }) => {
+const Secondary = ({ type, rate, time, unselected }) => {
   return (
-    <Box display="flex" flexDirection="column" ml={1}>
-      <Typography variant="caption" color="textSecondary">
-        Type: {type}
-      </Typography>
-
-      <Typography variant="caption" color="textSecondary">
-        Time: {time} min
-      </Typography>
-
-      <Typography variant="caption" color="textSecondary">
-        Rate: {rate} in/hr
-      </Typography>
+    <Box
+      display="flex"
+      flexDirection="column"
+      ml={1}
+      color={unselected ? "inherit" : "text.secondary"}
+    >
+      <Typography variant="caption">Type: {type}</Typography>
+      <Typography variant="caption">Time: {time} min</Typography>
+      <Typography variant="caption">Rate: {rate} in/hr</Typography>
     </Box>
   )
 }
@@ -89,10 +99,11 @@ const LawnsPage = () => {
     deleteLawn,
     dispatchLawn,
     updateLawns,
+    lawn,
   } = React.useContext(AppContext)
 
   // STATE ----------------------------------------------
-  const [state, localDispatch] = React.useReducer(reducer, {})
+  const [state, localDispatch] = React.useReducer(reducer, lawn)
   const [showDialog, setShowDialog] = React.useState(false)
   const [editing, setEditing] = React.useState(false)
   const [expanded, setExpanded] = React.useState(false)
@@ -116,7 +127,13 @@ const LawnsPage = () => {
       <MainContainer>
         <CompaniesLogos />
         {/* TOP BUTTONS */}
-        <Box mb={4} display="flex" justifyContent="space-around">
+        <Box
+          mb={4}
+          display="flex"
+          justifyContent="space-around"
+          alignItems="center"
+          minHeight="60px"
+        >
           <Link to="/location">
             <Fab
               color="primary"
@@ -130,7 +147,12 @@ const LawnsPage = () => {
             control={
               <Switch
                 checked={editing}
-                onChange={e => setEditing(e.target.checked)}
+                onChange={e => {
+                  if (!editing) {
+                    setExpanded(state.id)
+                  }
+                  setEditing(e.target.checked)
+                }}
               />
             }
             label="Edit Lawn Parameters"
@@ -138,6 +160,7 @@ const LawnsPage = () => {
         </Box>
 
         {lawns.map(lawn => {
+          const unselected = editing && expanded !== lawn.id
           return (
             <ExpansionPanel
               key={lawn.id}
@@ -146,11 +169,26 @@ const LawnsPage = () => {
               elevation={0}
             >
               <ExpansionPanelSummary
-                expandIcon={editing && <ExpandMoreIcon />}
+                expandIcon={
+                  editing && (
+                    <ExpandMoreIcon
+                      style={{
+                        color: unselected
+                          ? theme.palette.grey[400]
+                          : theme.palette.secondary.main,
+                      }}
+                    />
+                  )
+                }
                 aria-controls={`${lawn.address}-panel-content`}
                 id={`${lawn.address}-panel-header`}
               >
-                <ExpansionHeader lawn={lawn} theme={theme} />
+                <ExpansionHeader
+                  lawn={lawn}
+                  theme={theme}
+                  unselected={unselected}
+                  stateId={state.id}
+                />
               </ExpansionPanelSummary>
               {editing && (
                 <ExpansionPanelDetails>
@@ -281,19 +319,35 @@ const LawnsPage = () => {
           </DialogActions>
         </Dialog>
       </MainContainer>
+
+      <Box mx={-2}>
+        <Navigation />
+      </Box>
     </Layout>
   )
 }
 
-const ExpansionHeader = ({ lawn, theme }) => {
+const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
   return (
-    <Box display="flex" flexDirection="column">
-      <Primary address={lawn.address} />
+    <Box
+      display="fle
+    expanded={expanded}x"
+      flexDirection="column"
+      color={unselected && "grey.400"}
+    >
+      <Primary
+        address={lawn.address}
+        stateId={stateId}
+        lawnId={lawn.id}
+        theme={theme}
+      />
 
-      <Box display="flex" mt={1} alignItems="center">
+      <Box display="flex" mt={1} alignItems="center" color="inherit">
         <FontAwesomeIcon
           icon="tint"
-          color={theme.palette.deficit.color}
+          color={
+            unselected ? theme.palette.grey[400] : theme.palette.deficit.color
+          }
           size="2x"
           style={{ marginRight: 16 }}
         />
@@ -301,6 +355,7 @@ const ExpansionHeader = ({ lawn, theme }) => {
           type={lawn.sprinklerType}
           rate={lawn.sprinklerRate}
           time={lawn.sprinklerMinutes}
+          unselected={unselected}
         />
       </Box>
     </Box>

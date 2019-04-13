@@ -13,6 +13,7 @@ const CompaniesLogos = () => {
       display="flex"
       justifyContent="space-between"
       alignItems="center"
+      minHeight="70px"
     >
       <a
         href="http://www.nrcc.cornell.edu/"

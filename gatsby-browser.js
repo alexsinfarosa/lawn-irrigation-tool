@@ -43,6 +43,7 @@ import {
   faPlus,
   faEdit,
   faEllipsisV,
+  faCheck,
 } from "@fortawesome/pro-solid-svg-icons"
 library.add(
   faHome,
@@ -84,5 +85,6 @@ library.add(
   faInfo,
   falInfo,
   faEllipsisV,
-  faEdit
+  faEdit,
+  faCheck
 )

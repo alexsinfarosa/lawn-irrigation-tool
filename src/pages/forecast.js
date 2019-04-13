@@ -61,7 +61,7 @@ const ForecastPage = () => {
         </Box>
 
         <Box
-          mb={2}
+          mb={3}
           style={{ borderLeft: `4px solid ${theme.palette.secondary.main}` }}
         >
           <Box pl={1}>
@@ -81,11 +81,12 @@ const ForecastPage = () => {
               <Box
                 key={day.time}
                 mb={1}
-                py={0.2}
+                py={"0.5rem"}
                 display="flex"
                 alignItems="center"
+                // bgcolor="pink"
               >
-                <Box flexGrow={1} textAlign="center">
+                <Box flexGrow={1} textAlign="left">
                   <Typography style={{ fontWeight: "bold" }}>
                     {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
                   </Typography>
@@ -119,7 +120,7 @@ const ForecastPage = () => {
                 </Box>
 
                 {/* MAX TEMP */}
-                <Box flexGrow={1} textAlign="center">
+                <Box flexGrow={1} textAlign="right">
                   <Typography>
                     {`${Math.round(day.temperatureHigh, 1)}˚`}
                   </Typography>

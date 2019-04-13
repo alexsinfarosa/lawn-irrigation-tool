@@ -329,7 +329,7 @@ const LawnsPage = () => {
 
 const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
   return (
-    <Box display="flex" flexDirection="column" color={unselected && "grey.400"}>
+    <Box display="flex" flexDirection="column">
       <Primary
         address={lawn.address}
         stateId={stateId}
@@ -337,7 +337,7 @@ const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
         theme={theme}
       />
 
-      <Box display="flex" mt={1} alignItems="center" color="inherit">
+      <Box display="flex" mt={1} alignItems="center">
         <FontAwesomeIcon
           icon="tint"
           color={

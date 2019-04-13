@@ -45,7 +45,7 @@ function reducer(state, action) {
     case "setForecast":
       return { ...state, updated: Date.now(), forecast: action.forecast }
     case "setLawn":
-      return { ...action.lawn }
+      return { ...state, ...action.lawn }
     case "reset":
       return initialLawn
     default:
@@ -69,8 +69,15 @@ const AppProvider = ({ children }) => {
     setLawns(newLawns)
   }
 
+  // UPDATE Lawn -----------------------
+  function updateLawns(lawn) {
+    let lawnsCopy = [...lawns]
+    const idx = lawns.findIndex(l => l.id === lawn.id)
+    lawnsCopy[idx] = lawn
+    setLawns(lawnsCopy)
+  }
+
   const [lawn, dispatchLawn] = useReducer(reducer, initialLawn)
-  console.log(lawn)
   return (
     <AppContext.Provider
       value={{
@@ -82,6 +89,7 @@ const AppProvider = ({ children }) => {
         deleteLawn,
         loading,
         setLoading,
+        updateLawns,
       }}
     >
       {children}

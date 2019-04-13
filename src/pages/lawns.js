@@ -4,7 +4,6 @@ import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import Navigation from "../components/navigation"
 
 import { MainContainer } from "../components/styled/sharedComponents"
 import CompaniesLogos from "../components/companiesLogos"
@@ -42,6 +41,8 @@ function reducer(state, action) {
       return { ...state, sprinklerRate: action.rate }
     case "setLawn":
       return { ...action.lawn }
+    case "reset":
+      return {}
     default:
       throw new Error()
   }
@@ -59,11 +60,11 @@ const Secondary = ({ type, rate, time }) => {
       </Typography>
 
       <Typography variant="caption" color="textSecondary">
-        Rate: {rate} in/hr
+        Time: {time} min
       </Typography>
 
       <Typography variant="caption" color="textSecondary">
-        Time: {time} min
+        Rate: {rate} in/hr
       </Typography>
     </Box>
   )
@@ -82,25 +83,19 @@ const LawnsPage = () => {
   }
 
   // Context -------------------------------------------
-  const { loading, lawns, deleteLawn, dispatchLawn } = React.useContext(
-    AppContext
-  )
+  const {
+    loading,
+    lawns,
+    deleteLawn,
+    dispatchLawn,
+    updateLawns,
+  } = React.useContext(AppContext)
 
   // STATE ----------------------------------------------
   const [state, dispatch] = React.useReducer(reducer, {})
   const [isDeleteDialog, setIsDeleteDialog] = React.useState(false)
-  const [lawnId, setLawnId] = React.useState(0)
-  const [expanded, setExpanded] = React.useState(false)
   const [isEdit, setIsEdit] = React.useState(false)
 
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
-  const handleSwitch = event => {
-    setIsEdit(event.target.checked)
-  }
-  console.log(state)
   // Loading --------------------------------------------
   if (loading) return <Loading />
 
@@ -109,7 +104,7 @@ const LawnsPage = () => {
       <SEO title="Lawns Page" />
       <MainContainer>
         <CompaniesLogos />
-
+        {/* TOP BUTTONS */}
         <Box mb={4} display="flex" justifyContent="space-around">
           <Link to="/location">
             <Fab
@@ -121,61 +116,134 @@ const LawnsPage = () => {
             </Fab>
           </Link>
           <FormControlLabel
-            control={<Switch checked={isEdit} onChange={handleSwitch} />}
+            control={
+              <Switch
+                checked={isEdit}
+                onChange={e => setIsEdit(e.target.checked)}
+              />
+            }
             label="Edit Lawn Parameters"
           />
         </Box>
 
         {lawns.map(lawn => {
           return (
-            <div key={lawn.id}>
-              {isEdit ? (
-                <ExpansionPanel
-                  expanded={expanded === lawn.id}
-                  onChange={() => {
-                    dispatch({ type: "setLawn", lawn })
-                    handleChange(lawn.id)
-                  }}
-                  elevation={0}
-                >
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`${lawn.address}-content`}
-                    id={`${lawn.address}-header`}
-                    onClick={() => dispatch({ type: "setLawn", lawn })}
-                  >
-                    <ExpansionHeader lawn={lawn} theme={theme} />
-                  </ExpansionPanelSummary>
+            <ExpansionPanel
+              key={lawn.id}
+              expanded={state.id === lawn.id}
+              onChange={() => {
+                if (!isEdit) {
+                  dispatchLawn({ type: "setLawn", lawn })
+                  navigate("/lawn")
+                }
+              }}
+              elevation={0}
+            >
+              <ExpansionPanelSummary
+                expandIcon={isEdit && <ExpandMoreIcon />}
+                aria-controls={`${lawn.address}-panel-content`}
+                id={`${lawn.address}-panel-header`}
+                onClick={() => dispatch({ type: "setLawn", lawn })}
+              >
+                <ExpansionHeader lawn={lawn} theme={theme} />
+              </ExpansionPanelSummary>
+              {isEdit && (
+                <ExpansionPanelDetails>
+                  {Object.keys(state.lenght !== 0) && (
+                    <Box width="100%">
+                      <Box display="flex" alignItems="center" mb={4}>
+                        <Box flexGrow={1}>
+                          <Typography variant="subtitle1">Time: </Typography>
+                        </Box>
+                        <Box flexGrow={6}>
+                          <Slider
+                            min={0}
+                            step={1}
+                            max={120}
+                            value={state.sprinklerMinutes}
+                            onChange={minutes =>
+                              dispatch({ type: "setMinutes", minutes })
+                            }
+                            trackStyle={{
+                              backgroundColor: theme.palette.primary.main,
+                            }}
+                            handleStyle={sliderStyles}
+                          />
+                        </Box>
+                        <Box flexGrow={1}>
+                          <Typography
+                            variant="subtitle1"
+                            color="secondary"
+                            align="right"
+                          >
+                            {state.sprinklerMinutes} <small>min</small>
+                          </Typography>
+                        </Box>
+                      </Box>
 
-                  <ExpansionPanelDetails>
-                    {state.sprinklerRate && (
-                      <EditComponent
-                        state={state}
-                        dispatch={dispatch}
-                        theme={theme}
-                        sliderStyles={sliderStyles}
-                        setIsEdit={setIsEdit}
-                      />
-                    )}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              ) : (
-                <ExpansionPanel
-                  onChange={() => {
-                    dispatch({ type: "setLawn", lawn })
-                    navigate("/lawn")
-                  }}
-                  elevation={0}
-                >
-                  <ExpansionPanelSummary
-                    aria-controls={`${lawn.address}-content`}
-                    id={`${lawn.address}-header`}
-                  >
-                    <ExpansionHeader lawn={lawn} theme={theme} />
-                  </ExpansionPanelSummary>
-                </ExpansionPanel>
+                      {/* Rate Slider */}
+                      <Box display="flex" alignItems="center" mb={4}>
+                        <Box flexGrow={1}>
+                          <Typography variant="subtitle1">Rate: </Typography>
+                        </Box>
+
+                        <Box flexGrow={6}>
+                          <Slider
+                            disabled={
+                              state.sprinklerType === "Custom" ? false : true
+                            }
+                            min={0}
+                            step={0.05}
+                            max={2}
+                            value={state.sprinklerRate}
+                            onChange={rate =>
+                              dispatch({ type: "setRate", rate })
+                            }
+                            trackStyle={{
+                              backgroundColor: theme.palette.primary.main,
+                            }}
+                            handleStyle={sliderStyles}
+                          />
+                        </Box>
+                        <Box flexGrow={1}>
+                          <Typography
+                            variant="subtitle1"
+                            color="secondary"
+                            align="right"
+                          >
+                            {state.sprinklerRate} <small>in/hr</small>
+                          </Typography>
+                        </Box>
+                      </Box>
+
+                      <Box display="flex" justifyContent="center">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          style={{ marginRight: 32 }}
+                          onClick={() => {
+                            setIsDeleteDialog(true)
+                          }}
+                        >
+                          DELETE
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => {
+                            setIsEdit(false)
+                            dispatchLawn({ type: "setLawn", lawn: state })
+                            updateLawns(state)
+                          }}
+                        >
+                          UPDATE
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
+                </ExpansionPanelDetails>
               )}
-            </div>
+            </ExpansionPanel>
           )
         })}
 
@@ -196,8 +264,10 @@ const LawnsPage = () => {
             </Button>
             <Button
               onClick={() => {
-                deleteLawn(lawnId)
+                deleteLawn(state.id)
                 setIsDeleteDialog(false)
+                setIsEdit(false)
+                dispatch({ type: "reset" })
               }}
               color="secondary"
               autoFocus
@@ -207,10 +277,6 @@ const LawnsPage = () => {
           </DialogActions>
         </Dialog>
       </MainContainer>
-
-      <Box mx={-2}>
-        <Navigation />
-      </Box>
     </Layout>
   )
 }
@@ -234,90 +300,6 @@ const ExpansionHeader = ({ lawn, theme }) => {
         />
       </Box>
     </Box>
-  )
-}
-
-const EditComponent = ({ state, dispatch, theme, sliderStyles, setIsEdit }) => {
-  console.log("bello...")
-  return (
-    <>
-      {/* Minutes Slider */}
-      <Box width="100%">
-        <Box display="flex" alignItems="center" mb={4}>
-          <Box flexGrow={1}>
-            <Typography variant="h6">Time: </Typography>
-          </Box>
-          <Box flexGrow={6}>
-            <Slider
-              min={0}
-              step={1}
-              max={120}
-              value={state.sprinklerMinutes}
-              onChange={minutes => dispatch({ type: "setMinutes", minutes })}
-              trackStyle={{
-                backgroundColor: theme.palette.primary.main,
-              }}
-              handleStyle={sliderStyles}
-            />
-          </Box>
-          <Box flexGrow={1}>
-            <Typography variant="subtitle1" color="secondary" align="right">
-              {state.sprinklerMinutes} <small>min</small>
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Rate Slider */}
-
-        <Box display="flex" alignItems="center" mb={4}>
-          <Box flexGrow={1}>
-            <Typography variant="h6">Rate: </Typography>
-          </Box>
-
-          <Box flexGrow={6}>
-            <Slider
-              disabled={state.sprinklerType === "Custom" ? false : true}
-              min={0}
-              step={0.05}
-              max={2}
-              value={state.sprinklerRate}
-              onChange={rate => dispatch({ type: "setRate", rate })}
-              trackStyle={{
-                backgroundColor: theme.palette.primary.main,
-              }}
-              handleStyle={sliderStyles}
-            />
-          </Box>
-          <Box flexGrow={1}>
-            <Typography variant="subtitle1" color="secondary" align="right">
-              {state.sprinklerRate.toFixed(2)} <small>in/hr</small>
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box display="flex" justifyContent="center">
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ marginRight: 16 }}
-            onClick={() => {
-              setIsEdit(false)
-            }}
-          >
-            DELETE
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => {
-              setIsEdit(false)
-            }}
-          >
-            SAVE
-          </Button>
-        </Box>
-      </Box>
-    </>
   )
 }
 

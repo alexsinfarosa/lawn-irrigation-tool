@@ -92,10 +92,21 @@ const LawnsPage = () => {
   } = React.useContext(AppContext)
 
   // STATE ----------------------------------------------
-  const [state, dispatch] = React.useReducer(reducer, {})
-  const [isDeleteDialog, setIsDeleteDialog] = React.useState(false)
-  const [isEdit, setIsEdit] = React.useState(false)
+  const [state, localDispatch] = React.useReducer(reducer, {})
+  const [showDialog, setShowDialog] = React.useState(false)
+  const [editing, setEditing] = React.useState(false)
+  const [expanded, setExpanded] = React.useState(false)
 
+  const handleChange = panel => (event, isExpanded) => {
+    const selectedLawn = lawns.find(l => l.id === panel)
+    localDispatch({ type: "setLawn", lawn: selectedLawn })
+    if (editing) {
+      setExpanded(isExpanded ? panel : false)
+    } else {
+      dispatchLawn({ type: "setLawn", lawn: selectedLawn })
+      navigate("/lawn")
+    }
+  }
   // Loading --------------------------------------------
   if (loading) return <Loading />
 
@@ -118,8 +129,8 @@ const LawnsPage = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={isEdit}
-                onChange={e => setIsEdit(e.target.checked)}
+                checked={editing}
+                onChange={e => setEditing(e.target.checked)}
               />
             }
             label="Edit Lawn Parameters"
@@ -130,24 +141,18 @@ const LawnsPage = () => {
           return (
             <ExpansionPanel
               key={lawn.id}
-              expanded={state.id === lawn.id}
-              onChange={() => {
-                if (!isEdit) {
-                  dispatchLawn({ type: "setLawn", lawn })
-                  navigate("/lawn")
-                }
-              }}
+              expanded={expanded === lawn.id}
+              onChange={handleChange(lawn.id)}
               elevation={0}
             >
               <ExpansionPanelSummary
-                expandIcon={isEdit && <ExpandMoreIcon />}
+                expandIcon={editing && <ExpandMoreIcon />}
                 aria-controls={`${lawn.address}-panel-content`}
                 id={`${lawn.address}-panel-header`}
-                onClick={() => dispatch({ type: "setLawn", lawn })}
               >
                 <ExpansionHeader lawn={lawn} theme={theme} />
               </ExpansionPanelSummary>
-              {isEdit && (
+              {editing && (
                 <ExpansionPanelDetails>
                   {Object.keys(state.lenght !== 0) && (
                     <Box width="100%">
@@ -162,7 +167,7 @@ const LawnsPage = () => {
                             max={120}
                             value={state.sprinklerMinutes}
                             onChange={minutes =>
-                              dispatch({ type: "setMinutes", minutes })
+                              localDispatch({ type: "setMinutes", minutes })
                             }
                             trackStyle={{
                               backgroundColor: theme.palette.primary.main,
@@ -197,7 +202,7 @@ const LawnsPage = () => {
                             max={2}
                             value={state.sprinklerRate}
                             onChange={rate =>
-                              dispatch({ type: "setRate", rate })
+                              localDispatch({ type: "setRate", rate })
                             }
                             trackStyle={{
                               backgroundColor: theme.palette.primary.main,
@@ -221,9 +226,7 @@ const LawnsPage = () => {
                           variant="contained"
                           color="secondary"
                           style={{ marginRight: 32 }}
-                          onClick={() => {
-                            setIsDeleteDialog(true)
-                          }}
+                          onClick={() => setShowDialog(true)}
                         >
                           DELETE
                         </Button>
@@ -231,7 +234,8 @@ const LawnsPage = () => {
                           variant="contained"
                           color="secondary"
                           onClick={() => {
-                            setIsEdit(false)
+                            setEditing(false)
+                            localDispatch({ type: "setLawn", lawn: state })
                             dispatchLawn({ type: "setLawn", lawn: state })
                             updateLawns(state)
                           }}
@@ -249,8 +253,8 @@ const LawnsPage = () => {
 
         {/* DELETE DIALOG -----------------------------*/}
         <Dialog
-          open={isDeleteDialog}
-          onClose={() => setIsDeleteDialog(false)}
+          open={showDialog}
+          onClose={() => setShowDialog(false)}
           aria-labelledby="alert-dialog-delete-lawn"
           aria-describedby="alert-dialog-delete-selected-lawn"
         >
@@ -259,15 +263,15 @@ const LawnsPage = () => {
           </DialogTitle>
 
           <DialogActions>
-            <Button onClick={() => setIsDeleteDialog(false)} color="secondary">
+            <Button onClick={() => setShowDialog(false)} color="secondary">
               Undo
             </Button>
             <Button
               onClick={() => {
                 deleteLawn(state.id)
-                setIsDeleteDialog(false)
-                setIsEdit(false)
-                dispatch({ type: "reset" })
+                setShowDialog(false)
+                setEditing(false)
+                localDispatch({ type: "reset" })
               }}
               color="secondary"
               autoFocus

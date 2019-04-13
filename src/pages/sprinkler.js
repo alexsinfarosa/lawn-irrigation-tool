@@ -246,7 +246,7 @@ const SprinklerPage = () => {
 
         <Box mx={-2} height="80px">
           <ButtonLink
-            to="/forecast"
+            to="/lawn"
             variant="contained"
             color="primary"
             onClick={() => {

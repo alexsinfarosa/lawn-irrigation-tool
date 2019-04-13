@@ -13,7 +13,7 @@ import AppContext from "../appContext"
 
 const LawnPage = () => {
   const { lawn } = React.useContext(AppContext)
-  console.log(lawn)
+
   return (
     <Layout>
       <SEO title="Lawn Page" />

@@ -103,8 +103,6 @@ const SprinklerPage = () => {
   const classes = useStyles()
   const theme = useTheme()
 
-  console.log(lawn)
-
   const sliderStyles = {
     borderColor: theme.palette.primary.main,
     height: 28,

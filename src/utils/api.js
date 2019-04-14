@@ -70,13 +70,16 @@ export const mainFunction = lawn => {
 
   const year = new Date().getFullYear()
   const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
+
   return dates.map((date, i) => {
     return {
       date: new Date(`${date}/${year}`).toLocaleDateString(),
-      deficit: +deficitDaily[i].toFixed(2),
-      threshold: +threshold.toFixed(2),
+      deficit: deficitDaily[i],
+      threshold: threshold,
       shouldWater: deficitDaily[i] < threshold,
       hasUserWatered: hasUserWatered[i],
+      pcpn: pcpns[i],
+      bar: deficitDaily[i] - threshold,
     }
   })
 }

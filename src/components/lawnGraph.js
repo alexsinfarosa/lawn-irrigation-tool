@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   graphWrapper: {
     // background: "#fafafa",
     width: "100%",
-    height: `calc(100% - 100px)`,
+    height: `calc(100% - 120px)`,
   },
 }))
 
@@ -55,7 +55,7 @@ export default function LawnGraph({ lawn }) {
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
-  console.log(forecast)
+  // console.log(forecast)
 
   // XAXIS -----------------------------------
   const XaxisLabel = props => {
@@ -146,7 +146,6 @@ export default function LawnGraph({ lawn }) {
   // RIGHT Icons --------------------------------
   const RightIconButtons = props => {
     const { width, y, x, index, payload, reversed } = props
-    console.log(props)
     return (
       <svg width={100} height={26} x={x} y={y - 10}>
         {index === 0 || index === 1 ? (

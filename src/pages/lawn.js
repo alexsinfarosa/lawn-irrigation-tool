@@ -12,7 +12,7 @@ import Box from "@material-ui/core/Box"
 import AppContext from "../appContext"
 
 const LawnPage = () => {
-  const { loading } = React.useContext(AppContext)
+  const { lawn, loading } = React.useContext(AppContext)
 
   if (loading) return <Loading />
   return (
@@ -20,7 +20,7 @@ const LawnPage = () => {
       <SEO title="Lawn Page" />
 
       <MainContainer>
-        <LawnGraph />
+        {lawn.id !== null && <LawnGraph lawn={lawn} />}
       </MainContainer>
 
       <Box mx={-2}>

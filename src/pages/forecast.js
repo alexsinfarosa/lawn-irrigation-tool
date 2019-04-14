@@ -20,7 +20,7 @@ const ForecastPage = () => {
   const theme = useTheme()
   const { loading, lawn } = React.useContext(AppContext)
   const { daily, currently } = lawn.forecast
-  console.log(lawn)
+
   if (loading) return <Loading />
 
   if (Object.keys(lawn.forecast).length !== 0) {
@@ -86,7 +86,6 @@ const ForecastPage = () => {
                   py={"0.5rem"}
                   display="flex"
                   alignItems="center"
-                  // bgcolor="pink"
                 >
                   <Box flexGrow={1} textAlign="left">
                     <Typography style={{ fontWeight: "bold" }}>
@@ -96,7 +95,7 @@ const ForecastPage = () => {
                       <FontAwesomeIcon
                         icon={["fa", "raindrops"]}
                         style={{ marginRight: 4 }}
-                        color={theme.palette.noDeficit.color}
+                        color={theme.palette.background.noDeficit}
                       />
                       <Typography variant="caption">
                         {`${Math.round(day.precipProbability * 100)}%`}

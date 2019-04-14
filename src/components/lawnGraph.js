@@ -10,13 +10,11 @@ import AppContext from "../appContext"
 // API -------------------------------
 import { mainFunction } from "../utils/api"
 
-export default function LawnGraph() {
+export default function LawnGraph({ lawn }) {
   const theme = useTheme()
 
-  // CONTEXT ---------------------------------
-  const { lawn } = React.useContext(AppContext)
-
-  const results = mainFunction(lawn)
+  let results = []
+  results = mainFunction(lawn)
   console.log(results)
   const todayFromResults = results[results.length - 3]
 

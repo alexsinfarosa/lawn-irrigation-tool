@@ -79,7 +79,7 @@ const AppProvider = ({ children }) => {
 
   const hasDataAndForecast =
     lawn.data.length !== 0 && Object.keys(lawn.forecast).length !== 0
-  console.log(hasDataAndForecast)
+
   return (
     <AppContext.Provider
       value={{

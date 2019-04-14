@@ -94,7 +94,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SprinklerPage = () => {
-  const { globalDispatch, lawn, addLawn } = React.useContext(AppContext)
+  const {
+    globalDispatch,
+    lawn,
+    addLawn,
+    hasDataAndForecast,
+  } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -249,6 +254,7 @@ const SprinklerPage = () => {
 
         <Box mx={-2} height="80px">
           <ButtonLink
+            disabled={hasDataAndForecast ? false : true}
             to="/lawn"
             variant="contained"
             color="primary"

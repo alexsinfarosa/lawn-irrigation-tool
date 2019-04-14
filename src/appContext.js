@@ -77,6 +77,9 @@ const AppProvider = ({ children }) => {
 
   const [lawn, globalDispatch] = useReducer(reducer, initialLawn)
 
+  const hasDataAndForecast =
+    lawn.data.length !== 0 && Object.keys(lawn.forecast).length !== 0
+  console.log(hasDataAndForecast)
   return (
     <AppContext.Provider
       value={{
@@ -89,6 +92,7 @@ const AppProvider = ({ children }) => {
         deleteLawn,
         loading,
         setLoading,
+        hasDataAndForecast,
       }}
     >
       {children}

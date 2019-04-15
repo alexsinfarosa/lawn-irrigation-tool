@@ -25,7 +25,7 @@ import PlacesAutocomplete, {
 import hideVirtualKeyboard from "hide-virtual-keyboard"
 
 // UTILS ---------------------------------
-import { fetchForecastData, fetchPETData } from "../utils/api"
+import { fetchForecastData } from "../utils/api"
 
 import AppContext from "../appContext"
 
@@ -73,7 +73,7 @@ const LocationPage = () => {
   const theme = useTheme()
 
   // CONTEXT -----------------------------------------------
-  const { setLoading, globalDispatch } = React.useContext(AppContext)
+  const { loading, setLoading, globalDispatch } = React.useContext(AppContext)
 
   // STATE ------------------------------------------------
   const [state, localDispatch] = React.useReducer(reducer, initialState)
@@ -261,14 +261,12 @@ const LocationPage = () => {
             to="/irrigation"
             variant="contained"
             color="primary"
-            disabled={state.lat ? false : true}
+            disabled={!loading && state.lat ? false : true}
             onClick={async () => {
               setLoading(true)
               const forecast = await fetchForecastData(state.lat, state.lng)
-              const petData = await fetchPETData(state.lat, state.lng)
               globalDispatch({ type: "setLocation", ...state })
               globalDispatch({ type: "setForecast", forecast })
-              globalDispatch({ type: "setPETData", petData })
               setLoading(false)
             }}
           >

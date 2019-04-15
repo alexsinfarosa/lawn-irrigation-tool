@@ -4,6 +4,7 @@ import React, { createContext, useState, useReducer } from "react"
 import { addRemoveWater, fetchForecastData, fetchPETData } from "./utils/api"
 import { window } from "browser-monads"
 import differenceInMinutes from "date-fns/differenceInMinutes"
+import { navigate } from "gatsby"
 
 const AppContext = createContext({})
 
@@ -70,13 +71,14 @@ function writeToLS(item) {
 }
 function readFromLS() {
   const lsRef = window.localStorage.getItem(lsKey)
-  if (lsRef) {
+  if (lsRef !== null) {
     return JSON.parse(lsRef)
   }
   return []
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)
+  navigate("/")
 }
 // Local Storage -------------------------------------------
 
@@ -126,14 +128,22 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
-    updateDataAndForecast(lawn)
+    if (readFromLS().length > 0) {
+      navigate("/lawn")
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (lawn.updated !== null) {
+      updateDataAndForecast(lawn)
+    }
   }, [lawn.id])
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
 
-    if (minutes > 30) {
-      console.log("Fetching forecast and PET data...")
+    if (minutes > 720) {
+      // console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

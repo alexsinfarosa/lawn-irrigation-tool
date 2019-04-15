@@ -31,6 +31,9 @@ import Loading from "../components/loading"
 import Slider from "rc-slider"
 import "rc-slider/assets/index.css"
 
+// API ------------------------------------
+import { mainFunction } from "../utils/api"
+
 import AppContext from "../appContext"
 
 // REDUCER ---------------------------------
@@ -54,9 +57,9 @@ const Primary = ({ address, stateId, lawnId, theme }) => {
     <Box display="flex" alignItems="center">
       <FontAwesomeIcon
         icon={["fa", "check"]}
-        size="xs"
-        color={stateId === lawnId ? theme.palette.primary.main : "#fff"}
-        style={{ marginRight: 3 }}
+        size="sm"
+        color={stateId === lawnId ? theme.palette.primary.dark : "#fff"}
+        style={{ marginRight: 5 }}
       />
       <Typography variant="subtitle1" color="inherit">
         {address}
@@ -161,6 +164,10 @@ const LawnsPage = () => {
 
         {lawns.map(lawn => {
           const unselected = editing && expanded !== lawn.id
+          const results = mainFunction(lawn)
+          const todayDate = new Date().toLocaleDateString()
+          const todayObj = results.find(d => d.date === todayDate)
+
           return (
             <ExpansionPanel
               key={lawn.id}
@@ -188,6 +195,7 @@ const LawnsPage = () => {
                   theme={theme}
                   unselected={unselected}
                   stateId={state.id}
+                  todayObj={todayObj}
                 />
               </ExpansionPanelSummary>
               {editing && (
@@ -329,7 +337,7 @@ const LawnsPage = () => {
   )
 }
 
-const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
+const ExpansionHeader = ({ lawn, theme, unselected, stateId, todayObj }) => {
   return (
     <Box display="flex" flexDirection="column">
       <Primary
@@ -345,7 +353,9 @@ const ExpansionHeader = ({ lawn, theme, unselected, stateId }) => {
           color={
             unselected
               ? theme.palette.grey[400]
-              : theme.palette.background.deficit
+              : todayObj.shouldWater
+              ? theme.palette.background.deficit
+              : theme.palette.background.noDeficit
           }
           size="2x"
           style={{ marginRight: 16 }}

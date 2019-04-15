@@ -53,7 +53,7 @@ export default function LawnGraph({ lawn }) {
   const todayIdx = results.findIndex(d => d.date === todayDate)
   const todayObj = results.find(d => d.date === todayDate)
 
-  // results sliceed and reversed for the graph --
+  // results sliceed and reversed for the graph ---
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
   const domain = calculateDomain(reversed)
 

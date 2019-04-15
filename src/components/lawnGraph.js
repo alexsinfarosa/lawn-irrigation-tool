@@ -18,7 +18,7 @@ import {
 } from "recharts"
 
 // API -------------------------------
-import { mainFunction } from "../utils/api"
+import { mainFunction, isWaterAllowed } from "../utils/api"
 
 // utils -------------------------------
 import reverse from "lodash.reverse"
@@ -32,7 +32,6 @@ import AppContext from "../appContext"
 
 const useStyles = makeStyles(theme => ({
   graphWrapper: {
-    // background: "#fafafa",
     width: "100%",
     height: `calc(100% - 120px)`,
   },
@@ -87,7 +86,10 @@ export default function LawnGraph({ lawn }) {
               DRY
             </text>
             <svg width={20} height={20} x={0} y={0}>
-              <FontAwesomeIcon icon="tint" color={"#F79824"} />
+              <FontAwesomeIcon
+                icon="tint"
+                color={theme.palette.background.deficit}
+              />
             </svg>
           </g>
         )}
@@ -102,7 +104,10 @@ export default function LawnGraph({ lawn }) {
               WET
             </text>
             <svg width={20} height={20} x={0} y={0}>
-              <FontAwesomeIcon icon="tint" color={"#0197F6"} />
+              <FontAwesomeIcon
+                icon="tint"
+                color={theme.palette.background.noDeficit}
+              />
             </svg>
           </g>
         )}
@@ -132,7 +137,11 @@ export default function LawnGraph({ lawn }) {
           return (
             <tspan
               fontWeight="bold"
-              fill={todayObj.shouldWater ? "#F79824" : "#0197F6"}
+              fill={
+                todayObj.shouldWater
+                  ? theme.palette.background.deficit
+                  : theme.palette.background.noDeficit
+              }
               fontSize="1.2rem"
             >
               TODAY
@@ -167,21 +176,21 @@ export default function LawnGraph({ lawn }) {
               x={76}
               y={16}
               fontSize="0.8rem"
-              fill={theme.palette.grey["600"]}
+              fill={theme.palette.grey[700]}
             >
               {(forecast[index].precipProbability * 100).toFixed(0)}%
             </text>
             <svg width={20} x={50}>
               <FontAwesomeIcon
                 icon={["fal", "cloud-rain"]}
-                color={theme.palette.grey["600"]}
+                color={theme.palette.grey[700]}
               />
             </svg>
           </g>
         )}
 
         {/* ODD EVEN ORDINANCE */}
-        {index === 2 && (
+        {index === 2 && isWaterAllowed(lawn.streetNumber) && (
           <FontAwesomeIcon
             icon={["fas", "tint"]}
             color={
@@ -192,6 +201,13 @@ export default function LawnGraph({ lawn }) {
             onClick={() =>
               updateLawn(addRemoveWater(lawn, determineIdx(payload.value)))
             }
+          />
+        )}
+
+        {index === 2 && !isWaterAllowed(lawn.streetNumber) && (
+          <FontAwesomeIcon
+            icon={["fa", "tint-slash"]}
+            color={theme.palette.grey[700]}
           />
         )}
 
@@ -218,9 +234,11 @@ export default function LawnGraph({ lawn }) {
       <Box
         height="60px"
         bgcolor={
-          todayObj.shouldWater
-            ? theme.palette.background.deficit
-            : theme.palette.background.noDeficit
+          isWaterAllowed(lawn.streetNumber)
+            ? todayObj.shouldWater
+              ? theme.palette.background.deficit
+              : theme.palette.background.noDeficit
+            : theme.palette.grey[700]
         }
         display="flex"
         justifyContent="center"
@@ -230,7 +248,11 @@ export default function LawnGraph({ lawn }) {
         mt={-2}
       >
         <Typography variant="h5">
-          {todayObj.shouldWater ? "Water!" : "Do Not Water!"}
+          {isWaterAllowed(lawn.streetNumber)
+            ? todayObj.shouldWater
+              ? "Water!"
+              : "Do Not Water!"
+            : "Water Today Is Not Allowed"}
         </Typography>
       </Box>
 
@@ -291,7 +313,11 @@ export default function LawnGraph({ lawn }) {
                 return (
                   <Cell
                     key={day.date}
-                    fill={day.bar < 0 ? "#F79824" : "#0197F6"}
+                    fill={
+                      day.bar < 0
+                        ? theme.palette.background.deficit
+                        : theme.palette.background.noDeficit
+                    }
                   />
                 )
               })}

@@ -44,6 +44,7 @@ import {
   faEdit,
   faEllipsisV,
   faCheck,
+  faTintSlash,
 } from "@fortawesome/pro-solid-svg-icons"
 library.add(
   faHome,
@@ -86,5 +87,6 @@ library.add(
   falInfo,
   faEllipsisV,
   faEdit,
-  faCheck
+  faCheck,
+  faTintSlash
 )

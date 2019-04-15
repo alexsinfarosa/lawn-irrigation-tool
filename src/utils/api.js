@@ -54,7 +54,7 @@ export const addRemoveWater = (lawn, idx) => {
   let { pcpns, hasUserWatered } = lawnCopy.data
 
   const amountOfWater = (sprinklerRate * sprinklerMinutes) / 60
-  console.log(amountOfWater)
+
   if (hasUserWatered[idx] === false) {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater
@@ -66,6 +66,18 @@ export const addRemoveWater = (lawn, idx) => {
   return lawnCopy
 }
 
+export const isWaterAllowed = streetNumber => {
+  if (streetNumber !== null) {
+    const day = new Date().getDate()
+    const isDayEven = day % 2 === 0
+    const isStreetNumberEven = streetNumber % 2 === 0
+    if (isDayEven === isStreetNumberEven) return true
+    return false
+  } else {
+    return false
+  }
+}
+
 export const calculateDomain = results => {
   const min = Math.min(...results.map(d => d.bar))
   const max = Math.max(...results.map(d => d.bar))
@@ -74,8 +86,8 @@ export const calculateDomain = results => {
   const absMax = Math.abs(max)
 
   const dom = Math.max(absMin, absMax)
-  // console.log(`Min: ${min}, Max: ${max}, Domain: ${dom + dom * 0.6}`)
-  return +(dom + dom * 0.6).toFixed(2)
+  // console.log(`Min: ${min}, Max: ${max}, Domain: ${dom + dom * 0.8}`)
+  return +(dom + dom * 0.8).toFixed(2)
 }
 
 export const mainFunction = lawn => {

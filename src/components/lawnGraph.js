@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
-import { window } from "browser-monads"
+// import { window } from "browser-monads"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -15,7 +15,6 @@ import {
   YAxis,
   ReferenceLine,
   Cell,
-  ReferenceArea,
 } from "recharts"
 
 // API -------------------------------
@@ -24,9 +23,12 @@ import { mainFunction } from "../utils/api"
 // utils -------------------------------
 import reverse from "lodash.reverse"
 import format from "date-fns/format"
-import isAfter from "date-fns/isAfter"
 import subDays from "date-fns/subDays"
 import addDays from "date-fns/addDays"
+import { addRemoveWater, calculateDomain } from "../utils/api"
+
+// Context ------------------------------
+import AppContext from "../appContext"
 
 const useStyles = makeStyles(theme => ({
   graphWrapper: {
@@ -40,6 +42,9 @@ export default function LawnGraph({ lawn }) {
   const theme = useTheme()
   const classes = useStyles()
 
+  // Context -------------------------------------
+  const { updateLawn } = React.useContext(AppContext)
+
   // results data ---------------------------------
   let results = []
   results = mainFunction(lawn)
@@ -51,13 +56,21 @@ export default function LawnGraph({ lawn }) {
 
   // results sliceed and reversed for the graph --
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
+  const domain = calculateDomain(reversed)
+
   console.log(reversed)
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
   // console.log(forecast)
 
-  // XAXIS -----------------------------------
+  // determine index of the clicked drop icon ------
+  function determineIdx(date) {
+    console.log(results.findIndex(d => d.date === date))
+    return results.findIndex(d => d.date === date)
+  }
+
+  // x-axix -----------------------------------
   const XaxisLabel = props => {
     const { x, y, index } = props
     const translate = `translate(${x - 10},${y + 3})`
@@ -145,10 +158,10 @@ export default function LawnGraph({ lawn }) {
 
   // RIGHT Icons --------------------------------
   const RightIconButtons = props => {
-    const { width, y, x, index, payload, reversed } = props
+    const { y, x, index, payload, reversed } = props
     return (
-      <svg width={100} height={26} x={x} y={y - 10}>
-        {index === 0 || index === 1 ? (
+      <svg width={100} height={26} x={x} y={y - 13}>
+        {(index === 0 || index === 1) && (
           <g transform={`translate(${-40},${0})`}>
             <text
               x={76}
@@ -165,15 +178,34 @@ export default function LawnGraph({ lawn }) {
               />
             </svg>
           </g>
-        ) : (
+        )}
+
+        {/* ODD EVEN ORDINANCE */}
+        {index === 2 && (
           <FontAwesomeIcon
             icon={["fas", "tint"]}
             color={
-              reversed[index].shouldWater
+              reversed[index].hasUserWatered
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }
-            // onClick={() => watered(payload.value)}
+            onClick={() =>
+              updateLawn(addRemoveWater(lawn, determineIdx(payload.value)))
+            }
+          />
+        )}
+
+        {index > 2 && (
+          <FontAwesomeIcon
+            icon={["fas", "tint"]}
+            color={
+              reversed[index].hasUserWatered
+                ? theme.palette.background.noDeficit
+                : theme.palette.grey[300]
+            }
+            onClick={() =>
+              updateLawn(addRemoveWater(lawn, determineIdx(payload.value)))
+            }
           />
         )}
       </svg>
@@ -222,14 +254,16 @@ export default function LawnGraph({ lawn }) {
             maxBarSize={15}
             margin={{ top: 0, right: 20, left: 20, bottom: 10 }}
           >
+            {/* X-axis */}
             <XAxis
               dataKey="deficit"
               type="number"
+              domain={[-domain, "auto"]}
               tick={<XaxisLabel />}
               tickCount={3}
               stroke={theme.palette.grey[300]}
             />
-
+            />
             {/* Left dates */}
             <YAxis
               dataKey="date"
@@ -239,7 +273,6 @@ export default function LawnGraph({ lawn }) {
               axisLine={false}
               tick={<YaxisLabel />}
             />
-
             {/* RIght Icons */}
             <YAxis
               dataKey="date"
@@ -250,8 +283,9 @@ export default function LawnGraph({ lawn }) {
               axisLine={false}
               tick={<RightIconButtons reversed={reversed} />}
             />
-
+            {/* Origin */}
             <ReferenceLine x={0} stroke={theme.palette.grey[300]} />
+            {/* bars */}
             <Bar dataKey="bar" radius={[0, 20, 20, 0]}>
               {reversed.map(day => {
                 return (

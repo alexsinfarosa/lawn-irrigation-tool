@@ -1,4 +1,8 @@
 import React, { createContext, useState, useReducer } from "react"
+
+// utils ------------------------------------------------
+import { addRemoveWater } from "./utils/api"
+
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -57,7 +61,14 @@ const AppProvider = ({ children }) => {
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
-    const newLawns = [newLawn, ...lawns]
+    let newLawnCopy = { ...newLawn }
+    if (newLawn.irrigationDate) {
+      const todayIdx = newLawnCopy.data.dates.findIndex(
+        d => d === newLawn.irrigationDate
+      )
+      newLawnCopy = addRemoveWater(newLawnCopy, todayIdx)
+    }
+    const newLawns = [newLawnCopy, ...lawns]
     setLawns(newLawns)
   }
 

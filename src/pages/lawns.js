@@ -297,7 +297,9 @@ const LawnsPage = () => {
           aria-describedby="alert-dialog-delete-selected-lawn"
         >
           <DialogTitle id="alert-delete-dialog-title">
-            Are you sure you want to delete it?
+            <Typography variant="subtitle1">
+              Are you sure you want to delete it?
+            </Typography>
           </DialogTitle>
 
           <DialogActions>

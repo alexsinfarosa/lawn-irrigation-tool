@@ -29,8 +29,14 @@ export const fetchPETData = async (lat, lng) => {
   return await axios
     .get(url)
     .then(res => {
-      console.log(res.data)
-      const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst]
+      // console.log(res.data)
+      const datesNoYears = [
+        ...res.data.dates_precip,
+        ...res.data.dates_precip_fcst,
+      ]
+      const dates = datesNoYears.map(d =>
+        new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
+      )
       let pcpns = [...res.data.precip, ...res.data.precip_fcst]
       const pets = [...res.data.pet, ...res.data.pet_fcst]
       const hasUserWatered = new Array(dates.length).fill(false)
@@ -47,18 +53,29 @@ export const addRemoveWater = (lawn, idx) => {
   let { sprinklerMinutes, sprinklerRate } = lawnCopy
   let { pcpns, hasUserWatered } = lawnCopy.data
 
-  const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
-
+  const amountOfWater = (sprinklerRate * sprinklerMinutes) / 60
+  console.log(amountOfWater)
   if (hasUserWatered[idx] === false) {
     hasUserWatered[idx] = true
-    pcpns[idx] = pcpns[idx] + threshold
+    pcpns[idx] = pcpns[idx] + amountOfWater
   } else {
     hasUserWatered[idx] = false
-    pcpns[idx] = pcpns[idx] - threshold
+    pcpns[idx] = pcpns[idx] - amountOfWater
   }
 
-  console.log(lawnCopy)
   return lawnCopy
+}
+
+export const calculateDomain = results => {
+  const min = Math.min(...results.map(d => d.bar))
+  const max = Math.max(...results.map(d => d.bar))
+
+  const absMin = Math.abs(min)
+  const absMax = Math.abs(max)
+
+  const dom = Math.max(absMin, absMax)
+  // console.log(`Min: ${min}, Max: ${max}, Domain: ${dom + dom * 0.6}`)
+  return +(dom + dom * 0.6).toFixed(2)
 }
 
 export const mainFunction = lawn => {
@@ -68,12 +85,11 @@ export const mainFunction = lawn => {
   const res = runWaterDeficitModel(pcpns, pets)
   const { deficitDaily } = res
 
-  const year = new Date().getFullYear()
   const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
 
   return dates.map((date, i) => {
     return {
-      date: new Date(`${date}/${year}`).toLocaleDateString(),
+      date,
       deficit: deficitDaily[i],
       threshold: threshold,
       shouldWater: deficitDaily[i] < threshold,

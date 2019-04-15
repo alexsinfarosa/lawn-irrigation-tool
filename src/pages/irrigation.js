@@ -55,6 +55,7 @@ const IrrigationPage = () => {
             to="/sprinkler"
             variant="contained"
             color="primary"
+            disabled={lawn.lat ? false : true}
             onClick={async () => {
               setLoading(true)
 

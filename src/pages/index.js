@@ -5,10 +5,16 @@ import Box from "@material-ui/core/Box"
 import { window } from "browser-monads"
 
 import CompaniesLogos from "../components/companiesLogos"
-
 import RoundedButton from "../components/styled/roundedButton"
+import Loading from "../components/loading"
+
+import AppContext from "../appContext"
 
 export default function App() {
+  const { loading } = React.useContext(AppContext)
+
+  if (loading) return <Loading />
+
   return (
     <Container maxWidth="sm">
       <Box my={4} display="flex" flexDirection="column" alignItems="center">

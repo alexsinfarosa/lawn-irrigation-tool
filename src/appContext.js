@@ -6,11 +6,13 @@ import { window } from "browser-monads"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
+// import uuidv5 from "uuid"
+
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
-const initialLawn = ls => {
-  if (ls.length === 0) {
+const initialLawn = lawns => {
+  if (lawns.length === 0) {
     return {
       address: "",
       lat: null,
@@ -26,7 +28,7 @@ const initialLawn = ls => {
       data: [],
     }
   } else {
-    return ls[0]
+    return lawns[0]
   }
 }
 
@@ -73,8 +75,9 @@ function readFromLS() {
   const lsRef = window.localStorage.getItem(lsKey)
   if (lsRef !== null) {
     return JSON.parse(lsRef)
+  } else {
+    return []
   }
-  return []
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)
@@ -83,7 +86,7 @@ function removeAllLS() {
 // Local Storage -------------------------------------------
 
 const AppProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [lawns, setLawns] = useState(readFromLS())
 
   // ADD Lawn -------------------------
@@ -122,19 +125,23 @@ const AppProvider = ({ children }) => {
     setLawns(lawnsCopy)
   }
 
-  const [lawn, globalDispatch] = useReducer(reducer, initialLawn(readFromLS()))
+  const [lawn, globalDispatch] = useReducer(reducer, initialLawn(lawns))
+
   // Make sure the data array and the forecast object are not empy
   const hasDataAndForecast =
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
+    // console.log("one")
     if (readFromLS().length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
       navigate("/lawn")
+      setLoading(false)
     }
   }, [])
 
   React.useEffect(() => {
+    // console.log("two")
     if (lawn.updated !== null) {
       updateDataAndForecast(lawn)
     }
@@ -153,7 +160,7 @@ const AppProvider = ({ children }) => {
 
       if (Object.keys(forecast).length !== 0 && data.length !== 0) {
         lawnCopy.forecast = forecast
-        // hasUserWatered should not be updated since it containes user data
+        // hasUserWatered is not updated since it containes user data
         lawnCopy.data.dates = data.dates
         lawnCopy.data.pcpns = data.pcpns
         lawnCopy.data.pets = data.pets

@@ -136,8 +136,8 @@ const AppProvider = ({ children }) => {
     if (readFromLS().length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
       navigate("/lawn")
-      setLoading(false)
     }
+    setLoading(false)
   }, [])
 
   React.useEffect(() => {

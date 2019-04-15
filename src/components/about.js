@@ -4,6 +4,10 @@ import { makeStyles } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
+import Loading from "../components/loading"
+
+import AppContext from "../appContext"
+
 const useStyles = makeStyles(theme => ({
   li: {
     fontSize: "0.8rem",
@@ -16,6 +20,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function AboutPage() {
   const classes = useStyles()
+
+  const { loading } = React.useContext(AppContext)
+
+  if (loading) return <Loading />
   return (
     <Box px={2}>
       <Typography variant="h6">

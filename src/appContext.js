@@ -129,6 +129,7 @@ const AppProvider = ({ children }) => {
 
   React.useEffect(() => {
     if (readFromLS().length > 0) {
+      lawns.map(lawn => updateDataAndForecast(lawn))
       navigate("/lawn")
     }
   }, [])
@@ -142,8 +143,8 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
 
-    if (minutes > 720) {
-      // console.log("Fetching forecast and PET data...")
+    if (minutes > 60) {
+      console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

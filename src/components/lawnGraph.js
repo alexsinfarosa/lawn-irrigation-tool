@@ -209,7 +209,7 @@ export default function LawnGraph({ lawn }) {
         {index === 2 && !isWaterAllowed(lawn.streetNumber) && (
           <FontAwesomeIcon
             icon={["fa", "tint-slash"]}
-            color={theme.palette.grey[700]}
+            color={theme.palette.grey[400]}
           />
         )}
 

@@ -74,7 +74,7 @@ export const isWaterAllowed = streetNumber => {
     if (isDayEven === isStreetNumberEven) return true
     return false
   } else {
-    return false
+    return true
   }
 }
 

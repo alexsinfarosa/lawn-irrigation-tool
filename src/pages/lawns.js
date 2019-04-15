@@ -52,13 +52,19 @@ function reducer(state, action) {
   }
 }
 
-const Primary = ({ address, stateId, lawnId, theme }) => {
+const Primary = ({ address, stateId, lawnId, theme, todayObj }) => {
   return (
     <Box display="flex" alignItems="center">
       <FontAwesomeIcon
         icon={["fa", "check"]}
         size="sm"
-        color={stateId === lawnId ? theme.palette.primary.dark : "#fff"}
+        color={
+          stateId === lawnId
+            ? todayObj.shouldWater
+              ? theme.palette.background.deficit
+              : theme.palette.background.noDeficit
+            : "#fff"
+        }
         style={{ marginRight: 5 }}
       />
       <Typography variant="subtitle1" color="inherit">
@@ -345,6 +351,7 @@ const ExpansionHeader = ({ lawn, theme, unselected, stateId, todayObj }) => {
         stateId={stateId}
         lawnId={lawn.id}
         theme={theme}
+        todayObj={todayObj}
       />
 
       <Box display="flex" mt={1} alignItems="center">

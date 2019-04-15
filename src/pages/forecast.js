@@ -6,7 +6,7 @@ import Navigation from "../components/navigation"
 import { MainContainer } from "../components/styled/sharedComponents"
 import Loading from "../components/loading"
 
-import { useTheme } from "@material-ui/styles"
+import { makeStyles, useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
@@ -16,8 +16,18 @@ import format from "date-fns/format"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import AppContext from "../appContext"
 
+const useStyles = makeStyles(theme => ({
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    height: "calc(100% - 230px)",
+  },
+}))
+
 const ForecastPage = () => {
   const theme = useTheme()
+  const classes = useStyles()
+
   const { loading, lawn } = React.useContext(AppContext)
   const { daily, currently } = lawn.forecast
 
@@ -34,6 +44,7 @@ const ForecastPage = () => {
             alignItems="center"
             justifyContent="center"
             mb={2}
+            height="100px"
           >
             <Box
               display="flex"
@@ -66,6 +77,7 @@ const ForecastPage = () => {
             mb={3}
             style={{ borderLeft: `4px solid ${theme.palette.secondary.main}` }}
             mx={2}
+            height="80px"
           >
             <Box pl={1}>
               <Typography variant="h6" color="secondary">
@@ -78,10 +90,11 @@ const ForecastPage = () => {
             </Box>
           </Box>
 
-          <Box px={2}>
+          <Box px={2} className={classes.main}>
             {daily.data.map(day => {
               return (
                 <Box
+                  flexGrow={1}
                   key={day.time}
                   mb={1}
                   py={"0.5rem"}

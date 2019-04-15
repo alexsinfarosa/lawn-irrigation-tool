@@ -128,7 +128,9 @@ const LawnsPage = () => {
     <Layout>
       <SEO title="Lawns Page" />
       <MainContainer>
+        {/* LOGOS */}
         <CompaniesLogos />
+
         {/* TOP BUTTONS */}
         <Box
           mb={4}
@@ -330,9 +332,7 @@ const LawnsPage = () => {
         </Dialog>
       </MainContainer>
 
-      <Box mx={-2}>
-        <Navigation />
-      </Box>
+      <Navigation />
     </Layout>
   )
 }

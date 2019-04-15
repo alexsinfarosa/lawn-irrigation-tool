@@ -11,7 +11,7 @@ const Nav = styled.nav`
   align-items: flex-start;
   background: #fafafa;
   height: 80px;
-  padding: 8px 16px 16px;
+  padding: 8px 16px;
   width: 100%;
 `
 

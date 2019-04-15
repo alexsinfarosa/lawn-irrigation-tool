@@ -9,6 +9,7 @@ const CompaniesLogos = () => {
   return (
     <Box
       mb={4}
+      px={2}
       width="100%"
       display="flex"
       justifyContent="space-between"

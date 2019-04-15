@@ -65,6 +65,7 @@ const ForecastPage = () => {
           <Box
             mb={3}
             style={{ borderLeft: `4px solid ${theme.palette.secondary.main}` }}
+            mx={2}
           >
             <Box pl={1}>
               <Typography variant="h6" color="secondary">
@@ -77,7 +78,7 @@ const ForecastPage = () => {
             </Box>
           </Box>
 
-          <Box>
+          <Box px={2}>
             {daily.data.map(day => {
               return (
                 <Box
@@ -132,9 +133,7 @@ const ForecastPage = () => {
           </Box>
         </MainContainer>
 
-        <Box mx={-2}>
-          <Navigation />
-        </Box>
+        <Navigation />
       </Layout>
     )
   } else {

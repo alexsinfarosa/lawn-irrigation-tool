@@ -1,15 +1,12 @@
 import React from "react"
 
-// import { makeStyles } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
-// import Box from "@material-ui/core/Box"
-
-// const useStyles = makeStyles(theme => ({}))
+import Box from "@material-ui/core/Box"
 
 export default function HowToUseApp() {
   // const classes = useStyles()
   return (
-    <>
+    <Box px={2}>
       <Typography variant="h6" color="secondary" gutterBottom>
         Top Bar
       </Typography>
@@ -85,6 +82,6 @@ export default function HowToUseApp() {
         amount of water is calculated by the rate of the sprinkler head and the
         amount of time, in minutes that it runs.
       </Typography>
-    </>
+    </Box>
   )
 }

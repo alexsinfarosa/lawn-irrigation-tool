@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 export default function AboutPage() {
   const classes = useStyles()
   return (
-    <>
+    <Box px={2}>
       <Typography variant="h6">
         <Box mb={4} color="secondary.dark" fontWeight={500}>
           Welcome to the Cornell University Northeast Regional Climate Center’s
@@ -96,6 +96,6 @@ export default function AboutPage() {
         check that your system is functioning correctly, at least annually and
         with the help of a professional irrigation contractor.
       </Typography>
-    </>
+    </Box>
   )
 }

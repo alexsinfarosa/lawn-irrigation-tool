@@ -7,8 +7,6 @@ import { MainContainer } from "../components/styled/sharedComponents"
 import Loading from "../components/loading"
 import LawnGraph from "../components/lawnGraph"
 
-import Box from "@material-ui/core/Box"
-
 import AppContext from "../appContext"
 
 const LawnPage = () => {
@@ -23,9 +21,7 @@ const LawnPage = () => {
         {lawn.id !== null && <LawnGraph lawn={lawn} />}
       </MainContainer>
 
-      <Box mx={-2}>
-        <Navigation />
-      </Box>
+      <Navigation />
     </Layout>
   )
 }

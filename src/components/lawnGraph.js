@@ -34,6 +34,8 @@ const useStyles = makeStyles(theme => ({
   graphWrapper: {
     width: "100%",
     height: `calc(100% - 120px)`,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
 }))
 
@@ -57,7 +59,7 @@ export default function LawnGraph({ lawn }) {
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
   const domain = calculateDomain(reversed)
 
-  console.log(reversed)
+  // console.log(reversed)
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
@@ -65,7 +67,7 @@ export default function LawnGraph({ lawn }) {
 
   // determine index of the clicked drop icon ------
   function determineIdx(date) {
-    console.log(results.findIndex(d => d.date === date))
+    // console.log(results.findIndex(d => d.date === date))
     return results.findIndex(d => d.date === date)
   }
 

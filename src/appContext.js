@@ -72,13 +72,7 @@ function writeToLS(item) {
   window.localStorage.setItem(lsKey, JSON.stringify(item))
 }
 function readFromLS() {
-  const lsRef = window.localStorage.getItem(lsKey)
-  if (lsRef !== null) {
-    return JSON.parse(lsRef)
-    // return []
-  } else {
-    return []
-  }
+  return JSON.parse(window.localStorage.getItem(lsKey)) || null
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)
@@ -88,7 +82,7 @@ function removeAllLS() {
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
-  const [lawns, setLawns] = useState(readFromLS())
+  const [lawns, setLawns] = useState(readFromLS)
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
@@ -134,9 +128,8 @@ const AppProvider = ({ children }) => {
 
   React.useEffect(() => {
     // console.log("one")
-    if (readFromLS().length > 0) {
+    if (lawns.length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
-      navigate("/lawn")
     }
     setLoading(false)
   }, [])

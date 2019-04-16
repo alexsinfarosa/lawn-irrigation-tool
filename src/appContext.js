@@ -6,7 +6,7 @@ import { window } from "browser-monads"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
-// import uuidv5 from "uuid"
+import uuidv5 from "uuid"
 
 const AppContext = createContext({})
 
@@ -131,9 +131,14 @@ const AppProvider = ({ children }) => {
     // console.log("one")
     if (lawns.length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
-      // navigate("/lawn")
+      navigate("/lawn")
     } else {
-      // navigate("/")
+      // console.log("No local storage. First Time...")
+      const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
+      if (userIdRef === null) {
+        window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
+      }
+      navigate("/")
     }
     setLoading(false)
   }, [])

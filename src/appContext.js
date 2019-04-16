@@ -72,7 +72,7 @@ function writeToLS(item) {
   window.localStorage.setItem(lsKey, JSON.stringify(item))
 }
 function readFromLS() {
-  return JSON.parse(window.localStorage.getItem(lsKey)) || null
+  return JSON.parse(window.localStorage.getItem(lsKey)) || []
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)

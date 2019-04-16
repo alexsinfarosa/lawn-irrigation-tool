@@ -4,6 +4,8 @@ export const GridContainer = styled.div`
   display: grid;
   height: 100vh;
   grid-template-rows: 60px auto 80px;
+  padding-left: 16px;
+  padding-right: 16px;
 `
 
 export const MainContainer = styled.div`

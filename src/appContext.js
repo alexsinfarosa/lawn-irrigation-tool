@@ -75,6 +75,7 @@ function readFromLS() {
   const lsRef = window.localStorage.getItem(lsKey)
   if (lsRef !== null) {
     return JSON.parse(lsRef)
+    // return []
   } else {
     return []
   }

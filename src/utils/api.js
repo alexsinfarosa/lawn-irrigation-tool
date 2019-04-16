@@ -99,12 +99,17 @@ export const mainFunction = lawn => {
 
   const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
 
+  const today = new Date().toLocaleDateString()
+
   return dates.map((date, i) => {
     return {
       date,
       deficit: deficitDaily[i],
       threshold: threshold,
-      shouldWater: deficitDaily[i] < threshold,
+      shouldWater:
+        date === today
+          ? deficitDaily[i] < threshold && deficitDaily[i + 2] < threshold
+          : deficitDaily[i] < threshold,
       hasUserWatered: hasUserWatered[i],
       pcpn: pcpns[i],
       bar: deficitDaily[i] - threshold,

@@ -131,9 +131,9 @@ const AppProvider = ({ children }) => {
     // console.log("one")
     if (lawns.length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
-      navigate("/lawn")
+      // navigate("/lawn")
     } else {
-      navigate("/")
+      // navigate("/")
     }
     setLoading(false)
   }, [])

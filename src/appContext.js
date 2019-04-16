@@ -120,6 +120,7 @@ const AppProvider = ({ children }) => {
     setLawns(lawnsCopy)
   }
 
+  // State
   const [lawn, globalDispatch] = useReducer(reducer, initialLawn(lawns))
 
   // Make sure the data array and the forecast object are not empy

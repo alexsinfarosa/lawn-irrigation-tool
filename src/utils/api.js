@@ -87,7 +87,7 @@ export const calculateDomain = results => {
 
   const dom = Math.max(absMin, absMax)
   // console.log(`Min: ${min}, Max: ${max}, Domain: ${dom + dom * 0.8}`)
-  return +(dom + dom * 0.8).toFixed(2)
+  return dom + dom * 1.1
 }
 
 export const mainFunction = lawn => {

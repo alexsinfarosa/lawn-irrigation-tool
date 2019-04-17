@@ -101,7 +101,7 @@ export const StyledButton = styled(Link)`
       css`
         cursor: default;
         background: #fafafa;
-        color: rgba(0, 0, 0, 0.47);
+        color: rgba(0, 0, 0, 0.67);
       `}
   }
 `

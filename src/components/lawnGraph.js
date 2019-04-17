@@ -4,8 +4,6 @@ import { makeStyles, useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
-// import { window } from "browser-monads"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   ResponsiveContainer,
@@ -59,7 +57,8 @@ export default function LawnGraph({ lawn }) {
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
   const domain = calculateDomain(reversed)
 
-  // console.log(reversed)
+  console.log(reversed)
+  console.log(domain)
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
@@ -74,6 +73,7 @@ export default function LawnGraph({ lawn }) {
   // x-axix -----------------------------------
   const XaxisLabel = props => {
     const { x, y, index } = props
+    console.log(index)
     const translate = `translate(${x - 10},${y + 3})`
     return (
       <>
@@ -280,9 +280,8 @@ export default function LawnGraph({ lawn }) {
           >
             {/* X-axis */}
             <XAxis
-              dataKey="deficit"
+              dataKey="bar"
               type="number"
-              domain={[-domain, "auto"]}
               tick={<XaxisLabel />}
               tickCount={3}
               stroke={theme.palette.grey[300]}

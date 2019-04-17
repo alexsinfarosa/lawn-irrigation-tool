@@ -253,27 +253,25 @@ const SprinklerPage = () => {
           </Box>
         </Box>
 
-        <Box mx={-2} height="80px">
-          <StyledButton
-            to={hasDataAndForecast ? "/lawn/" : "/sprinkler/"}
-            disabled={hasDataAndForecast ? false : true}
-            onClick={() => {
-              const now = Date.now()
-              const updatedLawn = {
-                ...lawn,
-                sprinklerType: state.name,
-                sprinklerRate: state.rate,
-                sprinklerMinutes: state.minutes,
-                id: now,
-                updated: now,
-              }
-              globalDispatch({ type: "setSprinkler", id: now, ...state })
-              addLawn(updatedLawn)
-            }}
-          >
-            Create Entry
-          </StyledButton>
-        </Box>
+        <StyledButton
+          to={hasDataAndForecast ? "/lawn/" : "/sprinkler/"}
+          disabled={hasDataAndForecast ? false : true}
+          onClick={() => {
+            const now = Date.now()
+            const updatedLawn = {
+              ...lawn,
+              sprinklerType: state.name,
+              sprinklerRate: state.rate,
+              sprinklerMinutes: state.minutes,
+              id: now,
+              updated: now,
+            }
+            globalDispatch({ type: "setSprinkler", id: now, ...state })
+            addLawn(updatedLawn)
+          }}
+        >
+          Create Entry
+        </StyledButton>
       </GridContainer>
     </Layout>
   )

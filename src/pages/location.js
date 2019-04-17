@@ -257,21 +257,19 @@ const LocationPage = () => {
           </Box>
         </Box>
 
-        <Box mx={-2}>
-          <StyledButton
-            to={!loading && state.lat ? "/irrigation/" : "/location/"}
-            disabled={!loading && state.lat ? false : true}
-            onClick={async () => {
-              setLoading(true)
-              const forecast = await fetchForecastData(state.lat, state.lng)
-              globalDispatch({ type: "setLocation", ...state })
-              globalDispatch({ type: "setForecast", forecast })
-              setLoading(false)
-            }}
-          >
-            Continue
-          </StyledButton>
-        </Box>
+        <StyledButton
+          to={!loading && state.lat ? "/irrigation/" : "/location/"}
+          disabled={!loading && state.lat ? false : true}
+          onClick={async () => {
+            setLoading(true)
+            const forecast = await fetchForecastData(state.lat, state.lng)
+            globalDispatch({ type: "setLocation", ...state })
+            globalDispatch({ type: "setForecast", forecast })
+            setLoading(false)
+          }}
+        >
+          Continue
+        </StyledButton>
       </GridContainer>
     </Layout>
   )

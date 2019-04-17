@@ -64,10 +64,11 @@ export const StyledLink = styled(Link)`
 `
 
 export const StyledButton = styled(Link)`
+  height: 80px;
   text-decoration: none;
   padding: 24px 80px;
   text-transform: uppercase;
-  background: ${indigo[200]};
+  background: ${indigo[300]};
   color: #fff;
   text-align: center;
   width: 100%;
@@ -88,7 +89,7 @@ export const StyledButton = styled(Link)`
 
   :hover {
     color: #fff;
-    background: ${indigo[300]};
+    background: ${indigo[500]};
     transition: all 0.3s ease 0s;
     ${props =>
       props.disabled &&

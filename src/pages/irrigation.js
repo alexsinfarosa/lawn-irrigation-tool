@@ -51,29 +51,27 @@ const IrrigationPage = () => {
           </Box>
         </Box>
 
-        <Box mx={-2} height="80px">
-          <StyledButton
-            to={lawn.lat ? "/sprinkler/" : "/irrigation/"}
-            disabled={lawn.lat ? false : true}
-            onClick={async () => {
-              setLoading(true)
+        <StyledButton
+          to={lawn.lat ? "/sprinkler/" : "/irrigation/"}
+          disabled={lawn.lat ? false : true}
+          onClick={async () => {
+            setLoading(true)
 
-              const petData = await fetchPETData(lawn.lat, lawn.lng)
-              globalDispatch({ type: "setPETData", petData })
+            const petData = await fetchPETData(lawn.lat, lawn.lng)
+            globalDispatch({ type: "setPETData", petData })
 
-              globalDispatch({
-                type: "setDate",
-                selectedDate:
-                  selectedDate === null
-                    ? null
-                    : selectedDate.toLocaleDateString(),
-              })
-              setLoading(false)
-            }}
-          >
-            Continue
-          </StyledButton>
-        </Box>
+            globalDispatch({
+              type: "setDate",
+              selectedDate:
+                selectedDate === null
+                  ? null
+                  : selectedDate.toLocaleDateString(),
+            })
+            setLoading(false)
+          }}
+        >
+          Continue
+        </StyledButton>
       </GridContainer>
     </Layout>
   )

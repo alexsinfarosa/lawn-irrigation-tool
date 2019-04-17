@@ -42,9 +42,7 @@ export default function App() {
           </Typography>
         </Box>
 
-        <Box>
-          <StyledLink to="/location/">Get Started</StyledLink>
-        </Box>
+        <StyledLink to="/location/">Get Started</StyledLink>
       </Box>
     </Container>
   )

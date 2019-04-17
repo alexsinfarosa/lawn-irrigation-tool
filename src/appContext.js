@@ -72,7 +72,8 @@ function writeToLS(item) {
   window.localStorage.setItem(lsKey, JSON.stringify(item))
 }
 function readFromLS() {
-  return JSON.parse(window.localStorage.getItem(lsKey)) || []
+  // return JSON.parse(window.localStorage.getItem(lsKey)) || []
+  return []
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)
@@ -138,7 +139,6 @@ const AppProvider = ({ children }) => {
       if (userIdRef === null) {
         window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
       }
-      // navigate("/")
     }
     setLoading(false)
   }, [])

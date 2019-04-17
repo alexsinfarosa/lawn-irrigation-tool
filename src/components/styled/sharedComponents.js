@@ -48,17 +48,18 @@ export const StyledLink = styled(Link)`
   border-radius: 50px;
   text-transform: uppercase;
   background: #ffffff;
-  display: inline-block;
+  display: block;
   font-size: 1.1rem;
   font-family: roboto;
   color: ${indigo[300]};
+
   ::after {
     content: " →";
   }
 
   :hover {
     color: #fff;
-    background: ${indigo[300]};
+    background: ${indigo[500]};
     transition: all 0.2s ease 0s;
   }
 `
@@ -67,6 +68,8 @@ export const StyledButton = styled(Link)`
   height: 80px;
   text-decoration: none;
   padding: 24px 80px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   text-transform: uppercase;
   background: ${indigo[300]};
   color: #fff;
@@ -75,12 +78,14 @@ export const StyledButton = styled(Link)`
   display: block;
   font-size: 1.1rem;
   font-family: roboto;
+  letter-spacing: 1px;
+  line-height: 10px;
 
   ${props =>
     props.disabled &&
     css`
       background: #fafafa;
-      color: rgba(0, 0, 0, 0.47);
+      color: rgba(0, 0, 0, 0.67);
     `}
 
   ::after {

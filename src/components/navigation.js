@@ -30,11 +30,15 @@ const active = {
 
 const Navigation = () => {
   const path = window.location.pathname
+  const lastURLSegment = path.split("/")
+  const route = lastURLSegment[lastURLSegment.length - 2]
+  console.log(route)
+
   return (
     <Nav>
       <LinkStyled to="/info/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/info/" ? "fa" : "fal", "info-circle"]}
+          icon={[route === "info" ? "fa" : "fal", "info-circle"]}
           size="lg"
         />
         <Typography variant="caption">Info</Typography>
@@ -42,7 +46,7 @@ const Navigation = () => {
 
       <LinkStyled to="/lawn/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/lawn/" ? "fa" : "fal", "home"]}
+          icon={[route === "lawn" ? "fa" : "fal", "home"]}
           size="lg"
         />
         <Typography variant="caption">Lawn</Typography>
@@ -50,7 +54,7 @@ const Navigation = () => {
 
       <LinkStyled to="/forecast/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/forecast/" ? "fa" : "fal", "cloud"]}
+          icon={[route === "forecast" ? "fa" : "fal", "cloud"]}
           size="lg"
         />
         <Typography variant="caption">Forecast</Typography>
@@ -58,7 +62,7 @@ const Navigation = () => {
 
       <LinkStyled to="/lawns/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/lawns/" ? "fa" : "fal", "th-list"]}
+          icon={[route === "lawns" ? "fa" : "fal", "th-list"]}
           size="lg"
         />
         <Typography variant="caption">Lawns</Typography>

@@ -78,6 +78,18 @@ export const isWaterAllowed = streetNumber => {
   }
 }
 
+export const calculateDomain = results => {
+  const min = Math.min(...results.map(d => d.bar))
+  const max = Math.max(...results.map(d => d.bar))
+
+  const absMin = Math.abs(min)
+  const absMax = Math.abs(max)
+
+  const dom = Math.max(absMin, absMax)
+  // console.log(`Min: ${min}, Max: ${max}, Domain: ${dom + dom * 0.8}`)
+  return +(dom + dom * 0.6).toFixed(2)
+}
+
 export const mainFunction = lawn => {
   const { sprinklerRate, sprinklerMinutes } = lawn
   const { dates, pcpns, pets, hasUserWatered } = lawn.data

@@ -16,7 +16,7 @@ import {
 } from "recharts"
 
 // API -------------------------------
-import { mainFunction, isWaterAllowed } from "../utils/api"
+import { mainFunction, isWaterAllowed, calculateDomain } from "../utils/api"
 
 // utils -------------------------------
 import reverse from "lodash.reverse"
@@ -55,6 +55,7 @@ export default function LawnGraph({ lawn }) {
 
   // results sliceed and reversed for the graph ---
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
+  const domain = calculateDomain(reversed)
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
@@ -69,6 +70,7 @@ export default function LawnGraph({ lawn }) {
   // x-axix -----------------------------------
   const XaxisLabel = props => {
     const { x, y, index } = props
+    console.log(props)
     const translate = `translate(${x - 10},${y + 3})`
     return (
       <>
@@ -90,7 +92,7 @@ export default function LawnGraph({ lawn }) {
             </svg>
           </g>
         )}
-        {index === 2 && (
+        {index === 1 && (
           <g transform={translate}>
             <text
               x={-32}
@@ -155,7 +157,7 @@ export default function LawnGraph({ lawn }) {
 
     return (
       <g>
-        <text x={x - 70} y={y} dy={5} fill={theme.palette.grey[700]}>
+        <text x={x - 80} y={y} dy={5} fill={theme.palette.grey[700]}>
           {text(day)}
         </text>
       </g>
@@ -271,12 +273,13 @@ export default function LawnGraph({ lawn }) {
             layout="vertical"
             data={reversed}
             maxBarSize={15}
-            margin={{ top: 0, right: 20, left: 20, bottom: 10 }}
+            margin={{ top: 0, right: 20, left: 30, bottom: 10 }}
           >
             {/* X-axis */}
             <XAxis
               dataKey="bar"
               type="number"
+              domain={[-domain, domain]}
               tick={<XaxisLabel />}
               tickCount={3}
               stroke={theme.palette.grey[300]}

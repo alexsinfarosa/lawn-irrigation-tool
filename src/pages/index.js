@@ -42,16 +42,9 @@ export default function App() {
           </Typography>
         </Box>
 
-        {/* <RoundedButton
-          to="/location/"
-          variant="outlined"
-          color="primary"
-          size="large"
-        >
-          Get Started
-        </RoundedButton> */}
-
-        <StyledLink to="/location/">Get Started</StyledLink>
+        <Box>
+          <StyledLink to="/location/">Get Started</StyledLink>
+        </Box>
       </Box>
     </Container>
   )

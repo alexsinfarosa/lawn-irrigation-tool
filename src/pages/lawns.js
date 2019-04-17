@@ -1,6 +1,6 @@
 import React from "react"
-import { navigate } from "@reach/router"
-import { Link } from "gatsby"
+
+import { Link, navigate } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -123,7 +123,7 @@ const LawnsPage = () => {
       setExpanded(isExpanded ? panel : false)
     } else {
       globalDispatch({ type: "setLawn", lawn: selectedLawn })
-      navigate("/lawn")
+      navigate("/lawn/")
     }
   }
   // Loading --------------------------------------------

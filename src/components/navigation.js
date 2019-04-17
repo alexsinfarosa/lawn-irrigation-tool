@@ -32,7 +32,6 @@ const Navigation = () => {
   const path = window.location.pathname
   const lastURLSegment = path.split("/")
   const route = lastURLSegment[lastURLSegment.length - 2]
-  console.log(route)
 
   return (
     <Nav>

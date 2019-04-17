@@ -23,7 +23,7 @@ import reverse from "lodash.reverse"
 import format from "date-fns/format"
 import subDays from "date-fns/subDays"
 import addDays from "date-fns/addDays"
-import { addRemoveWater, calculateDomain } from "../utils/api"
+import { addRemoveWater } from "../utils/api"
 
 // Context ------------------------------
 import AppContext from "../appContext"
@@ -55,10 +55,6 @@ export default function LawnGraph({ lawn }) {
 
   // results sliceed and reversed for the graph ---
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
-  const domain = calculateDomain(reversed)
-
-  console.log(reversed)
-  console.log(domain)
 
   // forecast ------------------------------------
   const forecast = lawn.forecast.daily.data.slice(1, 3)
@@ -73,7 +69,6 @@ export default function LawnGraph({ lawn }) {
   // x-axix -----------------------------------
   const XaxisLabel = props => {
     const { x, y, index } = props
-    console.log(index)
     const translate = `translate(${x - 10},${y + 3})`
     return (
       <>

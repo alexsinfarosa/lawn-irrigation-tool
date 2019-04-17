@@ -14,8 +14,9 @@ import Box from "@material-ui/core/Box"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Header from "../components/header"
-import ButtonLink from "../components/styled/buttonLink"
+
 import { GridContainer } from "../components/styled/sharedComponents"
+import { StyledButton } from "../components/styled/sharedComponents"
 
 // GOOGLE API
 import PlacesAutocomplete, {
@@ -257,10 +258,8 @@ const LocationPage = () => {
         </Box>
 
         <Box mx={-2}>
-          <ButtonLink
-            to="/irrigation/"
-            variant="contained"
-            color="primary"
+          <StyledButton
+            to={!loading && state.lat ? "/irrigation/" : "/location/"}
             disabled={!loading && state.lat ? false : true}
             onClick={async () => {
               setLoading(true)
@@ -270,8 +269,8 @@ const LocationPage = () => {
               setLoading(false)
             }}
           >
-            Continue &rarr;
-          </ButtonLink>
+            Continue
+          </StyledButton>
         </Box>
       </GridContainer>
     </Layout>

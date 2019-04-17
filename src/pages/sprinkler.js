@@ -14,8 +14,9 @@ import Box from "@material-ui/core/Box"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Header from "../components/header"
-import ButtonLink from "../components/styled/buttonLink"
+
 import { GridContainer } from "../components/styled/sharedComponents"
+import { StyledButton } from "../components/styled/sharedComponents"
 
 import ImageSprinkler from "../components/imgSprinkler"
 
@@ -253,11 +254,9 @@ const SprinklerPage = () => {
         </Box>
 
         <Box mx={-2} height="80px">
-          <ButtonLink
+          <StyledButton
+            to={hasDataAndForecast ? "/lawn/" : "/sprinkler/"}
             disabled={hasDataAndForecast ? false : true}
-            to="/lawn"
-            variant="contained"
-            color="primary"
             onClick={() => {
               const now = Date.now()
               const updatedLawn = {
@@ -273,7 +272,7 @@ const SprinklerPage = () => {
             }}
           >
             Create Entry
-          </ButtonLink>
+          </StyledButton>
         </Box>
       </GridContainer>
     </Layout>

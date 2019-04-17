@@ -5,8 +5,9 @@ import Box from "@material-ui/core/Box"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Header from "../components/header"
-import ButtonLink from "../components/styled/buttonLink"
+
 import { GridContainer } from "../components/styled/sharedComponents"
+import { StyledButton } from "../components/styled/sharedComponents"
 
 // iutils
 import { DatePicker } from "material-ui-pickers"
@@ -51,10 +52,8 @@ const IrrigationPage = () => {
         </Box>
 
         <Box mx={-2} height="80px">
-          <ButtonLink
-            to="/sprinkler/"
-            variant="contained"
-            color="primary"
+          <StyledButton
+            to={lawn.lat ? "/sprinkler/" : "/irrigation/"}
             disabled={lawn.lat ? false : true}
             onClick={async () => {
               setLoading(true)
@@ -72,8 +71,8 @@ const IrrigationPage = () => {
               setLoading(false)
             }}
           >
-            Continue &rarr;
-          </ButtonLink>
+            Continue
+          </StyledButton>
         </Box>
       </GridContainer>
     </Layout>

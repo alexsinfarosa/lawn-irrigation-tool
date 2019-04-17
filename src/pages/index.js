@@ -5,10 +5,10 @@ import Box from "@material-ui/core/Box"
 import { window } from "browser-monads"
 
 import CompaniesLogos from "../components/companiesLogos"
-import RoundedButton from "../components/styled/roundedButton"
+// import RoundedButton from "../components/styled/roundedButton"
 import Loading from "../components/loading"
-
 import AppContext from "../appContext"
+import { StyledLink } from "../components/styled/sharedComponents"
 
 export default function App() {
   const { loading } = React.useContext(AppContext)
@@ -42,14 +42,16 @@ export default function App() {
           </Typography>
         </Box>
 
-        <RoundedButton
+        {/* <RoundedButton
           to="/location/"
           variant="outlined"
           color="primary"
           size="large"
         >
           Get Started
-        </RoundedButton>
+        </RoundedButton> */}
+
+        <StyledLink to="/location/">Get Started</StyledLink>
       </Box>
     </Container>
   )

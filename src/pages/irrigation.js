@@ -52,7 +52,7 @@ const IrrigationPage = () => {
 
         <Box mx={-2} height="80px">
           <ButtonLink
-            to="/sprinkler"
+            to="/sprinkler/"
             variant="contained"
             color="primary"
             disabled={lawn.lat ? false : true}

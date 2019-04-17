@@ -91,7 +91,6 @@ const Secondary = ({ type, rate, time, unselected }) => {
 
 const LawnsPage = () => {
   const theme = useTheme()
-
   const sliderStyles = {
     borderColor: theme.palette.primary.main,
     height: 28,
@@ -154,20 +153,23 @@ const LawnsPage = () => {
               <FontAwesomeIcon icon="plus" size="lg" color="#fff" />
             </Fab>
           </Link>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={editing}
-                onChange={e => {
-                  if (!editing) {
-                    setExpanded(state.id)
-                  }
-                  setEditing(e.target.checked)
-                }}
-              />
-            }
-            label="Edit Lawn Parameters"
-          />
+
+          {lawn.id !== null && (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={editing}
+                  onChange={e => {
+                    if (!editing) {
+                      setExpanded(state.id)
+                    }
+                    setEditing(e.target.checked)
+                  }}
+                />
+              }
+              label="Edit Lawn Parameters"
+            />
+          )}
         </Box>
 
         {lawns.map(lawn => {

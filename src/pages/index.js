@@ -43,7 +43,7 @@ export default function App() {
         </Box>
 
         <RoundedButton
-          to="/location"
+          to="/location/"
           variant="outlined"
           color="primary"
           size="large"

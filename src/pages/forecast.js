@@ -33,10 +33,10 @@ const ForecastPage = () => {
 
   if (loading) return <Loading />
 
-  if (Object.keys(lawn.forecast).length !== 0) {
-    return (
-      <Layout>
-        <SEO title="Forecast Page" />
+  return (
+    <Layout>
+      <SEO title="Forecast Page" />
+      {Object.keys(lawn.forecast).length !== 0 ? (
         <MainContainer>
           <Box
             display="flex"
@@ -75,7 +75,9 @@ const ForecastPage = () => {
 
           <Box
             mb={3}
-            style={{ borderLeft: `4px solid ${theme.palette.secondary.main}` }}
+            style={{
+              borderLeft: `4px solid ${theme.palette.secondary.main}`,
+            }}
             mx={2}
             height="80px"
           >
@@ -145,13 +147,22 @@ const ForecastPage = () => {
             })}
           </Box>
         </MainContainer>
+      ) : (
+        <MainContainer>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+          >
+            <Typography variant="subtitle1">Create a new Lawn</Typography>
+          </Box>
+        </MainContainer>
+      )}
 
-        <Navigation />
-      </Layout>
-    )
-  } else {
-    return null
-  }
+      <Navigation />
+    </Layout>
+  )
 }
 
 export default ForecastPage

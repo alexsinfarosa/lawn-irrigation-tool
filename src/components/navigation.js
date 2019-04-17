@@ -32,25 +32,25 @@ const Navigation = () => {
   const path = window.location.pathname
   return (
     <Nav>
-      <LinkStyled to="/info" activeStyle={active}>
+      <LinkStyled to="/info/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/info" ? "fa" : "fal", "info-circle"]}
+          icon={[path === "/info/" ? "fa" : "fal", "info-circle"]}
           size="lg"
         />
         <Typography variant="caption">Info</Typography>
       </LinkStyled>
 
-      <LinkStyled to="/lawn" activeStyle={active}>
+      <LinkStyled to="/lawn/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/lawn" ? "fa" : "fal", "home"]}
+          icon={[path === "/lawn/" ? "fa" : "fal", "home"]}
           size="lg"
         />
         <Typography variant="caption">Lawn</Typography>
       </LinkStyled>
 
-      <LinkStyled to="/forecast" activeStyle={active}>
+      <LinkStyled to="/forecast/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/forecast" ? "fa" : "fal", "cloud"]}
+          icon={[path === "/forecast/" ? "fa" : "fal", "cloud"]}
           size="lg"
         />
         <Typography variant="caption">Forecast</Typography>
@@ -58,7 +58,7 @@ const Navigation = () => {
 
       <LinkStyled to="/lawns/" activeStyle={active}>
         <FontAwesomeIcon
-          icon={[path === "/lawns" ? "fa" : "fal", "th-list"]}
+          icon={[path === "/lawns/" ? "fa" : "fal", "th-list"]}
           size="lg"
         />
         <Typography variant="caption">Lawns</Typography>

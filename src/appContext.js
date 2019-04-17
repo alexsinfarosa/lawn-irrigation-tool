@@ -131,14 +131,14 @@ const AppProvider = ({ children }) => {
     // console.log("one")
     if (lawns.length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
-      navigate("/lawn")
+      // navigate("/lawn/")
     } else {
       // console.log("No local storage. First Time...")
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
         window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
       }
-      navigate("/")
+      // navigate("/")
     }
     setLoading(false)
   }, [])

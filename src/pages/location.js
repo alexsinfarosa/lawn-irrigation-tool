@@ -258,7 +258,7 @@ const LocationPage = () => {
 
         <Box mx={-2}>
           <ButtonLink
-            to="/irrigation"
+            to="/irrigation/"
             variant="contained"
             color="primary"
             disabled={!loading && state.lat ? false : true}

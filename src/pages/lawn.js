@@ -9,6 +9,9 @@ import LawnGraph from "../components/lawnGraph"
 
 import AppContext from "../appContext"
 
+import Typography from "@material-ui/core/Typography"
+import Box from "@material-ui/core/Box"
+
 const LawnPage = () => {
   const { lawn, loading } = React.useContext(AppContext)
 
@@ -17,9 +20,22 @@ const LawnPage = () => {
     <Layout>
       <SEO title="Lawn Page" />
 
-      <MainContainer>
-        {lawn.id !== null && <LawnGraph lawn={lawn} />}
-      </MainContainer>
+      {lawn.id !== null ? (
+        <MainContainer>
+          <LawnGraph lawn={lawn} />
+        </MainContainer>
+      ) : (
+        <MainContainer>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+          >
+            <Typography variant="subtitle1">Create a new Lawn</Typography>
+          </Box>
+        </MainContainer>
+      )}
 
       <Navigation />
     </Layout>

@@ -39,7 +39,10 @@ export const fetchPETData = async (lat, lng) => {
       )
       let pcpns = [...res.data.precip, ...res.data.precip_fcst]
       const pets = [...res.data.pet, ...res.data.pet_fcst]
-      const hasUserWatered = new Array(dates.length).fill(false)
+      const currentDate = new Date().toLocaleDateString()
+      const todayIdx = dates.findIndex(date => date === currentDate)
+      let hasUserWatered = new Array(dates.length).fill(false)
+      hasUserWatered[todayIdx] = undefined
 
       return { dates, pcpns, pets, hasUserWatered }
     })
@@ -55,7 +58,7 @@ export const addRemoveWater = (lawn, idx) => {
 
   const amountOfWater = (sprinklerRate * sprinklerMinutes) / 60
 
-  if (hasUserWatered[idx] === false) {
+  if (hasUserWatered[idx] === false || hasUserWatered[idx] === undefined) {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater
   } else {
@@ -93,7 +96,6 @@ export const calculateDomain = results => {
 export const mainFunction = lawn => {
   const { sprinklerRate, sprinklerMinutes } = lawn
   const { dates, pcpns, pets, hasUserWatered } = lawn.data
-
   const res = runWaterDeficitModel(pcpns, pets)
   const { deficitDaily } = res
 

@@ -53,6 +53,19 @@ export default function LawnGraph({ lawn }) {
   const todayIdx = results.findIndex(d => d.date === todayDate)
   const todayObj = results.find(d => d.date === todayDate)
 
+  React.useEffect(() => {
+    console.log("effect")
+    if (
+      todayObj.hasUserWatered === undefined &&
+      todayObj.shouldWater &&
+      lawn.irrigationDate !== todayDate &&
+      isWaterAllowed(lawn.streetNumber)
+    ) {
+      console.log("it is undefined")
+      updateLawn(addRemoveWater(lawn, todayIdx))
+    }
+  }, [])
+
   // results sliceed and reversed for the graph ---
   const reversed = reverse(results.slice(todayIdx - 7, todayIdx + 3))
   const domain = calculateDomain(reversed)
@@ -70,7 +83,6 @@ export default function LawnGraph({ lawn }) {
   // x-axix -----------------------------------
   const XaxisLabel = props => {
     const { x, y, index } = props
-    console.log(props)
     const translate = `translate(${x - 10},${y + 3})`
     return (
       <>

@@ -107,7 +107,8 @@ const LocationPage = () => {
         return getLatLng(results[0])
       })
       .then(({ lat, lng }) => {
-        if (!(lat >= 37.2 && lat <= 47.6) || !(lng >= -82.7 && lng <= -66.1)) {
+
+        if (!(lat >= 40.58284 && lat <= 40.91561) || !(lng >= -73.76567 && lng <= -73.42468)) {
           setErrorMessage("ZERO_RESULTS")
         } else {
           localDispatch({ type: "setLatLng", lat, lng })

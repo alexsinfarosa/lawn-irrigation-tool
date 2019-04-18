@@ -15,15 +15,14 @@ const CompaniesLogos = () => {
       justifyContent="space-between"
       alignItems="center"
       minHeight="70px"
+
     >
       <a
         href="http://www.nrcc.cornell.edu/"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <NRCCIcon
-          style={{ height: 70, width: 220}}
-        />
+        <NRCCIcon style={{ height: 70, }} />
       </a>
 
       <a
@@ -31,7 +30,7 @@ const CompaniesLogos = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <WaterIcon style={{ height: 70, 'width': 220 }} />
+        <WaterIcon style={{ height: 70, }} />
       </a>
     </Box>
   )

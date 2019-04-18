@@ -47,7 +47,7 @@ export default function LawnGraph({ lawn }) {
   // results data ---------------------------------
   let results = []
   results = mainFunction(lawn)
-  console.log(results)
+  results.map(d => console.log(d.date, d.deficit, d.shouldWater))
   // today utils ----------------------------------
   const todayDate = new Date().toLocaleDateString()
   const todayIdx = results.findIndex(d => d.date === todayDate)

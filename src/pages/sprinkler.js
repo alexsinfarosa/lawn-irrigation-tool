@@ -194,7 +194,10 @@ const SprinklerPage = () => {
                             type: "setSprinkler",
                             ...sprinklers[0],
                           })
-                        : localDispatch({ type: "setName", name: "Custom" })
+                        : localDispatch({
+                            type: "setName",
+                            name: "Custom Sprinkler Nozzle",
+                          })
                     }}
                   />
                 }

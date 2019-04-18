@@ -1,6 +1,6 @@
 import React from "react"
 
-import NRCCIcon from "../assets/nrcc-logo.svg"
+import NRCCIcon from "../assets/nrcc-logo-two-line.svg"
 import WaterIcon from "../assets/NY-Water.svg"
 
 import Box from "@material-ui/core/Box"
@@ -21,7 +21,9 @@ const CompaniesLogos = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <NRCCIcon style={{ height: 70, paddingTop: 6 }} />
+        <NRCCIcon
+          style={{ height: 70, width: 220}}
+        />
       </a>
 
       <a
@@ -29,7 +31,7 @@ const CompaniesLogos = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <WaterIcon style={{ height: 70 }} />
+        <WaterIcon style={{ height: 70, 'width': 220 }} />
       </a>
     </Box>
   )

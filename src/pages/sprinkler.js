@@ -98,8 +98,7 @@ const useStyles = makeStyles(theme => ({
   gridList: {
     flexWrap: "nowrap",
     width: "100%",
-    height: 240,
-    // background: "pink",
+    height: 250,
   },
 }))
 

@@ -17,16 +17,10 @@ export default function App() {
 
   return (
     <Container maxWidth="sm" style={{ padding: 0 }}>
-      <Box
-        my={4}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        bgcolor="pink"
-      >
+      <Box my={4} display="flex" flexDirection="column" alignItems="center">
         <CompaniesLogos />
 
-        <Box display="flex" justifyContent="center" mb={5}>
+        <Box display="flex" justifyContent="center" my={4}>
           <Box>
             <Typography variant="h4" component="h1" gutterBottom>
               Lawn...

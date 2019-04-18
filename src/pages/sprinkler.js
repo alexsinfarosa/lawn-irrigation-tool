@@ -24,6 +24,7 @@ import ImageSprinkler from "../components/imgSprinkler"
 import FixedSpray from "../images/fixedSpray-spr.png"
 import KcRotor from "../images/kcRotor-spr.png"
 import RotaryNozzle from "../images/rotaryNozzle-spr.png"
+import ManualNozzle from "../images/manual-nozzle-spr.png"
 
 // SLIDER ---------------------------------
 import Slider from "rc-slider"
@@ -35,24 +36,31 @@ import AppContext from "../appContext"
 // SPRINKLERS -----------------------------
 const sprinklers = [
   {
-    name: "Fixed Spray",
+    name: "Fixed Spray Nozzle",
     img: FixedSpray,
-    rate: 1.4, // in/hr
-    minutes: 20,
+    rate: 1.5, // in/hr
+    minutes: 19,
     isSelected: false,
   },
   {
-    name: "KC Rotor",
+    name: "Rotor Nozzle",
     img: KcRotor,
-    rate: 0.9, // in/hr
-    minutes: 20,
+    rate: 0.75, // in/hr
+    minutes: 28,
     isSelected: false,
   },
   {
-    name: "Rotary Nozzle",
+    name: "Hi Efficiency Nozzle",
     img: RotaryNozzle,
-    rate: 0.35, // in/hr
+    rate: 0.5, // in/hr
     minutes: 40,
+    isSelected: false,
+  },
+  {
+    name: "Manual Nozzle",
+    img: ManualNozzle,
+    rate: 1, // in/hr
+    minutes: 24,
     isSelected: false,
   },
 ]
@@ -91,6 +99,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "nowrap",
     width: "100%",
     height: 240,
+    // background: "pink",
   },
 }))
 
@@ -135,14 +144,15 @@ const SprinklerPage = () => {
           </Box>
 
           {/* Images */}
-          <Box display="flex" mx={-2} height="220px" mb={4}>
+          <Box display="flex" mx={-2} height="230px" mb={6}>
             <GridList className={classes.gridList} cols={1.3}>
               {sprinklers.map(sprinkler => {
                 const { name, img, isSelected } = sprinkler
                 return (
-                  <GridListTile key={name} style={{ height: "220px" }}>
+                  <GridListTile key={name} style={{ height: 232 }}>
                     <ImageSprinkler src={img} />
                     <GridListTileBar
+                      style={{ background: theme.palette.primary.main }}
                       title={name}
                       actionIcon={
                         <IconButton>
@@ -188,7 +198,7 @@ const SprinklerPage = () => {
                     }}
                   />
                 }
-                label="Custom Values"
+                label="Custom Sprinkler Nozzle"
               />
             </FormGroup>
           </Box>

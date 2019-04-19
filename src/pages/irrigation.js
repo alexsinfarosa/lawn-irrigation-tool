@@ -55,19 +55,22 @@ const IrrigationPage = () => {
           to={lawn.lat ? "/sprinkler/" : "/irrigation/"}
           disabled={lawn.lat ? false : true}
           onClick={async () => {
-            setLoading(true)
+            if (lawn.lat !== null) {
+              // console.log("irrigation")
+              setLoading(true)
 
-            const petData = await fetchPETData(lawn.lat, lawn.lng)
-            globalDispatch({ type: "setPETData", petData })
+              const petData = await fetchPETData(lawn.lat, lawn.lng)
+              globalDispatch({ type: "setPETData", petData })
 
-            globalDispatch({
-              type: "setDate",
-              selectedDate:
-                selectedDate === null
-                  ? null
-                  : selectedDate.toLocaleDateString(),
-            })
-            setLoading(false)
+              globalDispatch({
+                type: "setDate",
+                selectedDate:
+                  selectedDate === null
+                    ? null
+                    : selectedDate.toLocaleDateString(),
+              })
+              setLoading(false)
+            }
           }}
         >
           Continue

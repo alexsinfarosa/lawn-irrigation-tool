@@ -73,7 +73,6 @@ const InfoPage = () => {
           to={"/lawn/"}
           onClick={() => {
             setCountRef(countRef + 1)
-            setValue(0)
           }}
           style={{
             width: 250,

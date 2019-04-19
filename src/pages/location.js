@@ -107,8 +107,10 @@ const LocationPage = () => {
         return getLatLng(results[0])
       })
       .then(({ lat, lng }) => {
-
-        if (!(lat >= 40.58284 && lat <= 40.91561) || !(lng >= -73.76567 && lng <= -73.42468)) {
+        if (
+          !(lat >= 40.58284 && lat <= 40.91561) ||
+          !(lng >= -73.76567 && lng <= -73.42468)
+        ) {
           setErrorMessage("ZERO_RESULTS")
         } else {
           localDispatch({ type: "setLatLng", lat, lng })
@@ -262,11 +264,14 @@ const LocationPage = () => {
           to={!loading && state.lat ? "/irrigation/" : "/location/"}
           disabled={!loading && state.lat ? false : true}
           onClick={async () => {
-            setLoading(true)
-            const forecast = await fetchForecastData(state.lat, state.lng)
-            globalDispatch({ type: "setLocation", ...state })
-            globalDispatch({ type: "setForecast", forecast })
-            setLoading(false)
+            if (!loading && state.lat) {
+              // console.log("location")
+              setLoading(true)
+              const forecast = await fetchForecastData(state.lat, state.lng)
+              globalDispatch({ type: "setLocation", ...state })
+              globalDispatch({ type: "setForecast", forecast })
+              setLoading(false)
+            }
           }}
         >
           Continue

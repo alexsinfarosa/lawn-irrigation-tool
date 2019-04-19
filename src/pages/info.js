@@ -75,8 +75,14 @@ const InfoPage = () => {
             setCountRef(countRef + 1)
             setValue(0)
           }}
+          style={{
+            width: 250,
+            padding: 24,
+            textAlign: "center",
+            margin: "auto",
+          }}
         >
-          Got it!
+          OK
         </StyledLink>
       ) : (
         <Navigation />

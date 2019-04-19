@@ -2,7 +2,7 @@ import React, { createContext, useState, useReducer } from "react"
 
 // utils ------------------------------------------------
 import { addRemoveWater, fetchForecastData, fetchPETData } from "./utils/api"
-import { window } from "browser-monads"
+// import { window } from "browser-monads"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
@@ -72,8 +72,12 @@ function writeToLS(item) {
   window.localStorage.setItem(lsKey, JSON.stringify(item))
 }
 function readFromLS() {
-  return JSON.parse(window.localStorage.getItem(lsKey)) || []
-  // return []
+  if (typeof window !== "undefined") {
+    const datafromStorage = JSON.parse(window.localStorage.getItem(lsKey))
+    return datafromStorage !== null ? datafromStorage : []
+  } else {
+    return []
+  }
 }
 function removeAllLS() {
   window.localStorage.removeItem(lsKey)

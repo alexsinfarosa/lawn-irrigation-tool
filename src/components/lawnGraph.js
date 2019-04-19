@@ -47,14 +47,16 @@ export default function LawnGraph({ lawn }) {
   // results data ---------------------------------
   let results = []
   results = mainFunction(lawn)
-  results.map(d => console.log(d.date, d.deficit, d.shouldWater))
+
+  // results.map(d => console.log(d.date, d.deficit, d.shouldWater))
+
   // today utils ----------------------------------
   const todayDate = new Date().toLocaleDateString()
   const todayIdx = results.findIndex(d => d.date === todayDate)
   const todayObj = results.find(d => d.date === todayDate)
 
   React.useEffect(() => {
-    console.log("effect")
+    // console.log("effect")
     if (
       todayObj.hasUserWatered === undefined &&
       todayObj.shouldWater &&

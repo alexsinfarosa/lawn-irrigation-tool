@@ -159,7 +159,7 @@ const AppProvider = ({ children }) => {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
 
     if (minutes > 60) {
-      console.log("Fetching forecast and PET data...")
+      // console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

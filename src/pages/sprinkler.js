@@ -108,6 +108,7 @@ const SprinklerPage = () => {
     lawn,
     addLawn,
     hasDataAndForecast,
+    countRef,
   } = React.useContext(AppContext)
   const classes = useStyles()
   const theme = useTheme()
@@ -266,7 +267,13 @@ const SprinklerPage = () => {
         </Box>
 
         <StyledButton
-          to={hasDataAndForecast ? "/lawn/" : "/sprinkler/"}
+          to={
+            countRef === 0
+              ? "/info/"
+              : hasDataAndForecast
+              ? "/lawn/"
+              : "/sprinkler/"
+          }
           disabled={hasDataAndForecast ? false : true}
           onClick={() => {
             const now = Date.now()

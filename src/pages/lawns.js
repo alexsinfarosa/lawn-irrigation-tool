@@ -108,6 +108,7 @@ const LawnsPage = () => {
     globalDispatch,
     updateLawn,
     lawn,
+    updateDataAndForecast,
   } = React.useContext(AppContext)
 
   // STATE ----------------------------------------------
@@ -123,6 +124,7 @@ const LawnsPage = () => {
       setExpanded(isExpanded ? panel : false)
     } else {
       globalDispatch({ type: "setLawn", lawn: selectedLawn })
+      updateDataAndForecast(selectedLawn)
       navigate("/lawn/")
     }
   }

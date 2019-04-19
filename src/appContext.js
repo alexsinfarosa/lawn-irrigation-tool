@@ -87,6 +87,7 @@ function removeAllLS() {
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
+  const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
 
   // ADD Lawn -------------------------
@@ -133,32 +134,33 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
-    // console.log("one")
+    // Incrementing number of times app was opened
+    const countRef = JSON.parse(window.localStorage.getItem(`${lsKey}-count`))
+    console.log(countRef)
+    if (countRef !== null) {
+      const count = Number(countRef + 1)
+      console.log(count)
+      setCountRef(count)
+      window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
+    }
+
     if (lawns.length > 0) {
       lawns.map(lawn => updateDataAndForecast(lawn))
-      // navigate("/lawn/")
     } else {
       // console.log("No local storage. First Time...")
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
         window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
-        navigate("/info")
+        window.localStorage.setItem(`${lsKey}-count`, 1)
       }
     }
     setLoading(false)
   }, [])
 
-  React.useEffect(() => {
-    // console.log("two")
-    if (lawn.updated !== null) {
-      updateDataAndForecast(lawn)
-    }
-  }, [lawn.id])
-
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
 
-    if (minutes > 60) {
+    if (minutes > 720) {
       // console.log("Fetching forecast and PET data...")
       setLoading(true)
 
@@ -168,6 +170,7 @@ const AppProvider = ({ children }) => {
 
       if (Object.keys(forecast).length !== 0 && data.length !== 0) {
         lawnCopy.forecast = forecast
+
         // hasUserWatered is not updated since it containes user data
         lawnCopy.data.dates = data.dates
         lawnCopy.data.pcpns = data.pcpns
@@ -192,6 +195,9 @@ const AppProvider = ({ children }) => {
         loading,
         setLoading,
         hasDataAndForecast,
+        countRef,
+        setCountRef,
+        updateDataAndForecast,
       }}
     >
       {children}

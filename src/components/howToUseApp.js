@@ -33,7 +33,7 @@ export default function HowToUseApp() {
         </Box>
 
         <Box textAlign="center" my={2}>
-          <Typography textAlign="center">Or</Typography>
+          <Typography>Or</Typography>
         </Box>
 
         <Box

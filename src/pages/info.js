@@ -11,7 +11,10 @@ import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+import { StyledLink } from "../components/styled/sharedComponents"
 import { InfoContainer } from "../components/styled/sharedComponents"
+
+import AppContext from "../appContext"
 
 const useStyles = makeStyles(theme => ({
   tabs: {
@@ -22,6 +25,8 @@ const useStyles = makeStyles(theme => ({
 
 const InfoPage = () => {
   const classes = useStyles()
+
+  const { countRef, setCountRef } = React.useContext(AppContext)
   const [value, setValue] = React.useState(1)
 
   function handleChange(event, newValue) {
@@ -41,6 +46,7 @@ const InfoPage = () => {
         className={classes.tabs}
       >
         <Tab
+          disabled={countRef === 0 ? true : false}
           style={{ paddingRight: 48, paddingLeft: 48 }}
           label="About"
           icon={<FontAwesomeIcon icon={["fal", "info"]} size="lg" />}
@@ -62,7 +68,13 @@ const InfoPage = () => {
         </InfoContainer>
       )}
 
-      <Navigation />
+      {countRef === 0 ? (
+        <StyledLink to={"/lawn/"} onClick={() => setCountRef(countRef + 1)}>
+          Got it!
+        </StyledLink>
+      ) : (
+        <Navigation />
+      )}
     </Layout>
   )
 }

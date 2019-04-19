@@ -1,87 +1,97 @@
 import React from "react"
 
+import { useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
+import Image from "../components/image"
+
+// screenshots --------------------------
+import imgOne from "../images/howTo-1.png"
+
 export default function HowToUseApp() {
-  // const classes = useStyles()
+  const theme = useTheme()
   return (
     <Box px={2}>
+      {/* Top Bar */}
       <Typography variant="h6" color="secondary" gutterBottom>
         Top Bar
       </Typography>
-      <Typography paragraph align="justify">
-        At the top of the application there is a colored bar, which displays the
-        recommendation messages. The messages within this bar should be used to
-        determine whether or not to water the lawn.
+      <Typography align="justify">
+        The top bar displays today's water recommendation message.
       </Typography>
+      <Box mb={2} />
+      <Box maxWidth="70%" m="auto" mb={6}>
+        <Box
+          bgcolor={theme.palette.background.deficit}
+          color="white"
+          p={1}
+          textAlign="center"
+        >
+          <Typography>Water!</Typography>
+        </Box>
 
+        <Box textAlign="center" my={2}>
+          <Typography textAlign="center">Or</Typography>
+        </Box>
+
+        <Box
+          bgcolor={theme.palette.background.noDeficit}
+          color="white"
+          p={1}
+          textAlign="center"
+        >
+          <Typography>Do Not Water!</Typography>
+        </Box>
+      </Box>
+
+      {/* Address */}
       <Typography variant="h6" color="secondary" gutterBottom>
         Address
       </Typography>
       <Typography paragraph align="justify">
         This is the address provided by the user. It is required to obtain
-        weather related data. On the right side of the address there is a
-        question mark icon. Tapping this icon will trigger the current pop-up
-        on/off.
+        weather related data.
       </Typography>
+      <Box maxWidth="70%" m="auto" mb={6}>
+        <Typography align="center" color="textSecondary">
+          133 N Main St, Freeport, NY, USA
+        </Typography>
+      </Box>
+      <Box mb={6} />
 
+      {/* Graph */}
       <Typography variant="h6" color="secondary" gutterBottom>
         Graph
       </Typography>
+
       <Typography paragraph align="justify">
-        The left part of the graph shows the dates. The first two dates from the
-        top are forecast dates, the colored date, which can be orange or blue,
-        depending on the deficit status, is the current date. Going down we have
-        dates in the past which go back a full week.
+        In the example below, the blue bar going to the right of the graph
+        indicates no water defict, hence the user on 04/13 should not water the
+        lawn.
       </Typography>
 
       <Typography paragraph align="justify">
-        The center part of the graph contains the colored bars. A single bar
-        represents the water deficit of a given day, it can be orange or blue.
-        An orange bar is displayed when there is water deficit, hence the lawn
-        is dry.
-        <br />A blue bar is displayed when there is no deficit, the lawn is wet.
-        The length of the bar gives the user a guidance on the relative amount
-        of dryiness or wettness the lawn is.
+        The orange bar going to the left of the graph warns the user of a water
+        deficit. In this case, the user on 04/12 should follow the app's
+        recommendation and water the lawn.
       </Typography>
 
       <Typography paragraph align="justify">
-        The right part of the graph containing the icons is the area where the
-        user interacts with the app. The first two forecast icons from the top
-        are not clickable and are there to inform the user of the probability of
-        precipitation.
+        The user can tap on any of the water droplet icons on the right side of
+        the graph. When tapping an icon, the user tells the app that the lawn
+        was watered that day, which triggers the app to recalculate the daily
+        deficits.
       </Typography>
 
       <Typography paragraph align="justify">
-        The drop shaped icons can be tapped by the user. Tapping the icon, will
-        changes its color. Blue color indicates that the lawn has been watered.
-        Untapping the icon, which makes it gray indicates that no water was
-        applied on the lawn.
+        The droplet icons can have a grey background if not water was applied,
+        or a blue background if water was applied on the lawn on a give day.
       </Typography>
 
-      <Typography variant="h6" color="secondary" gutterBottom>
-        Example
-      </Typography>
-
-      <Typography paragraph align="justify">
-        When water deficit reaches a certain level, the top colored bar (in this
-        case orange) will inform the user to water their lawn. The user at this
-        point should follow the app’s recommendation by watering their lawn and
-        by tapping the drop icon relative to the current date.
-      </Typography>
-
-      <Typography paragraph align="justify">
-        In doing so, the user informs the app that the recommendation has been
-        followed and consequently the newly added water will be used to
-        recalculate the deficit.
-      </Typography>
-
-      <Typography paragraph align="justify">
-        Tapping on any of the drop icons simply adds or removes water. The
-        amount of water is calculated by the rate of the sprinkler head and the
-        amount of time, in minutes that it runs.
-      </Typography>
+      <Box maxWidth="70%" m="auto" my={6}>
+        <Image src={imgOne} />
+      </Box>
     </Box>
   )
 }

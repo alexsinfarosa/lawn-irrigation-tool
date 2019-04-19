@@ -134,25 +134,24 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
-    // Incrementing number of times app was opened
-    const countRef = JSON.parse(window.localStorage.getItem(`${lsKey}-count`))
-    console.log(countRef)
-    if (countRef !== null) {
-      const count = Number(countRef + 1)
-      console.log(count)
-      setCountRef(count)
-      window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
-    }
-
-    if (lawns.length > 0) {
-      lawns.map(lawn => updateDataAndForecast(lawn))
-    } else {
-      // console.log("No local storage. First Time...")
+    // Navigating to the right route and making updates
+    if (lawns.length === 0) {
+      // First time the app is opened the useId is and the count are created
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
         window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
         window.localStorage.setItem(`${lsKey}-count`, 1)
       }
+    } else {
+      // Incrementing number of times app was opened
+      const countRef = JSON.parse(window.localStorage.getItem(`${lsKey}-count`))
+      if (countRef !== null) {
+        const count = Number(countRef + 1)
+        setCountRef(count)
+        window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
+      }
+
+      lawns.map(lawn => updateDataAndForecast(lawn))
     }
     setLoading(false)
   }, [])
@@ -161,7 +160,7 @@ const AppProvider = ({ children }) => {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
 
     if (minutes > 720) {
-      // console.log("Fetching forecast and PET data...")
+      console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

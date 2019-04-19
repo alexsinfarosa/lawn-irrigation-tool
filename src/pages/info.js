@@ -69,7 +69,13 @@ const InfoPage = () => {
       )}
 
       {countRef === 0 ? (
-        <StyledLink to={"/lawn/"} onClick={() => setCountRef(countRef + 1)}>
+        <StyledLink
+          to={"/lawn/"}
+          onClick={() => {
+            setCountRef(countRef + 1)
+            setValue(0)
+          }}
+        >
           Got it!
         </StyledLink>
       ) : (

@@ -142,6 +142,7 @@ const AppProvider = ({ children }) => {
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
         window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
+        navigate("/info")
       }
     }
     setLoading(false)

@@ -103,6 +103,11 @@ export const mainFunction = lawn => {
 
   const today = new Date().toLocaleDateString()
 
+  let index = 2 // today plus 2 days
+  if (lawn.streetNumber === null) {
+    index = 1 // today plus 1 day
+  }
+
   return dates.map((date, i) => {
     return {
       date,
@@ -110,7 +115,7 @@ export const mainFunction = lawn => {
       threshold: threshold,
       shouldWater:
         date === today
-          ? deficitDaily[i] < threshold && deficitDaily[i + 2] < threshold
+          ? deficitDaily[i] < threshold && deficitDaily[i + index] < threshold
           : deficitDaily[i] < threshold,
       hasUserWatered: hasUserWatered[i],
       pcpn: pcpns[i],

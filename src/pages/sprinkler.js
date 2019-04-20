@@ -98,7 +98,8 @@ const useStyles = makeStyles(theme => ({
   gridList: {
     flexWrap: "nowrap",
     width: "100%",
-    height: 250,
+    height: 280,
+    overflowY: "hidden",
   },
 }))
 
@@ -144,12 +145,12 @@ const SprinklerPage = () => {
           </Box>
 
           {/* Images */}
-          <Box display="flex" mx={-2} mb={6}>
+          <Box display="flex" mx={-2} mb={2}>
             <GridList className={classes.gridList} cols={1.3}>
               {sprinklers.map(sprinkler => {
                 const { name, img, isSelected } = sprinkler
                 return (
-                  <GridListTile key={name} style={{ height: "100%" }}>
+                  <GridListTile key={name} style={{ height: 280 }}>
                     <ImageSprinkler src={img} />
                     <GridListTileBar
                       title={name}

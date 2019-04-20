@@ -22,7 +22,7 @@ export default function HowToUseApp() {
         The top bar displays today's water recommendation message.
       </Typography>
       <Box mb={2} />
-      <Box maxWidth="70%" m="auto" mb={6}>
+      <Box maxWidth="90%" m="auto" mb={6}>
         <Box
           bgcolor={theme.palette.background.deficit}
           color="white"
@@ -54,7 +54,7 @@ export default function HowToUseApp() {
         This is the address provided by the user. It is required to obtain
         weather related data.
       </Typography>
-      <Box maxWidth="70%" m="auto" mb={6}>
+      <Box maxWidth="90%" m="auto" mb={6}>
         <Typography align="center" color="textSecondary">
           133 N Main St, Freeport, NY, USA
         </Typography>
@@ -66,7 +66,7 @@ export default function HowToUseApp() {
         Graph
       </Typography>
 
-      <Box maxWidth="70%" m="auto" my={6}>
+      <Box maxWidth="90%" m="auto" my={6}>
         <Image src={imgOne} />
       </Box>
 
@@ -100,7 +100,7 @@ export default function HowToUseApp() {
       <Typography variant="h6" color="secondary" gutterBottom>
         Using Forecast Data to Calculate Current Date Deficit
       </Typography>
-      <Box maxWidth="70%" m="auto" my={6}>
+      <Box maxWidth="90%" m="auto" my={6}>
         <Image src={imgTwo} />
       </Box>
       <Typography paragraph align="justify">

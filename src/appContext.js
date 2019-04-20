@@ -158,8 +158,8 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
-
-    if (minutes > 720) {
+    console.log(minutes, lawn.address)
+    if (minutes > 1) {
       console.log("Fetching forecast and PET data...")
       setLoading(true)
 
@@ -175,8 +175,8 @@ const AppProvider = ({ children }) => {
         lawnCopy.data.pcpns = data.pcpns
         lawnCopy.data.pets = data.pets
         lawnCopy.updated = Date.now()
+        updateLawn(lawnCopy)
       }
-      updateLawn(lawnCopy)
       setLoading(false)
     }
   }

@@ -53,7 +53,7 @@ const InfoPage = () => {
         />
         <Tab
           style={{ paddingRight: 48, paddingLeft: 48 }}
-          label="How to?"
+          label="How it works?"
           icon={<FontAwesomeIcon icon={["fal", "question-circle"]} size="lg" />}
         />
       </Tabs>

@@ -4,9 +4,7 @@ import Img from "gatsby-image"
 import styled from "styled-components"
 
 const StyledImg = styled(Img)`
-  /* border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  height: 180px; */
+  /* height: auto; */
 `
 
 function renderImage(file) {

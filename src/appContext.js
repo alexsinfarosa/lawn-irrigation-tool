@@ -134,6 +134,7 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
+    // console.log("ONE")
     // Navigating to the right route and making updates
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
@@ -151,6 +152,7 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
+      // console.log("updating forecast and data")
       lawns.map(lawn => updateDataAndForecast(lawn))
     }
     setLoading(false)
@@ -158,9 +160,9 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
-    console.log(minutes, lawn.address)
+    // console.log(minutes, lawn.address)
     if (minutes > 1) {
-      console.log("Fetching forecast and PET data...")
+      // console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

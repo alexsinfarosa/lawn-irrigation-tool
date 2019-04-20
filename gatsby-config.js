@@ -39,8 +39,8 @@ module.exports = {
       options: {
         name: `lawn-irrigation-tool`,
         short_name: `LawnIrriTool`,
-        start_url: `/lawn-irrigation-tool-v2`,
-        // start_url: `/`,
+        // start_url: `/lawn-irrigation-tool-v2`,
+        start_url: `/`,
         background_color: `#556cd6`,
         theme_color: `#556cd6`,
         display: `standalone`,

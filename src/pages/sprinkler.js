@@ -144,15 +144,14 @@ const SprinklerPage = () => {
           </Box>
 
           {/* Images */}
-          <Box display="flex" mx={-2} height="230px" mb={6}>
+          <Box display="flex" mx={-2} mb={6}>
             <GridList className={classes.gridList} cols={1.3}>
               {sprinklers.map(sprinkler => {
                 const { name, img, isSelected } = sprinkler
                 return (
-                  <GridListTile key={name} style={{ height: 232 }}>
+                  <GridListTile key={name} style={{ height: "100%" }}>
                     <ImageSprinkler src={img} />
                     <GridListTileBar
-                      style={{ background: theme.palette.primary.main }}
                       title={name}
                       actionIcon={
                         <IconButton>

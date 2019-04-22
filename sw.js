@@ -26,26 +26,26 @@ workbox.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-7ce4dc4697aeabd053e0.js"
+    "url": "webpack-runtime-26e3410b8007aae544d6.js"
   },
   {
-    "url": "app-259835d4e7b1e5fc4d1c.js"
+    "url": "app-b3d69dc54efc3a565e94.js"
   },
   {
-    "url": "component---node-modules-gatsby-plugin-offline-app-shell-js-87241caf033623167c44.js"
+    "url": "component---node-modules-gatsby-plugin-offline-app-shell-js-e981100b84a2ad10a00e.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "3cf28bb2a376d5adddf1c8b71c2b75aa"
+    "revision": "b5b920c56f47d7e8f86950b86512c7ec"
   },
   {
     "url": "styles.f6fc4498f887e1a59073.css"
   },
   {
-    "url": "styles-b4e5dad93c58ef8ff99c.js"
+    "url": "styles-b1c4b5e309f49bd58e5b.js"
   },
   {
-    "url": "component---src-pages-404-js-c437abf4559b1cdb69fa.js"
+    "url": "component---src-pages-404-js-d7fe2200d76323b922f2.js"
   },
   {
     "url": "static/d/285/path---404-html-516-62a-0SUcWyAf8ecbYDsMhQkEfPzV8.json"
@@ -55,7 +55,7 @@ self.__precacheManifest = [
   },
   {
     "url": "manifest.webmanifest",
-    "revision": "3e6a4e9d5dd0404278af8cbfec884447"
+    "revision": "c5a5ec462b019e7d8e18a4521af6aa37"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
@@ -76,7 +76,7 @@ const navigationRoute = new workbox.routing.NavigationRoute(({ event }) => {
   return idbKeyval.get(WHITELIST_KEY).then((customWhitelist = []) => {
     // Respond with the offline shell if we match the custom whitelist
     if (customWhitelist.includes(pathname)) {
-      const offlineShell = `/lawn-irrigation-tool-v2/offline-plugin-app-shell-fallback/index.html`
+      const offlineShell = `/lawn-irrigation-tool/offline-plugin-app-shell-fallback/index.html`
       const cacheName = workbox.core.cacheNames.precache
 
       return caches.match(offlineShell, { cacheName }).then(cachedResponse => {
@@ -148,7 +148,7 @@ const messageApi = {
 
     pathnames = pathnames.map(({ pathname, includesPrefix }) => {
       if (!includesPrefix) {
-        return `/lawn-irrigation-tool-v2${pathname}`
+        return `/lawn-irrigation-tool${pathname}`
       } else {
         return pathname
       }

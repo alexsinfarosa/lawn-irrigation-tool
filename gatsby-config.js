@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: "/lawn-irrigation-tool-v2",
+  pathPrefix: "/lawn-irrigation-tool",
   siteMetadata: {
     title: `Lawn Irrigation Tool`,
     description: `Lawn irrigation tool`,
@@ -45,8 +45,8 @@ module.exports = {
       options: {
         name: `lawn-irrigation-tool`,
         short_name: `LawnIrriTool`,
-        // start_url: `/lawn-irrigation-tool-v2`,
-        start_url: `/`,
+        start_url: `/lawn-irrigation-tool`,
+        // start_url: `/`,
         background_color: `#556cd6`,
         theme_color: `#556cd6`,
         display: `standalone`,

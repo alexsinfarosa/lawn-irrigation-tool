@@ -2,7 +2,9 @@ import React from "react"
 
 import { useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
+import Divider from "@material-ui/core/Divider"
 import Box from "@material-ui/core/Box"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Image from "../components/image"
 
@@ -14,10 +16,78 @@ export default function HowToUseApp() {
   const theme = useTheme()
   return (
     <Box px={2}>
+      <Box mb={3}>
+        <Typography variant="h6">
+          For a better experience on mobile devices it is highly recommended to
+          follow these instructions
+        </Typography>
+      </Box>
+
       <Box mb={5}>
-        <Typography variant="subtitle2" align="justify">
-          The recommendation page provides the main functionalities of the app.
-          Let's break down from top to bottom the various sections.
+        <Typography
+          variant="body2"
+          color="secondary"
+          gutterBottom
+          style={{ fontWeight: "bold" }}
+        >
+          iOS
+        </Typography>
+        <ul>
+          <li>
+            Tap the{" "}
+            <img src="https://png.icons8.com/ios/18/000000/level-up.png" /> icon
+            at the bottom of the screen
+          </li>
+          <li>
+            Tap the <code>'Add to Home Screen'</code> icon
+          </li>
+          <li>Give it a name (optional)</li>
+          <li>
+            Tap <code>add</code> at the top right corner of the screen
+          </li>
+          <li>
+            A new icon should have been added to the <code>HOME</code> screen
+          </li>
+          <li>Tap the newly created icon to launch the app</li>
+        </ul>
+      </Box>
+
+      <Box mb={5}>
+        <Typography
+          variant="body2"
+          color="secondary"
+          gutterBottom
+          style={{ fontWeight: "bold" }}
+        >
+          Android
+        </Typography>
+        <ul>
+          <li>
+            Tap the{" "}
+            <img src="https://png.icons8.com/material/18/000000/menu-2.png" />
+            icon at the top right corner of the screen
+          </li>
+          <li>
+            Tap the <code>Add Home Screen</code> icon
+          </li>
+          <li>Give it a name (optional)</li>
+          <li>
+            Tap <code>Add Automatically</code>
+          </li>
+          <li>
+            A new icon should have been added to the <code>HOME</code> screen
+          </li>
+          <li>Tap the newly created icon to launch the app</li>
+        </ul>
+      </Box>
+
+      <Divider variant="middle" />
+
+      <Box my={5}>
+        <Typography variant="h6">
+          The recommendation page (<FontAwesomeIcon icon={["fal", "home"]} />){" "}
+          provides the main functionalities of the app. Let's break down from
+          top to bottom the various sections.
         </Typography>
       </Box>
       {/* Top Bar */}

@@ -48,7 +48,7 @@ const Navigation = () => {
           icon={[route === "lawn" ? "fa" : "fal", "home"]}
           size="lg"
         />
-        <Typography variant="caption">Lawn</Typography>
+        <Typography variant="caption">Recommendation</Typography>
       </LinkStyled>
 
       <LinkStyled to="/forecast/" activeStyle={active}>

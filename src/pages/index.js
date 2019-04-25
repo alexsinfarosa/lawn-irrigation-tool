@@ -22,7 +22,7 @@ export default function App() {
         <Box display="flex" justifyContent="center" my={4}>
           <Box>
             <Typography variant="h4" component="h1" gutterBottom>
-              Lawn...
+              Lawn
             </Typography>
             <Typography variant="h4" component="h1" gutterBottom>
               Irrigation

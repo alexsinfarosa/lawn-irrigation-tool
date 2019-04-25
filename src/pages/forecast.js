@@ -104,8 +104,8 @@ const ForecastPage = () => {
                   alignItems="center"
                 >
                   <Box flexGrow={1} textAlign="left">
-                    <Typography style={{ fontWeight: "bold" }}>
-                      {format(new Date(day.time) * 1000, "EEE").toUpperCase()}
+                    <Typography>
+                      {format(new Date(day.time) * 1000, "MMM do")}
                     </Typography>
                     <Box>
                       <FontAwesomeIcon

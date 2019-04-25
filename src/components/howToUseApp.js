@@ -35,11 +35,14 @@ export default function HowToUseApp() {
         <ul>
           <li>
             Tap the{" "}
-            <img src="https://png.icons8.com/ios/18/000000/level-up.png" /> icon
-            at the bottom of the screen
+            <img
+              src="https://png.icons8.com/ios/18/000000/level-up.png"
+              alt="ios level up icon"
+            />{" "}
+            icon at the bottom of the screen
           </li>
           <li>
-            Tap the <code>'Add to Home Screen'</code> icon
+            Tap the <code>Add to Home Screen</code> icon
           </li>
           <li>Give it a name (optional)</li>
           <li>
@@ -64,7 +67,10 @@ export default function HowToUseApp() {
         <ul>
           <li>
             Tap the{" "}
-            <img src="https://png.icons8.com/material/18/000000/menu-2.png" />
+            <img
+              src="https://png.icons8.com/material/18/000000/menu-2.png"
+              alt="android menu icon"
+            />
             icon at the top right corner of the screen
           </li>
           <li>

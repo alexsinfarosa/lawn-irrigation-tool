@@ -46,6 +46,9 @@ const ForecastPage = () => {
             mb={2}
             height="100px"
           >
+            <Typography variant="caption" color="textSecondary" gutterBottom>
+              {lawn.address}
+            </Typography>
             <Box
               display="flex"
               justifyContent="center"
@@ -67,10 +70,6 @@ const ForecastPage = () => {
                 <Typography variant="subtitle2">{currently.summary}</Typography>
               </Box>
             </Box>
-
-            <Typography variant="caption" color="textSecondary">
-              {lawn.address}
-            </Typography>
           </Box>
 
           <Box

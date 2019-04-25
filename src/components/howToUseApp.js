@@ -14,13 +14,12 @@ export default function HowToUseApp() {
   const theme = useTheme()
   return (
     <Box px={2}>
-      <Box mb={5} mt={2}>
+      <Box mb={5}>
         <Typography variant="subtitle2" align="justify">
-          The Lawn page provides the main functionalities of the app. Let's
-          break down from top to bottom the various sections.
+          The recommendation page provides the main functionalities of the app.
+          Let's break down from top to bottom the various sections.
         </Typography>
       </Box>
-
       {/* Top Bar */}
       <Box mb={3}>
         <Typography
@@ -33,7 +32,6 @@ export default function HowToUseApp() {
           Top Bar
         </Typography>
       </Box>
-
       <Box maxWidth="70%" m="auto" mb={3}>
         <Box
           bgcolor={theme.palette.background.deficit}
@@ -44,14 +42,12 @@ export default function HowToUseApp() {
           <Typography>Water!</Typography>
         </Box>
       </Box>
-
       <Box mb={5}>
         <Typography align="justify">
           The bar displays today's water recommendation message. It informs the
           user to water (orange) or not (blue) their lawn.
         </Typography>
       </Box>
-
       {/* Address */}
       <Box mb={3}>
         <Typography
@@ -64,13 +60,11 @@ export default function HowToUseApp() {
           Address
         </Typography>
       </Box>
-
       <Box maxWidth="90%" m="auto" mb={3}>
         <Typography align="center" color="textSecondary">
           133 N Main St, Freeport, NY, USA
         </Typography>
       </Box>
-
       <Box mb={5}>
         <Typography paragraph align="justify">
           Next, we find the address. This is the address provided by the user.
@@ -90,23 +84,19 @@ export default function HowToUseApp() {
           Graph
         </Typography>
       </Box>
-
       <Box m="auto" mb={3}>
         <Image src={imgOne} />
       </Box>
-
       <Typography paragraph align="justify">
         We arrive then at the graph. In the example above, the blue bar going to
         the right of the graph indicates no water defict, hence on 04/13, the
         user should not water the lawn.
       </Typography>
-
       <Typography paragraph align="justify">
         The orange bar going to the left of the graph warns the user of a water
         deficit. In this case, on 04/12, the user should follow the app's
         recommendation and water their lawn.
       </Typography>
-
       <Box mb={5}>
         <Typography paragraph align="justify">
           Users can tap on any of the water droplet icons on the right side of
@@ -116,7 +106,6 @@ export default function HowToUseApp() {
           tapping the icon again which makes it grey.
         </Typography>
       </Box>
-
       {/* Example */}
       <Box mb={3}>
         <Typography
@@ -129,29 +118,24 @@ export default function HowToUseApp() {
           Using Forecast Data to Calculate Current Date Deficit
         </Typography>
       </Box>
-
       <Box m="auto" mb={6}>
         <Image src={imgTwo} />
       </Box>
-
       <Typography paragraph align="justify">
         In the above graph, the user is advised not to water on the current date
         (TODAY), despite the graph indicating a water deficit.
       </Typography>
-
       <Typography paragraph align="justify">
         The reason being that the calculation of the water deficit for the
         current date includes forecast data, rainfall. In fact, from the graph
         we see that there is a high probability of rainfall for the next day.
       </Typography>
-
       <Typography paragraph align="justify">
         Because of the high probability, the rainfall is accounted into the
         calculation of the current date's deficit. As a result of that the app
         now suggests to the user not to water the lawn, allowing water
         conservation.
       </Typography>
-
       <Typography paragraph align="justify">
         <b>Note:</b> For users following the{" "}
         <b>Nassau Even/Odd Water Ordinance</b>, the app will use forecast data

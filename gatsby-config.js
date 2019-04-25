@@ -44,7 +44,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `lawn-irrigation-tool`,
-        short_name: `LawnIrriTool`,
+        short_name: `Irrigation Tool`,
         start_url: `/lawn-irrigation-tool`,
         // start_url: `/`,
         background_color: `#556cd6`,

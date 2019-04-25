@@ -154,6 +154,7 @@ const AppProvider = ({ children }) => {
 
       // console.log("updating forecast and data")
       lawns.map(lawn => updateDataAndForecast(lawn))
+      navigate("/lawn/")
     }
     setLoading(false)
   }, [])

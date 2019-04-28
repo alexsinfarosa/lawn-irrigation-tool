@@ -18,7 +18,6 @@ export const fetchForecastData = (lat, lng) => {
 }
 
 export const fetchPETData = async (lat, lng) => {
-  console.log(lat, lng)
   const year = new Date().getFullYear()
 
   // the first date is 03/01 of the selected year.

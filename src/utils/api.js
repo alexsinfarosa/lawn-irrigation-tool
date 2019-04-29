@@ -17,6 +17,36 @@ export const fetchForecastData = (lat, lng) => {
     })
 }
 
+// const users = []
+// const user = {
+//   id: "",
+//   count: 0,
+//   lawns: [],
+// }
+
+// const metricsOnServer = (userId, count, lawn) => {
+//   const userIdx = users.findIndex(user => user.id === userId)
+
+//   // add user
+//   if (userIdx === -1) {
+//     let user = {}
+//     user.id = userId
+//     user.count = count
+//     user.lawns = [lawn]
+//     users = [user, ...users]
+//   } else {
+//     // update user
+//     const user = users[userIdx]
+//     let userCopy = { ...user }
+//     const lawnIdx = userCopy.lawns.findIndex(l => l.id === lawn.id)
+//     userCopy.count = count
+//     userCopy.lawns[lawnIdx] = lawn
+//     users[userIdx] = userCopy
+//   }
+
+//   return fetchPETData(lawn.lat, lawn.lng)
+// }
+
 export const fetchPETData = async (lat, lng) => {
   const year = new Date().getFullYear()
 

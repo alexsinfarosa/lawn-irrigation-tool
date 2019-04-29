@@ -152,8 +152,7 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      // console.log("updating forecast and data")
-      lawns.map(lawn => updateDataAndForecast(lawn))
+      updateDataAndForecast(lawn)
       navigate("/lawn/")
     }
     setLoading(false)
@@ -163,7 +162,7 @@ const AppProvider = ({ children }) => {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
     // console.log(minutes, lawn.address)
     if (minutes > 760) {
-      console.log("Fetching forecast and PET data...")
+      // console.log("Fetching forecast and PET data...")
       setLoading(true)
 
       const lawnCopy = { ...lawn }

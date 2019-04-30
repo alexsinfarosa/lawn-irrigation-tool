@@ -106,7 +106,8 @@ export default function LawnGraph({ lawn }) {
             </svg>
           </g>
         )}
-        {index === 2 && (
+
+        {(props.visibleTicksCount === 2 ? index === 1 : index === 2) && (
           <g transform={translate}>
             <text
               x={-32}

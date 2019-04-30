@@ -106,7 +106,7 @@ export default function LawnGraph({ lawn }) {
             </svg>
           </g>
         )}
-        {index === 1 && (
+        {index === 2 && (
           <g transform={translate}>
             <text
               x={-32}

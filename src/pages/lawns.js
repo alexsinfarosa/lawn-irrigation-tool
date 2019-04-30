@@ -179,7 +179,6 @@ const LawnsPage = () => {
           const results = mainFunction(lawn)
           const todayDate = new Date().toLocaleDateString()
           const todayObj = results.find(d => d.date === todayDate)
-          console.log(todayObj)
 
           return (
             <ExpansionPanel

@@ -72,7 +72,7 @@ export const fetchPETData = async (lat, lng) => {
       const currentDate = new Date().toLocaleDateString()
       const todayIdx = dates.findIndex(date => date === currentDate)
       let hasUserWatered = new Array(dates.length).fill(false)
-      hasUserWatered[todayIdx] = undefined
+      hasUserWatered[todayIdx] = "undefined"
 
       return { dates, pcpns, pets, hasUserWatered }
     })
@@ -87,8 +87,8 @@ export const addRemoveWater = (lawn, idx) => {
   let { pcpns, hasUserWatered } = lawnCopy.data
 
   const amountOfWater = (sprinklerRate * sprinklerMinutes) / 60
-
-  if (hasUserWatered[idx] === false || hasUserWatered[idx] === undefined) {
+  console.log(hasUserWatered[idx])
+  if (hasUserWatered[idx] === false || hasUserWatered[idx] === "undefined") {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater
   } else {

@@ -58,7 +58,7 @@ export default function LawnGraph({ lawn }) {
   React.useEffect(() => {
     // console.log("effect")
     if (
-      todayObj.hasUserWatered === undefined &&
+      todayObj.hasUserWatered === "undefined" &&
       todayObj.shouldWater &&
       lawn.irrigationDate !== todayDate &&
       isWaterAllowed(lawn.streetNumber)
@@ -207,7 +207,7 @@ export default function LawnGraph({ lawn }) {
           <FontAwesomeIcon
             icon={["fas", "tint"]}
             color={
-              reversed[index].hasUserWatered
+              (reversed[index].hasUserWatered === true) === true
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }
@@ -228,7 +228,7 @@ export default function LawnGraph({ lawn }) {
           <FontAwesomeIcon
             icon={["fas", "tint"]}
             color={
-              reversed[index].hasUserWatered
+              reversed[index].hasUserWatered === true
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }

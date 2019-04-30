@@ -180,30 +180,28 @@ export default function HowToUseApp() {
       <Typography variant="subtitle1" gutterBottom>
         The graph serves three purposes.
       </Typography>
-      <Typography paragraph align="justify">
-        <ol>
-          <li>
-            The blue and orange bars give a visual indication of water status
-            over the previous week and the next two days based on the weather
-            forecast.{" "}
-          </li>
-          <li>
-            A blue water drop indicates days that watering was necessary. A gray
-            water drop denotes days that watering was not needed. The drops are
-            tappable so a user can override the recommendation (for example
-            indicate they watered even though the app recommended not to). The
-            app needs this information to make an accurate recommendation. So if
-            your sprinkler automatically operates while you are on vacation, it
-            is recommended that you update the app by tapping the drops next to
-            the days that your system operated. The graph and recommendation is
-            recomputed whenever a drop tapped.
-          </li>
-          <li>
-            Weather icons give the user an idea of the weather conditions that
-            the app expects to occur during the next two days (see graph below).
-          </li>
-        </ol>
-      </Typography>
+
+      <ol>
+        <li>
+          The blue and orange bars give a visual indication of water status over
+          the previous week and the next two days based on the weather forecast.{" "}
+        </li>
+        <li>
+          A blue water drop indicates days that watering was necessary. A gray
+          water drop denotes days that watering was not needed. The drops are
+          tappable so a user can override the recommendation (for example
+          indicate they watered even though the app recommended not to). The app
+          needs this information to make an accurate recommendation. So if your
+          sprinkler automatically operates while you are on vacation, it is
+          recommended that you update the app by tapping the drops next to the
+          days that your system operated. The graph and recommendation is
+          recomputed whenever a drop tapped.
+        </li>
+        <li>
+          Weather icons give the user an idea of the weather conditions that the
+          app expects to occur during the next two days (see graph below).
+        </li>
+      </ol>
 
       {/* Example */}
       <Box mb={3}>
@@ -223,14 +221,13 @@ export default function HowToUseApp() {
       <Typography variant="subtitle1" gutterBottom>
         The recommendation to water or not water depends on:
       </Typography>
-      <Typography paragraph align="justify">
-        <ul>
-          <li>When and how long you last irrigated</li>
-          <li>The amount of rain that occurred</li>
-          <li>The amount of water that evaporated</li>
-          <li>The forecast for rain and evaporation over the next two days</li>
-        </ul>
-      </Typography>
+
+      <ul>
+        <li>When and how long you last irrigated</li>
+        <li>The amount of rain that occurred</li>
+        <li>The amount of water that evaporated</li>
+        <li>The forecast for rain and evaporation over the next two days</li>
+      </ul>
 
       <Typography paragraph align="justify">
         Watering is only recommended when the app indicates dry conditions BOTH

@@ -140,8 +140,16 @@ const SprinklerPage = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
+            flexDirection="column"
           >
-            <Typography variant="h6">Type: {state.name}</Typography>
+            {/* <Typography variant="h6">Type: {state.name}</Typography> */}
+            <Typography variant="h6">
+              Select the sprinkler head that most closely matches yours
+            </Typography>
+            <Typography variant="caption">
+              if you have different types of sprinkler heads, choose the most
+              common type
+            </Typography>
           </Box>
 
           {/* Images */}
@@ -201,7 +209,7 @@ const SprinklerPage = () => {
                     }}
                   />
                 }
-                label="Custom Sprinkler Nozzle"
+                label="Customize Application Duration and Rate"
               />
             </FormGroup>
           </Box>
@@ -214,7 +222,7 @@ const SprinklerPage = () => {
             alignItems="center"
           >
             <Box flexGrow={1}>
-              <Typography variant="h6">Time: </Typography>
+              <Typography variant="h6">Duration: </Typography>
             </Box>
             <Box flexGrow={6}>
               <Slider

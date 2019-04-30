@@ -152,7 +152,7 @@ const LocationPage = () => {
                     }
                   />
                 }
-                label="My street number follows the odd/even irrigation ordinance"
+                label="My property is subject to an odd/even water ordinance"
               />
             </FormGroup>
           </Box>

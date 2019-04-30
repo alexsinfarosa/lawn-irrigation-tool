@@ -39,7 +39,7 @@ export default function App() {
 
         <Box bgcolor="primary.main" mb={8} p={2} px={4} color="white">
           <Typography align="center">
-            You can find out your watering needs for today and the next two days
+            Recommendations for efficient lawn irrigation using weather data
           </Typography>
         </Box>
 

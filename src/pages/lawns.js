@@ -83,7 +83,7 @@ const Secondary = ({ type, rate, time, unselected }) => {
       color={unselected ? "inherit" : "text.secondary"}
     >
       <Typography variant="caption">Type: {type}</Typography>
-      <Typography variant="caption">Time: {time} min</Typography>
+      <Typography variant="caption">Duration: {time} min</Typography>
       <Typography variant="caption">Rate: {rate} in/hr</Typography>
     </Box>
   )
@@ -216,7 +216,9 @@ const LawnsPage = () => {
                     <Box width="100%">
                       <Box display="flex" alignItems="center" mb={4}>
                         <Box flexGrow={1}>
-                          <Typography variant="subtitle1">Time: </Typography>
+                          <Typography variant="subtitle1">
+                            Duration:{" "}
+                          </Typography>
                         </Box>
                         <Box flexGrow={6}>
                           <Slider

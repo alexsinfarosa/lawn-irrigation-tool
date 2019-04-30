@@ -17,7 +17,7 @@ export default function HowToUseApp() {
   return (
     <Box px={2}>
       <Box mb={3}>
-        <Typography variant="h6">
+        <Typography variant="h6" align="justify">
           For a better experience on mobile devices it is highly recommended to
           follow these instructions
         </Typography>
@@ -90,10 +90,9 @@ export default function HowToUseApp() {
       <Divider variant="middle" />
 
       <Box my={5}>
-        <Typography variant="h6">
+        <Typography variant="h6" align="justify">
           The recommendation page (<FontAwesomeIcon icon={["fal", "home"]} />){" "}
-          provides the main functionalities of the app. Let's break down from
-          top to bottom the various sections.
+          provides the main functionalities of the app. It has three sections.
         </Typography>
       </Box>
       {/* Top Bar */}
@@ -105,7 +104,7 @@ export default function HowToUseApp() {
             borderBottom: `1px solid ${theme.palette.secondary.main}`,
           }}
         >
-          Top Bar
+          Recommendation Bar
         </Typography>
       </Box>
       <Box maxWidth="70%" m="auto" mb={3}>
@@ -119,9 +118,24 @@ export default function HowToUseApp() {
         </Box>
       </Box>
       <Box mb={5}>
-        <Typography align="justify">
-          The bar displays today's water recommendation message. It informs the
-          user to water (orange) or not (blue) their lawn.
+        <Typography align="justify" gutterBottom>
+          The bar displays a daily recommendation message. It informs the user
+          to either irrigate (Orange Bar) or that there is already sufficient
+          water in the soil so irrigation should NOT occur (Blue Bar).
+        </Typography>
+        <Typography align="justify" gutterBottom>
+          The recommendation is updated multiple times per day. New forecasts
+          are incorporated on a three-hour cycle starting at midnight. Observed
+          data are updated once per day, typically between noon and 1 pm. The
+          recommendation is most likely to change following this update.
+        </Typography>
+        <Typography align="justify" gutterBottom>
+          If you follow the recommendation, the app does not require you to
+          provide any additional information. However if you do not follow the
+          recommendation (for example if you forget to bypass your irrigation
+          schedule on a day when no watering is recommended), you must inform
+          the app by tapping on the water drop next to that day. A blue drop
+          means watering occurred and a gray drop means you did not irrigate.
         </Typography>
       </Box>
       {/* Address */}
@@ -143,8 +157,8 @@ export default function HowToUseApp() {
       </Box>
       <Box mb={5}>
         <Typography paragraph align="justify">
-          Next, we find the address. This is the address provided by the user.
-          It is required to obtain weather related data.
+          Next, we find the address, that is provided by the user. It is
+          required to obtain weather related data.
         </Typography>
       </Box>
 
@@ -163,25 +177,34 @@ export default function HowToUseApp() {
       <Box m="auto" mb={3}>
         <Image src={imgOne} />
       </Box>
-      <Typography paragraph align="justify">
-        We arrive then at the graph. In the example above, the blue bar going to
-        the right of the graph indicates no water defict, hence on 04/13, the
-        user should not water the lawn.
+      <Typography variant="subtitle1" gutterBottom>
+        The graph serves three purposes.
       </Typography>
       <Typography paragraph align="justify">
-        The orange bar going to the left of the graph warns the user of a water
-        deficit. In this case, on 04/12, the user should follow the app's
-        recommendation and water their lawn.
+        <ol>
+          <li>
+            The blue and orange bars give a visual indication of water status
+            over the previous week and the next two days based on the weather
+            forecast.{" "}
+          </li>
+          <li>
+            A blue water drop indicates days that watering was necessary. A gray
+            water drop denotes days that watering was not needed. The drops are
+            tappable so a user can override the recommendation (for example
+            indicate they watered even though the app recommended not to). The
+            app needs this information to make an accurate recommendation. So if
+            your sprinkler automatically operates while you are on vacation, it
+            is recommended that you update the app by tapping the drops next to
+            the days that your system operated. The graph and recommendation is
+            recomputed whenever a drop tapped.
+          </li>
+          <li>
+            Weather icons give the user an idea of the weather conditions that
+            the app expects to occur during the next two days (see graph below).
+          </li>
+        </ol>
       </Typography>
-      <Box mb={5}>
-        <Typography paragraph align="justify">
-          Users can tap on any of the water droplet icons on the right side of
-          the graph. When tapping an icon, which turns into blue, the user tells
-          the app that the lawn was watered that day, which triggers the app to
-          recalculate the daily deficits. The user can also undo the action by
-          tapping the icon again which makes it grey.
-        </Typography>
-      </Box>
+
       {/* Example */}
       <Box mb={3}>
         <Typography
@@ -191,32 +214,36 @@ export default function HowToUseApp() {
             borderBottom: `1px solid ${theme.palette.secondary.main}`,
           }}
         >
-          Using Forecast Data to Calculate Current Date Deficit
+          Data Used to Make the Watering Recommendation
         </Typography>
       </Box>
       <Box m="auto" mb={6}>
         <Image src={imgTwo} />
       </Box>
-      <Typography paragraph align="justify">
-        In the above graph, the user is advised not to water on the current date
-        (TODAY), despite the graph indicating a water deficit.
+      <Typography variant="subtitle1" gutterBottom>
+        The recommendation to water or not water depends on:
       </Typography>
       <Typography paragraph align="justify">
-        The reason being that the calculation of the water deficit for the
-        current date includes forecast data, rainfall. In fact, from the graph
-        we see that there is a high probability of rainfall for the next day.
+        <ul>
+          <li>When and how long you last irrigated</li>
+          <li>The amount of rain that occurred</li>
+          <li>The amount of water that evaporated</li>
+          <li>The forecast for rain and evaporation over the next two days</li>
+        </ul>
+      </Typography>
+
+      <Typography paragraph align="justify">
+        Watering is only recommended when the app indicates dry conditions BOTH
+        today and the next time time that watering is allowed (either tomorrow
+        or the day after tomorrow if your address follows the Nassau County
+        Odd/Even Ordinance.) The app factors in the tolerance of your lawn to
+        stay healthy even when the graph indicates dry conditions today.
       </Typography>
       <Typography paragraph align="justify">
-        Because of the high probability, the rainfall is accounted into the
-        calculation of the current date's deficit. As a result of that the app
-        now suggests to the user not to water the lawn, allowing water
-        conservation.
-      </Typography>
-      <Typography paragraph align="justify">
-        <b>Note:</b> For users following the{" "}
-        <b>Nassau Even/Odd Water Ordinance</b>, the app will use forecast data
-        for the day after tomorrow instead to determine the current date deficit
-        since they are allowed to water only every other day.
+        In the graph above, although today is dry, the high probability of
+        natural rainfall over the next two days drives the “Do Not Water”
+        recommendation. For optimal water savings make sure you follow the
+        recommendation in the bar!
       </Typography>
       <Box mb={6} />
     </Box>

@@ -63,7 +63,7 @@ export default function LawnGraph({ lawn }) {
       lawn.irrigationDate !== todayDate &&
       isWaterAllowed(lawn.streetNumber)
     ) {
-      console.log("it is undefined")
+      // console.log("it is undefined")
       updateLawn(addRemoveWater(lawn, todayIdx))
     }
   }, [])
@@ -207,7 +207,7 @@ export default function LawnGraph({ lawn }) {
           <FontAwesomeIcon
             icon={["fas", "tint"]}
             color={
-              (reversed[index].hasUserWatered === true) === true
+              reversed[index].hasUserWatered === true
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }

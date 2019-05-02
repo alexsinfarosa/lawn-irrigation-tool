@@ -154,7 +154,12 @@ const ForecastPage = () => {
             alignItems="center"
             height="100vh"
           >
-            <Typography variant="subtitle1">Create a new Lawn</Typography>
+            <Box maxWidth="350px" align="center">
+              <Typography variant="subtitle1">
+                Tap the <code>Lawns</code> icon below to go to the lawns page
+                and setup a new lawn
+              </Typography>
+            </Box>
           </Box>
         </MainContainer>
       )}

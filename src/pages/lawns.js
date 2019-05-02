@@ -174,6 +174,23 @@ const LawnsPage = () => {
           )}
         </Box>
 
+        {lawns.length === 0 && (
+          <MainContainer>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100vh"
+            >
+              <Box maxWidth="350px" align="center">
+                <Typography variant="subtitle1">
+                  Tap the + icon above to setup a new lawn
+                </Typography>
+              </Box>
+            </Box>
+          </MainContainer>
+        )}
+
         {lawns.map(lawn => {
           const unselected = editing && expanded !== lawn.id
           const results = mainFunction(lawn)
@@ -277,7 +294,8 @@ const LawnsPage = () => {
                             color="secondary"
                             align="right"
                           >
-                            {state.sprinklerRate.toFixed(1)}{" "}
+                            {state.sprinklerRate &&
+                              state.sprinklerRate.toFixed(1)}{" "}
                             <small>in/hr</small>
                           </Typography>
                         </Box>

@@ -29,7 +29,7 @@ const IrrigationPage = () => {
         <Box my={2}>
           <Box mb={4} align="center">
             <Typography variant="h6" gutterBottom>
-              Select the date of last irrigation, otherwise continue.
+              Select the date of last irrigation otherwise continue
             </Typography>
           </Box>
 

@@ -261,7 +261,7 @@ const SprinklerPage = () => {
             <Box flexGrow={6}>
               <Slider
                 disabled={isCustom ? false : true}
-                min={0.1}
+                min={0}
                 step={0.1}
                 max={2}
                 value={state.rate}

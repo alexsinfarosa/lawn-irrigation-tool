@@ -258,7 +258,7 @@ const LawnsPage = () => {
                                 ? false
                                 : true
                             }
-                            min={0.1}
+                            min={0}
                             step={0.1}
                             max={2}
                             value={state.sprinklerRate}

@@ -1,4 +1,6 @@
 import React from "react"
+
+import { useTheme } from "@material-ui/styles"
 import Container from "@material-ui/core/Container"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
@@ -10,6 +12,7 @@ import AppContext from "../appContext"
 import { StyledLink } from "../components/styled/sharedComponents"
 
 export default function App() {
+  const theme = useTheme()
   const { loading, version } = React.useContext(AppContext)
 
   if (loading) return <Loading />
@@ -19,18 +22,33 @@ export default function App() {
       maxWidth="sm"
       style={{ padding: 0, background: "#fff", height: "100vh" }}
     >
-      <Box my={4} display="flex" flexDirection="column" alignItems="center">
+      <Box py={4} display="flex" flexDirection="column" alignItems="center">
         <CompaniesLogos />
 
         <Box display="flex" justifyContent="center" my={4}>
           <Box>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              style={{ fontWeight: "bold", color: theme.palette.grey[800] }}
+            >
               Lawn
             </Typography>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              style={{ fontWeight: "bold", color: theme.palette.grey[800] }}
+            >
               Irrigation
             </Typography>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              style={{ fontWeight: "bold", color: theme.palette.grey[800] }}
+            >
               Tool
             </Typography>
           </Box>

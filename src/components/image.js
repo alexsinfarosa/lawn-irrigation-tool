@@ -21,7 +21,7 @@ const SprinklerImage = props => (
             node {
               publicURL
               childImageSharp {
-                fluid(maxWidth: 250) {
+                fluid(maxWidth: 840) {
                   ...GatsbyImageSharpFluid
                 }
               }

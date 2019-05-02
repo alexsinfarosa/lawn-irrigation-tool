@@ -323,7 +323,7 @@ const SprinklerPage = () => {
       >
         <DialogTitle id="alert-select-rate">
           <Typography variant="subtitle1" component="p">
-            Custom Rate and Custom Duration cannot be zero.
+            Custom Duration or Custom Rate cannot be zero.
             <br />
             Please use sliders to modify their values.
           </Typography>

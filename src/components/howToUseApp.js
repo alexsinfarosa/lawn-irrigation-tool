@@ -12,8 +12,13 @@ import Image from "../components/image"
 import imgOne from "../images/howTo-1.png"
 import imgTwo from "../images/howTo-2.png"
 
+// Context ------------------------------
+import AppContext from "../appContext"
+
 export default function HowToUseApp() {
   const theme = useTheme()
+  const { version } = React.useContext(AppContext)
+
   return (
     <Box px={2}>
       <Box mb={3}>
@@ -242,7 +247,10 @@ export default function HowToUseApp() {
         recommendation. For optimal water savings make sure you follow the
         recommendation in the bar!
       </Typography>
-      <Box mb={6} />
+
+      <Box align="center" my={3}>
+        <Typography color="secondary">{version}</Typography>
+      </Box>
     </Box>
   )
 }

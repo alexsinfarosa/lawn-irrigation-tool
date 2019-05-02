@@ -10,7 +10,7 @@ import AppContext from "../appContext"
 import { StyledLink } from "../components/styled/sharedComponents"
 
 export default function App() {
-  const { loading } = React.useContext(AppContext)
+  const { loading, version } = React.useContext(AppContext)
 
   if (loading) return <Loading />
 
@@ -33,8 +33,9 @@ export default function App() {
           </Box>
         </Box>
 
-        <Box mb={4}>
+        <Box mb={4} align="center">
           <Typography color="error">- ßeta Release -</Typography>
+          <Typography variant="caption">{version}</Typography>
         </Box>
 
         <Box bgcolor="primary.main" mb={8} p={2} px={4} color="white">

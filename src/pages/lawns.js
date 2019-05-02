@@ -178,8 +178,10 @@ const LawnsPage = () => {
           const unselected = editing && expanded !== lawn.id
           const results = mainFunction(lawn)
           const todayDate = new Date().toLocaleDateString()
-          const todayObj = results.find(d => d.date === todayDate)
-
+          let todayObj = { shouldWater: false }
+          console.log(results, todayDate)
+          todayObj = results.find(d => d.date === todayDate)
+          console.log(todayObj)
           return (
             <ExpansionPanel
               key={lawn.id}

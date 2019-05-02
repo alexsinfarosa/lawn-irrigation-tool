@@ -53,7 +53,8 @@ export default function LawnGraph({ lawn }) {
   // today utils ----------------------------------
   const todayDate = new Date().toLocaleDateString()
   const todayIdx = results.findIndex(d => d.date === todayDate)
-  const todayObj = results.find(d => d.date === todayDate)
+  let todayObj = { shouldWater: false }
+  todayObj = results.find(d => d.date === todayDate)
 
   React.useEffect(() => {
     // console.log("effect")

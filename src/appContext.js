@@ -89,6 +89,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
+  const [version] = useState("v0.9.0")
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
@@ -199,6 +200,7 @@ const AppProvider = ({ children }) => {
         countRef,
         setCountRef,
         updateDataAndForecast,
+        version,
       }}
     >
       {children}

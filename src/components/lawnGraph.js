@@ -91,38 +91,28 @@ export default function LawnGraph({ lawn }) {
         {index === 0 && (
           <g transform={translate}>
             <text
-              x={24}
+              x={-6}
               y={15}
-              fontSize="0.7rem"
-              fill={theme.palette.grey[700]}
+              fontSize="0.9rem"
+              fontWeight="bold"
+              fill={theme.palette.background.deficit}
             >
               DRY
             </text>
-            <svg width={20} height={20} x={0} y={0}>
-              <FontAwesomeIcon
-                icon="tint"
-                color={theme.palette.background.deficit}
-              />
-            </svg>
           </g>
         )}
 
         {(props.visibleTicksCount === 2 ? index === 1 : index === 2) && (
           <g transform={translate}>
             <text
-              x={-32}
+              x={-10}
               y={15}
-              fontSize="0.7rem"
-              fill={theme.palette.grey[700]}
+              fontSize="0.9rem"
+              fontWeight="bold"
+              fill={theme.palette.background.noDeficit}
             >
               WET
             </text>
-            <svg width={20} height={20} x={0} y={0}>
-              <FontAwesomeIcon
-                icon="tint"
-                color={theme.palette.background.noDeficit}
-              />
-            </svg>
           </g>
         )}
       </>

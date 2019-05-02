@@ -22,7 +22,11 @@ export default function HowToUseApp() {
   return (
     <Box px={2}>
       <Box mb={3}>
-        <Typography variant="h6" align="justify">
+        <Typography
+          variant="h6"
+          align="center"
+          style={{ color: theme.palette.secondary.dark }}
+        >
           For a better experience on mobile devices it is highly recommended to
           follow these instructions
         </Typography>
@@ -31,9 +35,8 @@ export default function HowToUseApp() {
       <Box mb={5}>
         <Typography
           variant="body2"
-          color="secondary"
           gutterBottom
-          style={{ fontWeight: "bold" }}
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
         >
           iOS
         </Typography>
@@ -63,9 +66,8 @@ export default function HowToUseApp() {
       <Box mb={5}>
         <Typography
           variant="body2"
-          color="secondary"
           gutterBottom
-          style={{ fontWeight: "bold" }}
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
         >
           Android
         </Typography>
@@ -94,20 +96,22 @@ export default function HowToUseApp() {
 
       <Divider variant="middle" />
 
-      <Box my={5}>
-        <Typography variant="h6" align="justify">
+      <Box my={10}>
+        <Typography
+          variant="h6"
+          align="center"
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
+        >
           The recommendation page (<FontAwesomeIcon icon={["fal", "home"]} />){" "}
-          provides the main functionalities of the app. It has three sections.
+          provides the main functionalities of the app.
         </Typography>
       </Box>
+
       {/* Top Bar */}
       <Box mb={3}>
         <Typography
           variant="h6"
-          color="secondary"
-          style={{
-            borderBottom: `1px solid ${theme.palette.secondary.main}`,
-          }}
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
         >
           Recommendation Bar
         </Typography>
@@ -129,10 +133,8 @@ export default function HowToUseApp() {
           water in the soil so irrigation should NOT occur (Blue Bar).
         </Typography>
         <Typography align="justify" gutterBottom>
-          The recommendation is updated multiple times per day. New forecasts
-          are incorporated on a three-hour cycle starting at midnight. Observed
-          data are updated once per day, typically between noon and 1 pm. The
-          recommendation is most likely to change following this update.
+          It is recommended to check the app before watering. The app data is
+          updated multiple times during the day.
         </Typography>
         <Typography align="justify" gutterBottom>
           If you follow the recommendation, the app does not require you to
@@ -143,38 +145,12 @@ export default function HowToUseApp() {
           means watering occurred and a gray drop means you did not irrigate.
         </Typography>
       </Box>
-      {/* Address */}
-      <Box mb={3}>
-        <Typography
-          variant="h6"
-          color="secondary"
-          style={{
-            borderBottom: `1px solid ${theme.palette.secondary.main}`,
-          }}
-        >
-          Address
-        </Typography>
-      </Box>
-      <Box maxWidth="90%" m="auto" mb={3}>
-        <Typography align="center" color="textSecondary">
-          133 N Main St, Freeport, NY, USA
-        </Typography>
-      </Box>
-      <Box mb={5}>
-        <Typography paragraph align="justify">
-          Next, we find the address, that is provided by the user. It is
-          required to obtain weather related data.
-        </Typography>
-      </Box>
 
       {/* Graph */}
       <Box mb={3}>
         <Typography
           variant="h6"
-          color="secondary"
-          style={{
-            borderBottom: `1px solid ${theme.palette.secondary.main}`,
-          }}
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
         >
           Graph
         </Typography>
@@ -186,36 +162,36 @@ export default function HowToUseApp() {
         The graph serves three purposes.
       </Typography>
 
-      <ol>
-        <li>
-          The blue and orange bars give a visual indication of water status over
-          the previous week and the next two days based on the weather forecast.{" "}
-        </li>
-        <li>
-          A blue water drop indicates days that watering was necessary. A gray
-          water drop denotes days that watering was not needed. The drops are
-          tappable so a user can override the recommendation (for example
-          indicate they watered even though the app recommended not to). The app
-          needs this information to make an accurate recommendation. So if your
-          sprinkler automatically operates while you are on vacation, it is
-          recommended that you update the app by tapping the drops next to the
-          days that your system operated. The graph and recommendation is
-          recomputed whenever a drop tapped.
-        </li>
-        <li>
-          Weather icons give the user an idea of the weather conditions that the
-          app expects to occur during the next two days (see graph below).
-        </li>
-      </ol>
+      <Box mb={6}>
+        <ol>
+          <li>
+            The blue and orange bars give a visual indication of soil moisture
+            over the previous week and the next two days based on the weather
+            forecast.{" "}
+          </li>
+          <li>
+            A blue water drop indicates days that watering was necessary. A gray
+            water drop denotes days that watering was not needed. The drops are
+            tappable so a user can override the recommendation (for example
+            indicate they watered even though the app recommended not to). The
+            app needs this information to make an accurate recommendation. So if
+            your sprinkler automatically operates while you are on vacation, it
+            is recommended that you update the app by tapping the drops next to
+            the days that your system operated. The graph and recommendation is
+            recomputed whenever a drop tapped.
+          </li>
+          <li>
+            Weather icons give the user an idea of the weather conditions that
+            the app expects to occur during the next two days (see graph below).
+          </li>
+        </ol>
+      </Box>
 
       {/* Example */}
       <Box mb={3}>
         <Typography
           variant="h6"
-          color="secondary"
-          style={{
-            borderBottom: `1px solid ${theme.palette.secondary.main}`,
-          }}
+          style={{ color: theme.palette.secondary.dark, fontWeight: "bold" }}
         >
           Data Used to Make the Watering Recommendation
         </Typography>
@@ -249,7 +225,9 @@ export default function HowToUseApp() {
       </Typography>
 
       <Box align="center" my={3}>
-        <Typography color="secondary">{version}</Typography>
+        <Typography style={{ color: theme.palette.secondary.dark }}>
+          {version}
+        </Typography>
       </Box>
     </Box>
   )

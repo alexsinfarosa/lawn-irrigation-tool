@@ -1,6 +1,6 @@
 import React from "react"
 
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles, useTheme } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
@@ -20,14 +20,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function AboutPage() {
   const classes = useStyles()
+  const theme = useTheme()
 
-  const { loading } = React.useContext(AppContext)
+  const { loading, version } = React.useContext(AppContext)
 
   if (loading) return <Loading />
   return (
     <Box px={2}>
       <Typography variant="h6">
-        <Box mb={4} color="secondary.dark" fontWeight={500}>
+        <Box mb={4} color="secondary.dark" fontWeight={500} align="center">
           Welcome to the Cornell University Northeast Regional Climate Center’s
           Lawn Irrigation App!
         </Box>
@@ -60,7 +61,7 @@ export default function AboutPage() {
 
       <Typography paragraph align="justify">
         For more water saving tips, tools, and special offers for New York
-        American Water customers please check out our H2O Control Toolbox{" "}
+        American Water customers please check out our{" "}
         <a
           href="https://amwater.com/nyaw/conservation"
           target="_blank"
@@ -80,10 +81,10 @@ export default function AboutPage() {
 
       <Typography component="div" gutterBottom align="justify">
         <ul>
-          <li className={classes.li}>Evapotranspiration</li>
           <li className={classes.li}>Recent local rainfall</li>
           <li className={classes.li}>How much watering you’ve done recently</li>
           <li className={classes.li}>The local short-term weather forecast</li>
+          <li className={classes.li}>Evapotranspiration</li>
         </ul>
       </Typography>
 
@@ -104,6 +105,12 @@ export default function AboutPage() {
         check that your system is functioning correctly, at least annually and
         with the help of a professional irrigation contractor.
       </Typography>
+
+      <Box align="center" my={3}>
+        <Typography style={{ color: theme.palette.secondary.dark }}>
+          {version}
+        </Typography>
+      </Box>
     </Box>
   )
 }

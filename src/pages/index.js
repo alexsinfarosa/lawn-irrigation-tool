@@ -15,7 +15,10 @@ export default function App() {
   if (loading) return <Loading />
 
   return (
-    <Container maxWidth="sm" style={{ padding: 0 }}>
+    <Container
+      maxWidth="sm"
+      style={{ padding: 0, background: "#fff", height: "100vh" }}
+    >
       <Box my={4} display="flex" flexDirection="column" alignItems="center">
         <CompaniesLogos />
 

@@ -17,7 +17,7 @@ const Layout = ({ children }) => (
       }
     `}
     render={data => (
-      <Container maxWidth="sm" style={{ padding: 0 }}>
+      <Container maxWidth="sm" style={{ padding: 0, background: "#fff" }}>
         {children}
       </Container>
     )}

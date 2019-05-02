@@ -178,10 +178,7 @@ const LawnsPage = () => {
           const unselected = editing && expanded !== lawn.id
           const results = mainFunction(lawn)
           const todayDate = new Date().toLocaleDateString()
-          let todayObj = { shouldWater: false }
-          console.log(results, todayDate)
-          todayObj = results.find(d => d.date === todayDate)
-          console.log(todayObj)
+          const todayObj = results.find(d => d.date === todayDate)
           return (
             <ExpansionPanel
               key={lawn.id}
@@ -226,7 +223,7 @@ const LawnsPage = () => {
                           <Slider
                             min={0}
                             step={1}
-                            max={120}
+                            max={90}
                             value={state.sprinklerMinutes}
                             onChange={minutes =>
                               localDispatch({ type: "setMinutes", minutes })
@@ -257,10 +254,12 @@ const LawnsPage = () => {
                         <Box flexGrow={6}>
                           <Slider
                             disabled={
-                              state.sprinklerType === "Custom" ? false : true
+                              state.sprinklerType === "Custom Sprinkler Nozzle"
+                                ? false
+                                : true
                             }
-                            min={0}
-                            step={0.05}
+                            min={0.1}
+                            step={0.1}
                             max={2}
                             value={state.sprinklerRate}
                             onChange={rate =>
@@ -278,7 +277,8 @@ const LawnsPage = () => {
                             color="secondary"
                             align="right"
                           >
-                            {state.sprinklerRate} <small>in/hr</small>
+                            {state.sprinklerRate.toFixed(1)}{" "}
+                            <small>in/hr</small>
                           </Typography>
                         </Box>
                       </Box>

@@ -222,13 +222,14 @@ const SprinklerPage = () => {
             alignItems="center"
           >
             <Box flexGrow={1}>
+              <Typography variant="h6">Select </Typography>
               <Typography variant="h6">Duration: </Typography>
             </Box>
             <Box flexGrow={6}>
               <Slider
                 min={0}
                 step={1}
-                max={120}
+                max={90}
                 value={state.minutes}
                 onChange={minutes =>
                   localDispatch({ type: "setMinutes", minutes })
@@ -251,14 +252,17 @@ const SprinklerPage = () => {
             alignItems="center"
           >
             <Box flexGrow={1}>
+              <Typography variant="h6">
+                {isCustom ? "Select" : "Default"}
+              </Typography>
               <Typography variant="h6">Rate: </Typography>
             </Box>
 
             <Box flexGrow={6}>
               <Slider
                 disabled={isCustom ? false : true}
-                min={0}
-                step={0.05}
+                min={0.1}
+                step={0.1}
                 max={2}
                 value={state.rate}
                 onChange={rate => localDispatch({ type: "setRate", rate })}
@@ -268,7 +272,7 @@ const SprinklerPage = () => {
             </Box>
             <Box flexGrow={1}>
               <Typography variant="subtitle1" color="secondary" align="right">
-                {state.rate.toFixed(2)} <small>in/hr</small>
+                {state.rate.toFixed(1)} <small>in/hr</small>
               </Typography>
             </Box>
           </Box>

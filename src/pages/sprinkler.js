@@ -9,6 +9,10 @@ import Checkbox from "@material-ui/core/Checkbox"
 import Typography from "@material-ui/core/Typography"
 import FormGroup from "@material-ui/core/FormGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
 import Box from "@material-ui/core/Box"
 
 import Layout from "../components/layout"
@@ -126,6 +130,8 @@ const SprinklerPage = () => {
   // State --------------------------------------------
   const [state, localDispatch] = React.useReducer(reducer, initialState)
   const [isCustom, setIsCustom] = React.useState(false)
+  const [showDialog, setShowDialog] = React.useState(false)
+
   return (
     <Layout>
       <SEO title="Location" />
@@ -282,28 +288,53 @@ const SprinklerPage = () => {
           to={
             countRef === 0
               ? "/info/"
-              : hasDataAndForecast
+              : hasDataAndForecast && state.rate !== 0 && state.minutes !== 0
               ? "/lawn/"
               : "/sprinkler/"
           }
           disabled={hasDataAndForecast ? false : true}
           onClick={() => {
-            const now = Date.now()
-            const updatedLawn = {
-              ...lawn,
-              sprinklerType: state.name,
-              sprinklerRate: state.rate,
-              sprinklerMinutes: state.minutes,
-              id: now,
-              updated: now,
+            if (state.rate !== 0 && state.minutes !== 0) {
+              const now = Date.now()
+              const updatedLawn = {
+                ...lawn,
+                sprinklerType: state.name,
+                sprinklerRate: state.rate,
+                sprinklerMinutes: state.minutes,
+                id: now,
+                updated: now,
+              }
+              globalDispatch({ type: "setSprinkler", id: now, ...state })
+              addLawn(updatedLawn)
+            } else {
+              setShowDialog(true)
             }
-            globalDispatch({ type: "setSprinkler", id: now, ...state })
-            addLawn(updatedLawn)
           }}
         >
           Create Entry
         </StyledButton>
       </GridContainer>
+
+      <Dialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        aria-labelledby="alert-dialog-select-rate"
+        aria-describedby="alert-dialog-select-rate"
+      >
+        <DialogTitle id="alert-select-rate">
+          <Typography variant="subtitle1" component="p">
+            Custom Rate and Custom Duration cannot be zero.
+            <br />
+            Please use sliders to modify their values.
+          </Typography>
+        </DialogTitle>
+
+        <DialogActions>
+          <Button onClick={() => setShowDialog(false)} color="secondary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   )
 }

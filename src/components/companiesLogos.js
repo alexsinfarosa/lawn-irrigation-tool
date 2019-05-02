@@ -22,7 +22,7 @@ const CompaniesLogos = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <NRCCIcon style={{ height: 70, }} />
+        <NRCCIcon style={{ height: 70 }} />
       </a>
 
       <a
@@ -30,7 +30,7 @@ const CompaniesLogos = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <WaterIcon style={{ height: 70, }} />
+        <WaterIcon style={{ height: 70 }} />
       </a>
     </Box>
   )

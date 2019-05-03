@@ -132,6 +132,9 @@ const SprinklerPage = () => {
   const [isCustom, setIsCustom] = React.useState(false)
   const [showDialog, setShowDialog] = React.useState(false)
 
+
+  const hasAllRequiredFields = lawn.lat !== null && state.rate !== 0 && state.minutes !== 0
+console.log(lawn.lat !== null && state.rate !== 0 && state.minutes !== 0)
   return (
     <Layout>
       <SEO title="Location" />
@@ -288,13 +291,13 @@ const SprinklerPage = () => {
           to={
             countRef === 0 && state.rate !== 0 && state.minutes !== 0
               ? "/info/"
-              : hasDataAndForecast && state.rate !== 0 && state.minutes !== 0
+              : hasDataAndForecast && hasAllRequiredFields
               ? "/lawn/"
               : "/sprinkler/"
           }
           disabled={hasDataAndForecast ? false : true}
           onClick={() => {
-            if (state.rate !== 0 && state.minutes !== 0) {
+            if (hasAllRequiredFields) {
               const now = Date.now()
               const updatedLawn = {
                 ...lawn,

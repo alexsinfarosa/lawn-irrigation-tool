@@ -154,7 +154,7 @@ const AppProvider = ({ children }) => {
       }
 
       updateDataAndForecast(lawn)
-      // navigate("/lawn/")
+      navigate("/lawn/")
     }
     setLoading(false)
   }, [])

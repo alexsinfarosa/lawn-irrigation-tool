@@ -192,7 +192,7 @@ const SprinklerPage = () => {
             </GridList>
           </Box>
 
-          <Box my={4} border={1} px={1} borderRadius={8}>
+          <Box mt={4} mb={6} border={1} px={1} borderRadius={8}>
             <FormGroup row>
               <FormControlLabel
                 control={
@@ -228,8 +228,8 @@ const SprinklerPage = () => {
             alignItems="center"
           >
             <Box flexGrow={1}>
-              <Typography variant="h6">Select </Typography>
-              <Typography variant="h6">Duration: </Typography>
+              <Typography variant="subtitle2">Select </Typography>
+              <Typography variant="subtitle2">Duration: </Typography>
             </Box>
             <Box flexGrow={6}>
               <Slider
@@ -245,7 +245,7 @@ const SprinklerPage = () => {
               />
             </Box>
             <Box flexGrow={1}>
-              <Typography variant="subtitle1" color="secondary" align="right">
+              <Typography variant="subtitle2" color="secondary" align="right">
                 {state.minutes} <small>min</small>
               </Typography>
             </Box>
@@ -258,10 +258,10 @@ const SprinklerPage = () => {
             alignItems="center"
           >
             <Box flexGrow={1}>
-              <Typography variant="h6">
+              <Typography variant="subtitle2">
                 {isCustom ? "Select" : "Default"}
               </Typography>
-              <Typography variant="h6">Rate: </Typography>
+              <Typography variant="subtitle2">Rate: </Typography>
             </Box>
 
             <Box flexGrow={6}>
@@ -277,7 +277,7 @@ const SprinklerPage = () => {
               />
             </Box>
             <Box flexGrow={1}>
-              <Typography variant="subtitle1" color="secondary" align="right">
+              <Typography variant="subtitle2" color="secondary" align="right">
                 {state.rate.toFixed(1)} <small>in/hr</small>
               </Typography>
             </Box>

@@ -286,7 +286,7 @@ const SprinklerPage = () => {
 
         <StyledButton
           to={
-            countRef === 0
+            countRef === 0 && state.rate !== 0 && state.minutes !== 0
               ? "/info/"
               : hasDataAndForecast && state.rate !== 0 && state.minutes !== 0
               ? "/lawn/"

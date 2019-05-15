@@ -22,6 +22,8 @@ const initialLawn = lawns => {
       sprinklerType: "",
       sprinklerRate: null,
       sprinklerMinutes: null,
+      distributionUniformity: null,
+      sprayEfficiencyFactor: null,
       id: null,
       updated: null,
       forecast: {},
@@ -52,6 +54,8 @@ function reducer(state, action) {
         sprinklerType: action.name,
         sprinklerRate: action.rate,
         sprinklerMinutes: action.minutes,
+        distributionUniformity: action.distributionUniformity,
+        sprayEfficiencyFactor: action.sprayEfficiencyFactor,
       }
     case "setForecast":
       return { ...state, forecast: action.forecast }

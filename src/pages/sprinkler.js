@@ -45,6 +45,8 @@ const sprinklers = [
     rate: 1.5, // in/hr
     minutes: 19,
     isSelected: false,
+    distributionUniformity: 0.7,
+    sprayEfficiencyFactor: 0.75,
   },
   {
     name: "Rotor Nozzle",
@@ -52,6 +54,8 @@ const sprinklers = [
     rate: 0.75, // in/hr
     minutes: 28,
     isSelected: false,
+    distributionUniformity: 0.8,
+    sprayEfficiencyFactor: 0.95,
   },
   {
     name: "Hi Efficiency Nozzle",
@@ -59,6 +63,8 @@ const sprinklers = [
     rate: 0.5, // in/hr
     minutes: 40,
     isSelected: false,
+    distributionUniformity: 0.8,
+    sprayEfficiencyFactor: 1,
   },
   {
     name: "Manual Nozzle",
@@ -66,6 +72,8 @@ const sprinklers = [
     rate: 1, // in/hr
     minutes: 24,
     isSelected: false,
+    distributionUniformity: 0.75,
+    sprayEfficiencyFactor: 0.86,
   },
 ]
 
@@ -82,6 +90,8 @@ function reducer(state, action) {
         rate: action.rate,
         minutes: action.minutes,
         isSelected: action.isSelected,
+        distributionUniformity: action.distributionUniformity,
+        sprayEfficiencyFactor: action.sprayEfficiencyFactor,
       }
     case "setName":
       return { ...state, img: null, name: action.name }
@@ -132,9 +142,9 @@ const SprinklerPage = () => {
   const [isCustom, setIsCustom] = React.useState(false)
   const [showDialog, setShowDialog] = React.useState(false)
 
-
-  const hasAllRequiredFields = lawn.lat !== null && state.rate !== 0 && state.minutes !== 0
-console.log(lawn.lat !== null && state.rate !== 0 && state.minutes !== 0)
+  const hasAllRequiredFields =
+    lawn.lat !== null && state.rate !== 0 && state.minutes !== 0
+  // console.log(lawn.lat !== null && state.rate !== 0 && state.minutes !== 0)
   return (
     <Layout>
       <SEO title="Location" />
@@ -304,6 +314,8 @@ console.log(lawn.lat !== null && state.rate !== 0 && state.minutes !== 0)
                 sprinklerType: state.name,
                 sprinklerRate: state.rate,
                 sprinklerMinutes: state.minutes,
+                distributionUniformity: state.distributionUniformity,
+                sprayEfficiencyFactor: state.sprayEfficiencyFactor,
                 id: now,
                 updated: now,
               }

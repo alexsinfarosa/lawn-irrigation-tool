@@ -83,10 +83,21 @@ export const fetchPETData = async (lat, lng) => {
 
 export const addRemoveWater = (lawn, idx) => {
   let lawnCopy = { ...lawn }
-  let { sprinklerMinutes, sprinklerRate } = lawnCopy
+  let {
+    sprinklerMinutes,
+    sprinklerRate,
+    sprayEfficiencyFactor,
+    distributionUniformity,
+  } = lawnCopy
   let { pcpns, hasUserWatered } = lawnCopy.data
 
-  const amountOfWater = (sprinklerRate * sprinklerMinutes) / 60
+  // const rate = (sprinklerRate * sprinklerMinutes) / 60
+  // const rtm = (1 / (0.4 + 0.6 * distributionUniformity)) * sprayEfficiencyFactor
+
+  const amountOfWater =
+    (sprinklerMinutes / 60) *
+    (sprinklerRate / (1 / (0.4 + 0.6 * distributionUniformity))) *
+    sprayEfficiencyFactor
 
   if (hasUserWatered[idx] === false || hasUserWatered[idx] === "undefined") {
     hasUserWatered[idx] = true
@@ -130,7 +141,6 @@ export const mainFunction = lawn => {
   const { deficitDaily } = res
 
   const threshold = -1.6 * ((sprinklerRate * sprinklerMinutes) / 60)
-
   const today = new Date().toLocaleDateString()
 
   let index = 2 // today plus 2 days

@@ -7,7 +7,7 @@ import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
 import uuidv5 from "uuid"
-
+import { metricsOnServer } from "./utils/api"
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -139,6 +139,7 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
+    console.log(metricsOnServer("98cn2", 1, lawn))
     // console.log("ONE")
     // Navigating to the right route and making updates
     if (lawns.length === 0) {

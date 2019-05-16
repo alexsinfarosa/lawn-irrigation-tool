@@ -17,35 +17,36 @@ export const fetchForecastData = (lat, lng) => {
     })
 }
 
-// const users = []
-// const user = {
-//   id: "",
-//   count: 0,
-//   lawns: [],
-// }
+export const metricsOnServer = (userId, count, lawn) => {
+  let users = []
+  const userIdx = users.findIndex(user => user.id === userId)
 
-// const metricsOnServer = (userId, count, lawn) => {
-//   const userIdx = users.findIndex(user => user.id === userId)
+  const lawnCopy = Object.keys(lawn).reduce((obj, key) => {
+    if (key !== "forecast" && key !== "updated" && key !== "irrigationDate") {
+      obj[key] = lawn[key]
+    }
+    return obj
+  }, {})
 
-//   // add user
-//   if (userIdx === -1) {
-//     let user = {}
-//     user.id = userId
-//     user.count = count
-//     user.lawns = [lawn]
-//     users = [user, ...users]
-//   } else {
-//     // update user
-//     const user = users[userIdx]
-//     let userCopy = { ...user }
-//     const lawnIdx = userCopy.lawns.findIndex(l => l.id === lawn.id)
-//     userCopy.count = count
-//     userCopy.lawns[lawnIdx] = lawn
-//     users[userIdx] = userCopy
-//   }
+  // add user
+  if (userIdx === -1) {
+    let user = {}
+    user.id = userId
+    user.count = count
+    user.lawns = [lawnCopy]
+    users = [user, ...users]
+  } else {
+    // update user
+    const user = users[userIdx]
+    let userCopy = { ...user }
+    const lawnIdx = userCopy.lawns.findIndex(l => l.id === lawnCopy.id)
+    userCopy.count = count
+    userCopy.lawns[lawnIdx] = lawnCopy
+    users[userIdx] = userCopy
+  }
 
-//   return fetchPETData(lawn.lat, lawn.lng)
-// }
+  return users
+}
 
 export const fetchPETData = async (lat, lng) => {
   const year = new Date().getFullYear()
@@ -90,9 +91,6 @@ export const addRemoveWater = (lawn, idx) => {
     distributionUniformity,
   } = lawnCopy
   let { pcpns, hasUserWatered } = lawnCopy.data
-
-  // const rate = (sprinklerRate * sprinklerMinutes) / 60
-  // const rtm = (1 / (0.4 + 0.6 * distributionUniformity)) * sprayEfficiencyFactor
 
   const amountOfWater =
     (sprinklerMinutes / 60) *

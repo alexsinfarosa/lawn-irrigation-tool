@@ -1,20 +1,19 @@
 import axios from "axios"
 
 export const fetchDataFromServer = (id, lon, lat) => {
-  const url = `https://lawnwatering.org/v0/forecast`
+  const url = `https://stage.lawnwatering.org/v0/forecast`
   const payload = {
     id,
     lon: Number(lon.toFixed(2)),
     lat: Number(lat.toFixed(2)),
     year: new Date().getFullYear(),
   }
-
   return axios
     .post(url, payload)
     .then(res => {
-      console.log(res)
+      console.log(res.data)
       // res: {"id":"0123-abc", "forecast":{…}, "irrigation":{…}}
-      return res
+      return res.data
     })
     .catch(err => console.log("Failed to fetch data from server", err))
 }

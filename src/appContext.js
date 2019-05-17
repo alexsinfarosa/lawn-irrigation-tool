@@ -144,8 +144,9 @@ const AppProvider = ({ children }) => {
     lawn.data.length !== 0 && Object.keys(lawn).length !== 0
 
   React.useEffect(() => {
-    console.log(metricsOnServer("98cn2", 1, lawn))
-    fetchDataFromServer(null, lawn.lng, lawn.lat)
+    // console.log(metricsOnServer("98cn2", 1, lawn))
+    fetchDataFromServer("asdf", lawn.lng, lawn.lat)
+
     // console.log("ONE")
     // Navigating to the right route and making updates
     if (lawns.length === 0) {

@@ -1,7 +1,12 @@
 import React, { createContext, useState, useReducer } from "react"
 
 // utils ------------------------------------------------
-import { addRemoveWater, fetchForecastData, fetchPETData } from "./utils/api"
+import {
+  addRemoveWater,
+  fetchForecastData,
+  fetchPETData,
+  fetchDataFromServer,
+} from "./utils/api"
 // import { window } from "browser-monads"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
@@ -140,6 +145,7 @@ const AppProvider = ({ children }) => {
 
   React.useEffect(() => {
     console.log(metricsOnServer("98cn2", 1, lawn))
+    fetchDataFromServer(null, lawn.lng, lawn.lat)
     // console.log("ONE")
     // Navigating to the right route and making updates
     if (lawns.length === 0) {

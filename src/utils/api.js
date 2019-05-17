@@ -1,5 +1,36 @@
 import axios from "axios"
 
+export const fetchDataFromServer = (id, lon, lat) => {
+  const url = `https://lawnwatering.org/v0/forecast`
+  const payload = {
+    id,
+    lon: Number(lon.toFixed(2)),
+    lat: Number(lat.toFixed(2)),
+    year: new Date().getFullYear(),
+  }
+
+  return axios
+    .post(url, payload)
+    .then(res => {
+      console.log(res)
+      // res: {"id":"0123-abc", "forecast":{…}, "irrigation":{…}}
+      return res
+    })
+    .catch(err => console.log("Failed to fetch data from server", err))
+}
+
+export const createOrUpdateUser = (id, lawns) => {
+  const url = `https://lawnwatering.org/v0/?id:'dflkjsd'/`
+  const payload = { id, lawns }
+  return axios
+    .post(url, payload)
+    .then(res => {
+      console.log(res)
+      return res
+    })
+    .catch(err => console.log("Failed to create or update user", err))
+}
+
 // Fetch forecast data -------------------------------
 export const fetchForecastData = (lat, lng) => {
   const url = `${

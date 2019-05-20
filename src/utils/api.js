@@ -11,16 +11,64 @@ export const fetchDataFromServer = (id, lon, lat) => {
   return axios
     .post(url, payload)
     .then(res => {
-      console.log(res.data)
-      // res: {"id":"0123-abc", "forecast":{…}, "irrigation":{…}}
-      return res.data
+      const { id, forecast, irrigation } = res
+
+      const datesNoYears = [
+        ...irrigation.data.dates_precip,
+        ...irrigation.data.dates_precip_fcst,
+      ]
+
+      const dates = datesNoYears.map(d =>
+        new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
+      )
+
+      let pcpns = [...irrigation.data.precip, ...irrigation.data.precip_fcst]
+      const pets = [...irrigation.data.pet, ...irrigation.data.pet_fcst]
+      const currentDate = new Date().toLocaleDateString()
+      const todayIdx = dates.findIndex(date => date === currentDate)
+      let hasUserWatered = new Array(dates.length).fill(false)
+      hasUserWatered[todayIdx] = "undefined"
+
+      return {
+        id,
+        forecast,
+        irrigation: { dates, pcpns, pets, hasUserWatered },
+      }
     })
     .catch(err => console.log("Failed to fetch data from server", err))
 }
 
-export const createOrUpdateUser = (id, lawns) => {
-  const url = `https://lawnwatering.org/v0/?id:'dflkjsd'/`
-  const payload = { id, lawns }
+export const createUser = () => {
+  const url = `https://stage.lawnwatering.org/v0/user`
+  const payload = { id: "", water: "nyamwater", lawns: [] }
+  return axios
+    .post(url, payload)
+    .then(res => res)
+    .catch(err => console.log("Failed to create or update user", err))
+}
+
+export const updateUser = (lawn, lawns, id) => {
+  let lawnsCopy = [...lawns]
+  const lawnIdx = lawns.findIndex(l => l.id === lawn.id)
+
+  const newLawn = {
+    data: {
+      dates: lawn.data.dates,
+      hasUserWatered: lawn.data.hasUserWatered,
+      shouldWater: mainFunction(lawn).map(d => d.shouldWater),
+    },
+    id: lawn.id,
+    lat: lawn.lat,
+    lng: lawn.lng,
+    sprinklerMinutes: lawn.sprinklerMinutes,
+    sprinklerRate: lawn.sprinklerRate,
+    sprinklerType: lawn.sprinklerType,
+    hasOddEvenWaterOrdinance: lawn.streetNumber === null ? false : true,
+  }
+
+  lawnsCopy[lawnIdx] = newLawn
+  const url = `https://stage.lawnwatering.org/v0/user`
+  const payload = { id, water: "nyamwater", lawns: lawnsCopy }
   return axios
     .post(url, payload)
     .then(res => {
@@ -47,36 +95,36 @@ export const fetchForecastData = (lat, lng) => {
     })
 }
 
-export const metricsOnServer = (userId, count, lawn) => {
-  let users = []
-  const userIdx = users.findIndex(user => user.id === userId)
+// export const metricsOnServer = (userId, count, lawn) => {
+//   let users = []
+//   const userIdx = users.findIndex(user => user.id === userId)
 
-  const lawnCopy = Object.keys(lawn).reduce((obj, key) => {
-    if (key !== "forecast" && key !== "updated" && key !== "irrigationDate") {
-      obj[key] = lawn[key]
-    }
-    return obj
-  }, {})
+//   const lawnCopy = Object.keys(lawn).reduce((obj, key) => {
+//     if (key !== "forecast" && key !== "updated" && key !== "irrigationDate") {
+//       obj[key] = lawn[key]
+//     }
+//     return obj
+//   }, {})
 
-  // add user
-  if (userIdx === -1) {
-    let user = {}
-    user.id = userId
-    user.count = count
-    user.lawns = [lawnCopy]
-    users = [user, ...users]
-  } else {
-    // update user
-    const user = users[userIdx]
-    let userCopy = { ...user }
-    const lawnIdx = userCopy.lawns.findIndex(l => l.id === lawnCopy.id)
-    userCopy.count = count
-    userCopy.lawns[lawnIdx] = lawnCopy
-    users[userIdx] = userCopy
-  }
+//   // add user
+//   if (userIdx === -1) {
+//     let user = {}
+//     user.id = userId
+//     user.count = count
+//     user.lawns = [lawnCopy]
+//     users = [user, ...users]
+//   } else {
+//     // update user
+//     const user = users[userIdx]
+//     let userCopy = { ...user }
+//     const lawnIdx = userCopy.lawns.findIndex(l => l.id === lawnCopy.id)
+//     userCopy.count = count
+//     userCopy.lawns[lawnIdx] = lawnCopy
+//     users[userIdx] = userCopy
+//   }
 
-  return users
-}
+//   return users
+// }
 
 export const fetchPETData = async (lat, lng) => {
   const year = new Date().getFullYear()
@@ -95,9 +143,11 @@ export const fetchPETData = async (lat, lng) => {
         ...res.data.dates_precip,
         ...res.data.dates_precip_fcst,
       ]
+
       const dates = datesNoYears.map(d =>
         new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
       )
+
       let pcpns = [...res.data.precip, ...res.data.precip_fcst]
       const pets = [...res.data.pet, ...res.data.pet_fcst]
       const currentDate = new Date().toLocaleDateString()

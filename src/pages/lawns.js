@@ -154,6 +154,7 @@ const LawnsPage = () => {
             >
               <FontAwesomeIcon icon="plus" size="lg" color="#fff" />
             </Fab>
+            {/* <Typography variant="caption">Add a new Lawn</Typography> */}
           </Link>
 
           {lawn.id !== null && (

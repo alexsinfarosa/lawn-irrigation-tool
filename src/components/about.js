@@ -94,16 +94,16 @@ export default function AboutPage() {
         County Irrigation ordinance applies to you the app will make
         recommendations consistent with the ordinance. The app uses the
         information you provide but neither NRCC nor New York American Water
-        collects any data about you, or your lawn so you can rest assured that
-        your privacy is protected.
+        collects any data about you, so you can rest assured that your privacy
+        is protected.
       </Typography>
 
       <Typography paragraph align="justify">
         Please note that the app assumes you have a well-designed irrigation
-        system that provides uniform coverage without any leaks in the system.
-        It’s important to keep your system well-maintained. We recommend you
-        check that your system is functioning correctly, at least annually and
-        with the help of a professional irrigation contractor.
+        system without any leaks. It’s important to keep your system
+        well-maintained. We recommend you check that your system is functioning
+        correctly, at least annually and with the help of a professional
+        irrigation contractor.
       </Typography>
 
       <Box align="center" my={3}>

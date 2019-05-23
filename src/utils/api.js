@@ -10,6 +10,7 @@ export const createUser = () => {
 }
 
 export const updateUser = (lawn, lawns, id) => {
+  console.log("updateUser Called!")
   let lawnsCopy = [...lawns]
   const lawnIdx = lawns.findIndex(l => l.id === lawn.id)
   const newLawn = {
@@ -19,8 +20,8 @@ export const updateUser = (lawn, lawns, id) => {
       shouldWater: mainFunction(lawn).map(d => d.shouldWater),
     },
     id: lawn.id,
-    lat: lawn.lat,
-    lng: lawn.lng,
+    lat: Number(lawn.lat.toFixed(2)),
+    lng: Number(lawn.lng.toFixed(2)),
     sprinklerMinutes: lawn.sprinklerMinutes,
     sprinklerRate: lawn.sprinklerRate,
     sprinklerType: lawn.sprinklerType,
@@ -135,7 +136,7 @@ export const addRemoveWater = (lawn, idx) => {
     (sprinklerMinutes / 60) *
     (sprinklerRate / (1 / (0.4 + 0.6 * distributionUniformity))) *
     sprayEfficiencyFactor
-  console.log(amountOfWater)
+
   if (hasUserWatered[idx] === false || hasUserWatered[idx] === "firstDate") {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater

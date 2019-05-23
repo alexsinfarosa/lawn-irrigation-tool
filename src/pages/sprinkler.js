@@ -167,7 +167,7 @@ const SprinklerPage = () => {
             </Typography>
             <Typography variant="caption">
               if you have different types of sprinkler heads, choose the most
-              common type
+              common type for your lawn
             </Typography>
           </Box>
 
@@ -296,6 +296,12 @@ const SprinklerPage = () => {
             </Box>
           </Box>
         </Box>
+
+        <Typography variant="caption">
+          This app will work with multiple zones if sprinkler heads are similar
+          throughout your yard. If you have different sprinker types, you can
+          set up multiple lawns (i.e. zones).
+        </Typography>
 
         <StyledButton
           to={

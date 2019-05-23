@@ -1,46 +1,8 @@
 import axios from "axios"
 
-export const fetchDataFromServer = (id, lon, lat) => {
-  const url = `https://stage.lawnwatering.org/v0/forecast`
-  const payload = {
-    id,
-    lon: Number(lon.toFixed(2)),
-    lat: Number(lat.toFixed(2)),
-    year: new Date().getFullYear(),
-  }
-  return axios
-    .post(url, payload)
-    .then(res => {
-      const { id, forecast, irrigation } = res
-
-      const datesNoYears = [
-        ...irrigation.data.dates_precip,
-        ...irrigation.data.dates_precip_fcst,
-      ]
-
-      const dates = datesNoYears.map(d =>
-        new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
-      )
-
-      let pcpns = [...irrigation.data.precip, ...irrigation.data.precip_fcst]
-      const pets = [...irrigation.data.pet, ...irrigation.data.pet_fcst]
-      const currentDate = new Date().toLocaleDateString()
-      const todayIdx = dates.findIndex(date => date === currentDate)
-      let hasUserWatered = new Array(dates.length).fill(false)
-      hasUserWatered[todayIdx] = "undefined"
-
-      return {
-        id,
-        forecast,
-        irrigation: { dates, pcpns, pets, hasUserWatered },
-      }
-    })
-    .catch(err => console.log("Failed to fetch data from server", err))
-}
-
 export const createUser = () => {
   const url = `https://stage.lawnwatering.org/v0/user`
-  const payload = { id: "", water: "nyamwater", lawns: [] }
+  const payload = { id: "", lawns: [] }
   return axios
     .post(url, payload)
     .then(res => res)
@@ -79,21 +41,21 @@ export const updateUser = (lawn, lawns, id) => {
 }
 
 // Fetch forecast data -------------------------------
-export const fetchForecastData = (lat, lng) => {
-  const url = `${
-    process.env.GATSBY_PROXYDARKSKY
-  }/${lat},${lng}?exclude=flags,minutely,alerts,hourly`
-  return axios
-    .get(url)
-    .then(res => {
-      // console.log(res.data)
-      const { currently, daily } = res.data
-      return { currently, daily }
-    })
-    .catch(err => {
-      console.log("Failed to load forecast weather data", err)
-    })
-}
+// export const fetchForecastData = (lat, lng) => {
+//   const url = `${
+//     process.env.GATSBY_PROXYDARKSKY
+//   }/${lat},${lng}?exclude=flags,minutely,alerts,hourly`
+//   return axios
+//     .get(url)
+//     .then(res => {
+//       // console.log(res.data)
+//       const { currently, daily } = res.data
+//       return { currently, daily }
+//     })
+//     .catch(err => {
+//       console.log("Failed to load forecast weather data", err)
+//     })
+// }
 
 // export const metricsOnServer = (userId, count, lawn) => {
 //   let users = []
@@ -126,41 +88,41 @@ export const fetchForecastData = (lat, lng) => {
 //   return users
 // }
 
-export const fetchPETData = async (lat, lng) => {
-  const year = new Date().getFullYear()
+// export const fetchPETData = async (lat, lng) => {
+//   const year = new Date().getFullYear()
 
-  // the first date is 03/01 of the selected year.
-  // It goes up to today (plus 3 days forecast)
-  const url = `${process.env.GATSBY_PROXYIRRIGATION}?lat=${lat.toFixed(
-    4
-  )}&lon=${lng.toFixed(4)}&year=${year}`
+//   // the first date is 03/01 of the selected year.
+//   // It goes up to today (plus 3 days forecast)
+//   const url = `${process.env.GATSBY_PROXYIRRIGATION}?lat=${lat.toFixed(
+//     4
+//   )}&lon=${lng.toFixed(4)}&year=${year}`
 
-  return await axios
-    .get(url)
-    .then(res => {
-      // console.log(res.data)
-      const datesNoYears = [
-        ...res.data.dates_precip,
-        ...res.data.dates_precip_fcst,
-      ]
+//   return await axios
+//     .get(url)
+//     .then(res => {
+//       // console.log(res.data)
+//       const datesNoYears = [
+//         ...res.data.dates_precip,
+//         ...res.data.dates_precip_fcst,
+//       ]
 
-      const dates = datesNoYears.map(d =>
-        new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
-      )
+//       const dates = datesNoYears.map(d =>
+//         new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
+//       )
 
-      let pcpns = [...res.data.precip, ...res.data.precip_fcst]
-      const pets = [...res.data.pet, ...res.data.pet_fcst]
-      const currentDate = new Date().toLocaleDateString()
-      const todayIdx = dates.findIndex(date => date === currentDate)
-      let hasUserWatered = new Array(dates.length).fill(false)
-      hasUserWatered[todayIdx] = "undefined"
+//       let pcpns = [...res.data.precip, ...res.data.precip_fcst]
+//       const pets = [...res.data.pet, ...res.data.pet_fcst]
+//       const currentDate = new Date().toLocaleDateString()
+//       const todayIdx = dates.findIndex(date => date === currentDate)
+//       let hasUserWatered = new Array(dates.length).fill(false)
+//       hasUserWatered[todayIdx] = "undefined"
 
-      return { dates, pcpns, pets, hasUserWatered }
-    })
-    .catch(err => {
-      console.log("Failed to load PET data", err)
-    })
-}
+//       return { dates, pcpns, pets, hasUserWatered }
+//     })
+//     .catch(err => {
+//       console.log("Failed to load PET data", err)
+//     })
+// }
 
 export const addRemoveWater = (lawn, idx) => {
   let lawnCopy = { ...lawn }
@@ -177,14 +139,13 @@ export const addRemoveWater = (lawn, idx) => {
     (sprinklerRate / (1 / (0.4 + 0.6 * distributionUniformity))) *
     sprayEfficiencyFactor
 
-  if (hasUserWatered[idx] === false || hasUserWatered[idx] === "undefined") {
+  if (hasUserWatered[idx] === false || hasUserWatered[idx] === "firstDate") {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater
   } else {
     hasUserWatered[idx] = false
     pcpns[idx] = pcpns[idx] - amountOfWater
   }
-
   return lawnCopy
 }
 

@@ -25,9 +25,6 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete"
 import hideVirtualKeyboard from "hide-virtual-keyboard"
 
-// UTILS ---------------------------------
-import { fetchForecastData } from "../utils/api"
-
 import AppContext from "../appContext"
 
 // Initial State --------------------------------------------------
@@ -74,7 +71,12 @@ const LocationPage = () => {
   const theme = useTheme()
 
   // CONTEXT -----------------------------------------------
-  const { loading, setLoading, globalDispatch } = React.useContext(AppContext)
+  const {
+    loading,
+    globalDispatch,
+    userId,
+    fetchDataFromServer,
+  } = React.useContext(AppContext)
 
   // STATE ------------------------------------------------
   const [state, localDispatch] = React.useReducer(reducer, initialState)
@@ -264,12 +266,8 @@ const LocationPage = () => {
           disabled={!loading && state.lat ? false : true}
           onClick={async () => {
             if (!loading && state.lat) {
-              // console.log("location")
-              setLoading(true)
-              const forecast = await fetchForecastData(state.lat, state.lng)
               globalDispatch({ type: "setLocation", ...state })
-              globalDispatch({ type: "setForecast", forecast })
-              setLoading(false)
+              fetchDataFromServer(userId, state.lng, state.lat)
             }
           }}
         >

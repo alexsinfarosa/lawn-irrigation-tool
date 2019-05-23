@@ -310,7 +310,6 @@ const SprinklerPage = () => {
             if (hasAllRequiredFields) {
               const now = Date.now()
               const updatedLawn = {
-                ...lawn,
                 sprinklerType: state.name,
                 sprinklerRate: state.rate,
                 sprinklerMinutes: state.minutes,
@@ -319,7 +318,7 @@ const SprinklerPage = () => {
                 id: now,
                 updated: now,
               }
-              globalDispatch({ type: "setSprinkler", id: now, ...state })
+              globalDispatch({ type: "setSprinkler", ...state })
               addLawn(updatedLawn)
             } else {
               setShowDialog(true)

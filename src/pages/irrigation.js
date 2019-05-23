@@ -11,12 +11,13 @@ import { StyledButton } from "../components/styled/sharedComponents"
 
 // iutils
 import { DatePicker } from "material-ui-pickers"
-import { fetchPETData } from "../utils/api"
 
 import AppContext from "../appContext"
 
 const IrrigationPage = () => {
-  const { lawn, setLoading, globalDispatch } = React.useContext(AppContext)
+  const { lawn, globalDispatch, createHasUserWatered } = React.useContext(
+    AppContext
+  )
   const [selectedDate, handleDateChange] = React.useState(null)
 
   return (
@@ -56,12 +57,6 @@ const IrrigationPage = () => {
           disabled={lawn.lat ? false : true}
           onClick={async () => {
             if (lawn.lat !== null) {
-              // console.log("irrigation")
-              setLoading(true)
-
-              const petData = await fetchPETData(lawn.lat, lawn.lng)
-              globalDispatch({ type: "setPETData", petData })
-
               globalDispatch({
                 type: "setDate",
                 selectedDate:
@@ -69,7 +64,9 @@ const IrrigationPage = () => {
                     ? null
                     : selectedDate.toLocaleDateString(),
               })
-              setLoading(false)
+              createHasUserWatered(
+                selectedDate ? selectedDate.toLocaleDateString() : null
+              )
             }
           }}
         >

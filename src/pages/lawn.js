@@ -20,7 +20,7 @@ const LawnPage = () => {
     <Layout>
       <SEO title="Lawn Page" />
 
-      {lawn.id !== null ? (
+      {lawn.id !== null && lawn.data.hasUserWatered ? (
         <MainContainer>
           <LawnGraph lawn={lawn} />
         </MainContainer>

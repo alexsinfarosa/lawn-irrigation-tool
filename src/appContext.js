@@ -1,18 +1,11 @@
 import React, { createContext, useState, useReducer } from "react"
+import axios from "axios"
 
 // utils ------------------------------------------------
-import {
-  addRemoveWater,
-  fetchForecastData,
-  fetchPETData,
-  fetchDataFromServer,
-} from "./utils/api"
-// import { window } from "browser-monads"
+import { addRemoveWater } from "./utils/api"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
-import uuidv5 from "uuid"
-import { metricsOnServer } from "./utils/api"
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -55,19 +48,22 @@ function reducer(state, action) {
     case "setSprinkler":
       return {
         ...state,
-        id: action.id,
         sprinklerType: action.name,
         sprinklerRate: action.rate,
         sprinklerMinutes: action.minutes,
         distributionUniformity: action.distributionUniformity,
         sprayEfficiencyFactor: action.sprayEfficiencyFactor,
+        id: action.id,
+        updated: action.updated,
       }
     case "setForecast":
       return { ...state, forecast: action.forecast }
     case "setPETData":
       return { ...state, updated: Date.now(), data: action.petData }
     case "setLawn":
-      return { ...state, ...action.lawn }
+      return { ...action.lawn }
+    case "setUserHasWatered":
+      return { ...state, data: action.newData }
     case "reset":
       return initialLawn
     default:
@@ -92,6 +88,15 @@ function removeAllLS() {
   window.localStorage.removeItem(lsKey)
   navigate("/")
 }
+
+function readUserId() {
+  if (typeof window !== "undefined") {
+    const userIdStorage = window.localStorage.getItem(
+      "lawn-irrigation-tool-userId"
+    )
+    return userIdStorage !== null ? userIdStorage : null
+  }
+}
 // Local Storage -------------------------------------------
 
 const AppProvider = ({ children }) => {
@@ -102,16 +107,17 @@ const AppProvider = ({ children }) => {
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
-    let newLawnCopy = { ...newLawn }
-    if (newLawn.irrigationDate) {
-      const todayIdx = newLawnCopy.data.dates.findIndex(
-        d => d === newLawn.irrigationDate
+    let newLawnCopy = { ...lawn, ...newLawn }
+    if (newLawnCopy.irrigationDate) {
+      const irrigationDateIdx = newLawnCopy.data.dates.findIndex(
+        date => date === newLawnCopy.irrigationDate
       )
-      newLawnCopy = addRemoveWater(newLawnCopy, todayIdx)
+      newLawnCopy = addRemoveWater(newLawnCopy, irrigationDateIdx)
     }
     const newLawns = [newLawnCopy, ...lawns]
 
     if (hasDataAndForecast) {
+      // console.log("hasDataAndForecast")
       writeToLS(newLawns)
     }
 
@@ -128,6 +134,8 @@ const AppProvider = ({ children }) => {
 
   // UPDATE Lawn -----------------------
   function updateLawn(lawn) {
+    // globalDispatch({ type: "setLawn", lawn })
+
     let lawnsCopy = [...lawns]
     const idx = lawns.findIndex(l => l.id === lawn.id)
     lawnsCopy[idx] = lawn
@@ -138,22 +146,92 @@ const AppProvider = ({ children }) => {
 
   // State
   const [lawn, globalDispatch] = useReducer(reducer, initialLawn(lawns))
-
+  const [userId, setUserId] = React.useState(readUserId)
   // Make sure the data array and the forecast object are not empy
+
   const hasDataAndForecast =
-    lawn.data.length !== 0 && Object.keys(lawn).length !== 0
+    lawn.data.length !== 0 && Object.keys(lawn.forecast).length !== 0
+
+  // Fetching -------------------------------------------------------
+  async function createUser(lawns = []) {
+    console.log("createUser CALLED!")
+    const url = `https://stage.lawnwatering.org/v0/user`
+    const payload = { id: "", lawns }
+    return axios
+      .post(url, payload)
+      .then(res => {
+        setUserId(res.data.id)
+        window.localStorage.setItem(`${lsKey}-userId`, res.data.id)
+      })
+      .catch(err => console.log("Failed to create or update user", err))
+  }
+
+  async function fetchDataFromServer(id, lon, lat) {
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+
+    const payload = {
+      id,
+      lon: Number(lon.toFixed(2)),
+      lat: Number(lat.toFixed(2)),
+      year: new Date().getFullYear(),
+    }
+    console.log(payload)
+    return axios
+      .post(url, payload)
+      .then(res => {
+        setLoading(true)
+        const { forecast, irrigation } = res.data
+
+        const datesNoYears = [
+          ...irrigation.dates_precip,
+          ...irrigation.dates_precip_fcst,
+        ]
+
+        const dates = datesNoYears.map(d =>
+          new Date(`${d}/${new Date().getFullYear()}`).toLocaleDateString()
+        )
+        let pcpns = [...irrigation.precip, ...irrigation.precip_fcst]
+        const pets = [...irrigation.pet, ...irrigation.pet_fcst]
+
+        globalDispatch({ type: "setForecast", forecast })
+        const petData = { dates, pcpns, pets }
+        globalDispatch({ type: "setPETData", petData })
+        setLoading(false)
+      })
+      .catch(err => console.log("Failed to fetch data from server", err))
+  }
+
+  function createHasUserWatered(selDate) {
+    const newData = { ...lawn.data }
+    newData["hasUserWatered"] = new Array(newData.dates.length).fill(false)
+    if (selDate) {
+      const selectedDateIdx = newData.dates.findIndex(date => date === selDate)
+      newData["hasUserWatered"][selectedDateIdx] = "firstDate"
+    }
+    globalDispatch({ type: "setUserHasWatered", newData })
+  }
+
+  async function updateDataAndForecast(lawn) {
+    const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
+    console.log(minutes)
+    if (false) {
+      console.log("Fetching forecast and PET data...")
+      await fetchDataFromServer(userId, lawn.lng, lawn.lat)
+      updateHasUserWatered()
+    }
+  }
+
+  function updateHasUserWatered() {
+    console.log(lawn)
+  }
 
   React.useEffect(() => {
-    // console.log(metricsOnServer("98cn2", 1, lawn))
-    fetchDataFromServer("asdf", lawn.lng, lawn.lat)
-
-    // console.log("ONE")
-    // Navigating to the right route and making updates
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
-        window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
+        createUser()
+        // window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
         window.localStorage.setItem(`${lsKey}-count`, 1)
       }
     } else {
@@ -166,36 +244,11 @@ const AppProvider = ({ children }) => {
       }
 
       updateDataAndForecast(lawn)
-      navigate("/lawn/")
     }
     setLoading(false)
   }, [])
 
-  async function updateDataAndForecast(lawn) {
-    const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
-    // console.log(minutes, lawn.address)
-    if (minutes > 760) {
-      // console.log("Fetching forecast and PET data...")
-      setLoading(true)
-
-      const lawnCopy = { ...lawn }
-      const forecast = await fetchForecastData(lawnCopy.lat, lawnCopy.lng)
-      const data = await fetchPETData(lawnCopy.lat, lawnCopy.lng)
-
-      if (Object.keys(forecast).length !== 0 && data.length !== 0) {
-        lawnCopy.forecast = forecast
-
-        // hasUserWatered is not updated since it containes user data
-        lawnCopy.data.dates = data.dates
-        lawnCopy.data.pcpns = data.pcpns
-        lawnCopy.data.pets = data.pets
-        lawnCopy.updated = Date.now()
-        updateLawn(lawnCopy)
-      }
-      setLoading(false)
-    }
-  }
-
+  // console.log(lawn)
   return (
     <AppContext.Provider
       value={{
@@ -213,6 +266,10 @@ const AppProvider = ({ children }) => {
         setCountRef,
         updateDataAndForecast,
         version,
+        userId,
+        setUserId,
+        fetchDataFromServer,
+        createHasUserWatered,
       }}
     >
       {children}

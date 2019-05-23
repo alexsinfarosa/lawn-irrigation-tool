@@ -58,12 +58,12 @@ export default function LawnGraph({ lawn }) {
   React.useEffect(() => {
     // console.log("effect")
     if (
-      todayObj.hasUserWatered === "undefined" &&
+      todayObj.hasUserWatered === "firstDate" &&
       todayObj.shouldWater &&
       lawn.irrigationDate !== todayDate &&
       isWaterAllowed(lawn.streetNumber)
     ) {
-      // console.log("it is undefined")
+      // console.log("it is firstDate")
       updateLawn(addRemoveWater(lawn, todayIdx))
     }
   }, [])
@@ -172,6 +172,7 @@ export default function LawnGraph({ lawn }) {
   // RIGHT Icons --------------------------------
   const RightIconButtons = props => {
     const { y, x, index, payload, reversed } = props
+
     return (
       <svg width={100} height={26} x={x} y={y - 13}>
         {(index === 0 || index === 1) && (
@@ -202,9 +203,9 @@ export default function LawnGraph({ lawn }) {
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }
-            onClick={() =>
+            onClick={() => {
               updateLawn(addRemoveWater(lawn, determineIdx(payload.value)))
-            }
+            }}
           />
         )}
 
@@ -223,9 +224,9 @@ export default function LawnGraph({ lawn }) {
                 ? theme.palette.background.noDeficit
                 : theme.palette.grey[300]
             }
-            onClick={() =>
+            onClick={() => {
               updateLawn(addRemoveWater(lawn, determineIdx(payload.value)))
-            }
+            }}
           />
         )}
       </svg>

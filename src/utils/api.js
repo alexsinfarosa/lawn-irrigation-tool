@@ -12,7 +12,6 @@ export const createUser = () => {
 export const updateUser = (lawn, lawns, id) => {
   let lawnsCopy = [...lawns]
   const lawnIdx = lawns.findIndex(l => l.id === lawn.id)
-
   const newLawn = {
     data: {
       dates: lawn.data.dates,
@@ -30,13 +29,10 @@ export const updateUser = (lawn, lawns, id) => {
 
   lawnsCopy[lawnIdx] = newLawn
   const url = `https://stage.lawnwatering.org/v0/user`
-  const payload = { id, water: "nyamwater", lawns: lawnsCopy }
+  const payload = { id, lawns: lawnsCopy }
   return axios
     .post(url, payload)
-    .then(res => {
-      console.log(res)
-      return res
-    })
+    .then(res => console.log(res.data))
     .catch(err => console.log("Failed to create or update user", err))
 }
 
@@ -125,6 +121,7 @@ export const updateUser = (lawn, lawns, id) => {
 // }
 
 export const addRemoveWater = (lawn, idx) => {
+  // console.log("addRemoveWater")
   let lawnCopy = { ...lawn }
   let {
     sprinklerMinutes,
@@ -138,7 +135,7 @@ export const addRemoveWater = (lawn, idx) => {
     (sprinklerMinutes / 60) *
     (sprinklerRate / (1 / (0.4 + 0.6 * distributionUniformity))) *
     sprayEfficiencyFactor
-
+  console.log(amountOfWater)
   if (hasUserWatered[idx] === false || hasUserWatered[idx] === "firstDate") {
     hasUserWatered[idx] = true
     pcpns[idx] = pcpns[idx] + amountOfWater
@@ -148,6 +145,30 @@ export const addRemoveWater = (lawn, idx) => {
   }
   return lawnCopy
 }
+
+// export const updatePcpn = lawn => {
+//   let lawnCopy = { ...lawn }
+//   let {
+//     sprinklerMinutes,
+//     sprinklerRate,
+//     sprayEfficiencyFactor,
+//     distributionUniformity,
+//   } = lawnCopy
+//   let { pcpns, hasUserWatered } = lawnCopy.data
+
+//   const amountOfWater =
+//     (sprinklerMinutes / 60) *
+//     (sprinklerRate / (1 / (0.4 + 0.6 * distributionUniformity))) *
+//     sprayEfficiencyFactor
+
+//   return pcpns.map((p, i) => {
+//     if (hasUserWatered[i]) {
+//       return p + amountOfWater
+//     } else {
+//       return p
+//     }
+//   })
+// }
 
 export const isWaterAllowed = streetNumber => {
   if (streetNumber !== null) {
@@ -174,6 +195,7 @@ export const calculateDomain = results => {
 }
 
 export const mainFunction = lawn => {
+  // console.log("mainFunction")
   const { sprinklerRate, sprinklerMinutes } = lawn
   const { dates, pcpns, pets, hasUserWatered } = lawn.data
   const res = runWaterDeficitModel(pcpns, pets)

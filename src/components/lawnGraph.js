@@ -56,7 +56,7 @@ export default function LawnGraph({ lawn }) {
   const todayObj = results.find(d => d.date === todayDate)
 
   React.useEffect(() => {
-    // console.log("effect")
+    // console.log("lawnGraph useEffect")
     if (
       todayObj.hasUserWatered === "firstDate" &&
       todayObj.shouldWater &&

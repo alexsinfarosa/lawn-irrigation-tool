@@ -2,7 +2,7 @@ import React, { createContext, useState, useReducer } from "react"
 import axios from "axios"
 
 // utils ------------------------------------------------
-import { addRemoveWater } from "./utils/api"
+import { addRemoveWater, updateUser } from "./utils/api"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
@@ -154,7 +154,7 @@ const AppProvider = ({ children }) => {
 
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
-    console.log("createUser CALLED!")
+    // console.log("createUser CALLED!")
     const url = `https://stage.lawnwatering.org/v0/user`
     const payload = { id: "", lawns }
     return axios
@@ -166,7 +166,7 @@ const AppProvider = ({ children }) => {
       .catch(err => console.log("Failed to create or update user", err))
   }
 
-  async function fetchDataFromServer(id, lon, lat) {
+  async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
     const url = `https://stage.lawnwatering.org/v0/forecast`
 
     const payload = {
@@ -175,7 +175,7 @@ const AppProvider = ({ children }) => {
       lat: Number(lat.toFixed(2)),
       year: new Date().getFullYear(),
     }
-    console.log(payload)
+
     return axios
       .post(url, payload)
       .then(res => {
@@ -192,10 +192,33 @@ const AppProvider = ({ children }) => {
         )
         let pcpns = [...irrigation.precip, ...irrigation.precip_fcst]
         const pets = [...irrigation.pet, ...irrigation.pet_fcst]
+        let petData = { dates, pcpns, pets }
+
+        if (hasUserWatered) {
+          // console.log("UPDATING...")
+          const newDays =
+            lawn.data.dates.length - lawn.data.hasUserWatered.length
+
+          const start = lawn.data.pcpns.length
+          const newPcpns = pcpns.slice(start)
+
+          const updatedPcpns = [...lawn.data.pcpns, ...newPcpns]
+          const updatedHasUserWatered = [
+            ...hasUserWatered,
+            ...new Array(newDays).fill(false),
+          ]
+
+          petData = {
+            dates,
+            pets,
+            pcpns: updatedPcpns,
+            hasUserWatered: updatedHasUserWatered,
+          }
+        }
 
         globalDispatch({ type: "setForecast", forecast })
-        const petData = { dates, pcpns, pets }
         globalDispatch({ type: "setPETData", petData })
+
         setLoading(false)
       })
       .catch(err => console.log("Failed to fetch data from server", err))
@@ -214,15 +237,10 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
     console.log(minutes)
-    if (false) {
+    if (minutes > 760) {
       console.log("Fetching forecast and PET data...")
-      await fetchDataFromServer(userId, lawn.lng, lawn.lat)
-      updateHasUserWatered()
+      fetchDataFromServer(userId, lawn.lng, lawn.lat, lawn.data.hasUserWatered)
     }
-  }
-
-  function updateHasUserWatered() {
-    console.log(lawn)
   }
 
   React.useEffect(() => {
@@ -244,11 +262,12 @@ const AppProvider = ({ children }) => {
       }
 
       updateDataAndForecast(lawn)
+      updateUser(lawn, lawns, userId)
     }
     setLoading(false)
   }, [])
 
-  // console.log(lawn)
+  console.log(lawn)
   return (
     <AppContext.Provider
       value={{

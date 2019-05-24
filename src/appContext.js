@@ -2,7 +2,7 @@ import React, { createContext, useState, useReducer } from "react"
 import axios from "axios"
 
 // utils ------------------------------------------------
-import { addRemoveWater, updateUser } from "./utils/api"
+import { addRemoveWater, mainFunction } from "./utils/api"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
@@ -122,6 +122,7 @@ const AppProvider = ({ children }) => {
     }
 
     setLawns(newLawns)
+    updateUser(newLawns)
   }
 
   // DELETE Lawn ----------------------
@@ -142,6 +143,7 @@ const AppProvider = ({ children }) => {
 
     writeToLS(lawnsCopy)
     setLawns(lawnsCopy)
+    updateUser(lawnsCopy)
   }
 
   // State
@@ -195,7 +197,7 @@ const AppProvider = ({ children }) => {
         let petData = { dates, pcpns, pets }
 
         if (hasUserWatered) {
-          // console.log("UPDATING...")
+          console.log("UPDATING...")
           const newDays =
             lawn.data.dates.length - lawn.data.hasUserWatered.length
 
@@ -203,6 +205,7 @@ const AppProvider = ({ children }) => {
           const newPcpns = pcpns.slice(start)
 
           const updatedPcpns = [...lawn.data.pcpns, ...newPcpns]
+          console.log(hasUserWatered.length, newDays)
           const updatedHasUserWatered = [
             ...hasUserWatered,
             ...new Array(newDays).fill(false),
@@ -237,10 +240,40 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
     console.log(minutes)
-    if (minutes > 760) {
+    if (true) {
       console.log("Fetching forecast and PET data...")
       fetchDataFromServer(userId, lawn.lng, lawn.lat, lawn.data.hasUserWatered)
     }
+  }
+
+  const updateUser = lawns => {
+    console.log("updateUser Called!")
+    const lawnsCopy = [...lawns]
+    const metrics = lawnsCopy.map(l => {
+      return {
+        data: {
+          dates: l.data.dates,
+          hasUserWatered: l.data.hasUserWatered,
+          shouldWater: mainFunction(l).map(d => d.shouldWater),
+        },
+        id: l.id,
+        lat: Number(l.lat.toFixed(2)),
+        lng: Number(l.lng.toFixed(2)),
+        sprinklerMinutes: l.sprinklerMinutes,
+        sprinklerRate: l.sprinklerRate,
+        sprinklerType: l.sprinklerType,
+        hasOddEvenWaterOrdinance: l.streetNumber === null ? false : true,
+      }
+    })
+
+    console.log(metrics)
+
+    const url = `https://stage.lawnwatering.org/v0/user`
+    const payload = { userId, lawns: metrics }
+    return axios
+      .post(url, payload)
+      .then(res => res.data)
+      .catch(err => console.log("Failed to create or update user", err))
   }
 
   React.useEffect(() => {
@@ -262,7 +295,7 @@ const AppProvider = ({ children }) => {
       }
 
       updateDataAndForecast(lawn)
-      updateUser(lawn, lawns, userId)
+      updateLawn(lawn)
     }
     setLoading(false)
   }, [])

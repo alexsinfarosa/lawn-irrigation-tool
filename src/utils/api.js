@@ -9,33 +9,33 @@ export const createUser = () => {
     .catch(err => console.log("Failed to create or update user", err))
 }
 
-export const updateUser = (lawn, lawns, id) => {
-  console.log("updateUser Called!")
-  let lawnsCopy = [...lawns]
-  const lawnIdx = lawns.findIndex(l => l.id === lawn.id)
-  const newLawn = {
-    data: {
-      dates: lawn.data.dates,
-      hasUserWatered: lawn.data.hasUserWatered,
-      shouldWater: mainFunction(lawn).map(d => d.shouldWater),
-    },
-    id: lawn.id,
-    lat: Number(lawn.lat.toFixed(2)),
-    lng: Number(lawn.lng.toFixed(2)),
-    sprinklerMinutes: lawn.sprinklerMinutes,
-    sprinklerRate: lawn.sprinklerRate,
-    sprinklerType: lawn.sprinklerType,
-    hasOddEvenWaterOrdinance: lawn.streetNumber === null ? false : true,
-  }
+// export const updateUser = (lawn, lawns, id) => {
+//   console.log("updateUser Called!")
+//   let lawnsCopy = [...lawns]
+//   const lawnIdx = lawns.findIndex(l => l.id === lawn.id)
+//   const newLawn = {
+//     data: {
+//       dates: lawn.data.dates,
+//       hasUserWatered: lawn.data.hasUserWatered,
+//       shouldWater: mainFunction(lawn).map(d => d.shouldWater),
+//     },
+//     id: lawn.id,
+//     lat: Number(lawn.lat.toFixed(2)),
+//     lng: Number(lawn.lng.toFixed(2)),
+//     sprinklerMinutes: lawn.sprinklerMinutes,
+//     sprinklerRate: lawn.sprinklerRate,
+//     sprinklerType: lawn.sprinklerType,
+//     hasOddEvenWaterOrdinance: lawn.streetNumber === null ? false : true,
+//   }
 
-  lawnsCopy[lawnIdx] = newLawn
-  const url = `https://stage.lawnwatering.org/v0/user`
-  const payload = { id, lawns: lawnsCopy }
-  return axios
-    .post(url, payload)
-    .then(res => console.log(res.data))
-    .catch(err => console.log("Failed to create or update user", err))
-}
+//   lawnsCopy[lawnIdx] = newLawn
+//   const url = `https://stage.lawnwatering.org/v0/user`
+//   const payload = { id, lawns: lawnsCopy }
+//   return axios
+//     .post(url, payload)
+//     .then(res => console.log(res.data))
+//     .catch(err => console.log("Failed to create or update user", err))
+// }
 
 // Fetch forecast data -------------------------------
 // export const fetchForecastData = (lat, lng) => {

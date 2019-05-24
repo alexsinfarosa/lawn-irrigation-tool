@@ -197,7 +197,7 @@ const AppProvider = ({ children }) => {
         let petData = { dates, pcpns, pets }
 
         if (hasUserWatered) {
-          console.log("UPDATING...")
+          // console.log("UPDATING...")
           const newDays =
             lawn.data.dates.length - lawn.data.hasUserWatered.length
 
@@ -205,7 +205,7 @@ const AppProvider = ({ children }) => {
           const newPcpns = pcpns.slice(start)
 
           const updatedPcpns = [...lawn.data.pcpns, ...newPcpns]
-          console.log(hasUserWatered.length, newDays)
+          // console.log(hasUserWatered.length, newDays)
           const updatedHasUserWatered = [
             ...hasUserWatered,
             ...new Array(newDays).fill(false),
@@ -239,15 +239,15 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
-    console.log(minutes)
-    if (true) {
-      console.log("Fetching forecast and PET data...")
+    // console.log(minutes)
+    if (minutes > 760) {
+      // console.log("Fetching forecast and PET data...")
       fetchDataFromServer(userId, lawn.lng, lawn.lat, lawn.data.hasUserWatered)
     }
   }
 
   const updateUser = lawns => {
-    console.log("updateUser Called!")
+    // console.log("updateUser Called!")
     const lawnsCopy = [...lawns]
     const metrics = lawnsCopy.map(l => {
       return {
@@ -266,7 +266,7 @@ const AppProvider = ({ children }) => {
       }
     })
 
-    console.log(metrics)
+    // console.log(metrics)
 
     const url = `https://stage.lawnwatering.org/v0/user`
     const payload = { userId, lawns: metrics }
@@ -300,7 +300,7 @@ const AppProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  console.log(lawn)
+  // console.log(lawn)
   return (
     <AppContext.Provider
       value={{

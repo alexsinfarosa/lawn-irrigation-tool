@@ -169,7 +169,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `https://stage.lawnwatering.org/v0/forecast`
+    const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -268,8 +269,9 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    const url = `https://stage.lawnwatering.org/v0/user`
-    const payload = { userId, lawns: metrics }
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
+    const payload = { id: userId, lawns: metrics }
     return axios
       .post(url, payload)
       .then(res => res.data)

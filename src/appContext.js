@@ -157,7 +157,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
     const payload = { id: "", lawns }
     return axios
       .post(url, payload)

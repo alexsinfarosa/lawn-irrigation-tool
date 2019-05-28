@@ -97,10 +97,6 @@ const ForecastPage = () => {
           <Box px={2} className={classes.main}>
             {daily.data.map(day => {
               const date = new Date(day.time * 1000).toLocaleDateString()
-              {
-                /* console.log(date) */
-              }
-
               const today = new Date()
               const tomorrow = addDays(today, 1)
               const yesterday = subDays(today, 1)
@@ -120,7 +116,7 @@ const ForecastPage = () => {
                   display="flex"
                   alignItems="center"
                 >
-                  <Box flexGrow={1} textAlign="left">
+                  <Box flexGrow={1} textAlign="left" width={20}>
                     <Typography>
                       {/* {format(new Date(day.time) * 1000, "MMM do")} */}
                       {dd}

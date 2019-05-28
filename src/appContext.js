@@ -103,7 +103,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v0.9.3")
+  const [version] = useState("v0.9.4")
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
@@ -183,7 +183,7 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         setLoading(true)
         const { forecast, irrigation } = res.data
 

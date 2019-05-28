@@ -122,6 +122,7 @@ export default function LawnGraph({ lawn }) {
   // DAYS ----------------------------------------
   const YaxisLabel = props => {
     const { x, y, payload } = props
+    console.log(props)
     const date = payload.value
     const today = new Date()
     const tomorrow = addDays(today, 1)
@@ -312,6 +313,10 @@ export default function LawnGraph({ lawn }) {
             />
             {/* Origin */}
             <ReferenceLine x={0} stroke={theme.palette.grey[300]} />
+            <ReferenceLine
+              y={new Date().toLocaleDateString()}
+              stroke={theme.palette.grey[300]}
+            />
             {/* bars */}
             <Bar dataKey="bar" radius={[0, 20, 20, 0]}>
               {reversed.map(day => {

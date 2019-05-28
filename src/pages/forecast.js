@@ -12,9 +12,12 @@ import Box from "@material-ui/core/Box"
 
 // utils
 import { mapIcon } from "../utils/mapIcon"
-import format from "date-fns/format"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import AppContext from "../appContext"
+
+import format from "date-fns/format"
+import subDays from "date-fns/subDays"
+import addDays from "date-fns/addDays"
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -93,6 +96,21 @@ const ForecastPage = () => {
 
           <Box px={2} className={classes.main}>
             {daily.data.map(day => {
+              const date = new Date(day.time * 1000).toLocaleDateString()
+              {
+                /* console.log(date) */
+              }
+
+              const today = new Date()
+              const tomorrow = addDays(today, 1)
+              const yesterday = subDays(today, 1)
+              const formatted = date => format(date, "M/d/yyyy")
+
+              let dd = format(new Date(date), "MMM do")
+              if (date === formatted(tomorrow)) dd = "Tomorrow"
+              if (date === formatted(today)) dd = "Today"
+              if (date === formatted(yesterday)) dd = "Yesterday"
+
               return (
                 <Box
                   flexGrow={1}
@@ -104,7 +122,8 @@ const ForecastPage = () => {
                 >
                   <Box flexGrow={1} textAlign="left">
                     <Typography>
-                      {format(new Date(day.time) * 1000, "MMM do")}
+                      {/* {format(new Date(day.time) * 1000, "MMM do")} */}
+                      {dd}
                     </Typography>
                     <Box>
                       <FontAwesomeIcon

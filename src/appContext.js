@@ -103,7 +103,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v0.9.2")
+  const [version] = useState("v0.9.3")
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
@@ -157,8 +157,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
     const payload = { id: "", lawns }
     return axios
       .post(url, payload)
@@ -170,8 +170,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -183,6 +183,7 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
+        console.log(res.data)
         setLoading(true)
         const { forecast, irrigation } = res.data
 

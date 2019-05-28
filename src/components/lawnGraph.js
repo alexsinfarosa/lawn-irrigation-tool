@@ -255,9 +255,9 @@ export default function LawnGraph({ lawn }) {
         <Typography variant="h5">
           {isWaterAllowed(lawn.streetNumber)
             ? todayObj.shouldWater
-              ? "Water!"
-              : "Do Not Water!"
-            : "Water Today Is Not Allowed"}
+              ? "Water Today!"
+              : "No Need to Water Today!"
+            : "Ordinance Prohibits Watering Today"}
         </Typography>
       </Box>
 

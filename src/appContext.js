@@ -60,6 +60,8 @@ function reducer(state, action) {
       return { ...state, forecast: action.forecast }
     case "setPETData":
       return { ...state, updated: Date.now(), data: action.petData }
+    case "updated":
+      return { ...state, updated: action.now }
     case "setLawn":
       return { ...action.lawn }
     case "setUserHasWatered":
@@ -135,11 +137,12 @@ const AppProvider = ({ children }) => {
 
   // UPDATE Lawn -----------------------
   function updateLawn(lawn) {
-    // globalDispatch({ type: "setLawn", lawn })
+    let lawnCopy = { ...lawn }
+    lawnCopy.updated = Date.now()
 
     let lawnsCopy = [...lawns]
     const idx = lawns.findIndex(l => l.id === lawn.id)
-    lawnsCopy[idx] = lawn
+    lawnsCopy[idx] = lawnCopy
 
     writeToLS(lawnsCopy)
     setLawns(lawnsCopy)
@@ -157,8 +160,9 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
+
     const payload = { id: "", lawns }
     return axios
       .post(url, payload)
@@ -170,8 +174,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    const url = `https://stage.lawnwatering.org/v0/forecast`
-    // const url = `/v0/forecast`
+    // const url = `https://stage.lawnwatering.org/v0/forecast`
+    const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -224,7 +228,6 @@ const AppProvider = ({ children }) => {
 
         globalDispatch({ type: "setForecast", forecast })
         globalDispatch({ type: "setPETData", petData })
-
         setLoading(false)
       })
       .catch(err => console.log("Failed to fetch data from server", err))
@@ -241,7 +244,7 @@ const AppProvider = ({ children }) => {
   }
 
   async function updateDataAndForecast(lawn) {
-    const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
+    const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes)
     if (minutes > 360) {
       // console.log("Fetching forecast and PET data...")
@@ -281,6 +284,7 @@ const AppProvider = ({ children }) => {
   }
 
   React.useEffect(() => {
+    setLoading(true)
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
@@ -300,6 +304,7 @@ const AppProvider = ({ children }) => {
 
       updateDataAndForecast(lawn)
       updateLawn(lawn)
+      navigate("/lawn/")
     }
     setLoading(false)
   }, [])

@@ -157,8 +157,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
     const payload = { id: "", lawns }
     return axios
       .post(url, payload)
@@ -170,8 +170,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -243,7 +243,7 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), new Date(lawn.updated))
     // console.log(minutes)
-    if (minutes > 760) {
+    if (minutes > 360) {
       // console.log("Fetching forecast and PET data...")
       fetchDataFromServer(userId, lawn.lng, lawn.lat, lawn.data.hasUserWatered)
     }

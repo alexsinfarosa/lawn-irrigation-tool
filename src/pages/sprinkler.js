@@ -295,13 +295,15 @@ const SprinklerPage = () => {
               </Typography>
             </Box>
           </Box>
-        </Box>
 
-        <Typography variant="caption">
-          This app will work with multiple zones if sprinkler heads are similar
-          throughout your yard. If you have different sprinker types, you can
-          set up multiple lawns (i.e. zones).
-        </Typography>
+          <Box mt={5}>
+            <Typography variant="caption">
+              This app will work with multiple zones if sprinkler heads are
+              similar throughout your yard. If you have different sprinker
+              types, you can set up multiple lawns (i.e. zones).
+            </Typography>
+          </Box>
+        </Box>
 
         <StyledButton
           to={

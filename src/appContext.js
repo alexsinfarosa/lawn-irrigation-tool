@@ -157,8 +157,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
     const payload = { id: "", lawns }
     return axios
       .post(url, payload)
@@ -170,8 +170,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -286,7 +286,7 @@ const AppProvider = ({ children }) => {
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
       if (userIdRef === null) {
         createUser()
-        // window.localStorage.setItem(`${lsKey}-userId`, uuidv5())
+        // window.localStorage.setItem(`${lsKey}-userId`, userId)
         window.localStorage.setItem(`${lsKey}-count`, 1)
       }
     } else {

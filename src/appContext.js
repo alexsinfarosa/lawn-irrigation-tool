@@ -105,7 +105,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v0.9.4")
+  const [version] = useState("v1.0")
 
   // ADD Lawn -------------------------
   async function addLawn(newLawn) {
@@ -160,8 +160,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   async function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -174,8 +174,8 @@ const AppProvider = ({ children }) => {
   }
 
   async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -187,7 +187,6 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
-        // console.log(res.data)
         setLoading(true)
         const { forecast, irrigation } = res.data
 
@@ -206,7 +205,9 @@ const AppProvider = ({ children }) => {
         if (hasUserWatered) {
           // console.log("UPDATING...")
           const newDays =
-            lawn.data.dates.length - lawn.data.hasUserWatered.length
+            irrigation.dates_pet.length +
+            irrigation.dates_pet_fcst.length -
+            lawn.data.hasUserWatered.length
 
           const start = lawn.data.pcpns.length
           const newPcpns = pcpns.slice(start)
@@ -226,9 +227,10 @@ const AppProvider = ({ children }) => {
           }
         }
 
-        globalDispatch({ type: "setForecast", forecast })
-        globalDispatch({ type: "setPETData", petData })
+        // globalDispatch({ type: "setForecast", forecast })
+        // globalDispatch({ type: "setPETData", petData })
         setLoading(false)
+        return { forecast, petData }
       })
       .catch(err => console.log("Failed to fetch data from server", err))
   }
@@ -245,10 +247,18 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
-    // console.log(minutes)
     if (minutes > 360) {
       // console.log("Fetching forecast and PET data...")
-      fetchDataFromServer(userId, lawn.lng, lawn.lat, lawn.data.hasUserWatered)
+      const { forecast, petData } = await fetchDataFromServer(
+        userId,
+        lawn.lng,
+        lawn.lat,
+        lawn.data.hasUserWatered
+      )
+      const lawnCopy = { ...lawn }
+      lawnCopy.forecast = forecast
+      lawnCopy.data = petData
+      updateLawn(lawnCopy)
     }
   }
 
@@ -274,8 +284,8 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
     const payload = { id: userId, lawns: metrics }
     return axios
       .post(url, payload)
@@ -303,7 +313,6 @@ const AppProvider = ({ children }) => {
       }
 
       updateDataAndForecast(lawn)
-      updateLawn(lawn)
       navigate("/lawn/")
     }
     setLoading(false)

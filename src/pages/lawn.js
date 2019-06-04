@@ -19,7 +19,6 @@ const LawnPage = () => {
   return (
     <Layout>
       <SEO title="Lawn Page" />
-
       {lawn.id !== null && lawn.data.hasUserWatered ? (
         <MainContainer>
           <LawnGraph lawn={lawn} />
@@ -41,7 +40,6 @@ const LawnPage = () => {
           </Box>
         </MainContainer>
       )}
-
       <Navigation />
     </Layout>
   )

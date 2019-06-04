@@ -107,8 +107,21 @@ export default function AboutPage() {
       </Typography>
 
       <Box align="center" my={3}>
+        <a
+          href="https://www.awneighborhood.com/c/r/userfeedback"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          <Typography variant="h6" color="secondary">
+            Take a Survey &#8594;
+          </Typography>
+        </a>
+      </Box>
+
+      <Box align="center" my={3}>
         <Typography style={{ color: theme.palette.secondary.dark }}>
-          {version}
+          ({version})
         </Typography>
       </Box>
     </Box>

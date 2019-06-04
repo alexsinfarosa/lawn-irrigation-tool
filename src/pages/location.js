@@ -267,7 +267,13 @@ const LocationPage = () => {
           onClick={async () => {
             if (!loading && state.lat) {
               globalDispatch({ type: "setLocation", ...state })
-              fetchDataFromServer(userId, state.lng, state.lat)
+              const { forecast, petData } = await fetchDataFromServer(
+                userId,
+                state.lng,
+                state.lat
+              )
+              globalDispatch({ type: "setForecast", forecast })
+              globalDispatch({ type: "setPETData", petData })
             }
           }}
         >

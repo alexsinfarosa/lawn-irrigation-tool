@@ -55,7 +55,7 @@ export default function App() {
         </Box>
 
         <Box mb={4} align="center">
-          <Typography color="error">- ßeta Release -</Typography>
+          {/* <Typography color="error">- ßeta Release -</Typography> */}
           <Typography variant="caption">{version}</Typography>
         </Box>
 

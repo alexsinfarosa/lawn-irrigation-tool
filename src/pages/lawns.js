@@ -128,6 +128,13 @@ const LawnsPage = () => {
       navigate("/lawn/")
     }
   }
+
+  React.useEffect(() => {
+    lawns.forEach(async lawn => {
+      await updateDataAndForecast(lawn)
+    })
+  }, [])
+
   // Loading --------------------------------------------
   if (loading) return <Loading />
 

@@ -56,7 +56,7 @@ export default function App() {
 
         <Box mb={4} align="center">
           {/* <Typography color="error">- ßeta Release -</Typography> */}
-          <Typography variant="caption">{version}</Typography>
+          <Typography variant="body2">{version}</Typography>
         </Box>
 
         <Box bgcolor="primary.main" mb={8} p={2} px={4} color="white">

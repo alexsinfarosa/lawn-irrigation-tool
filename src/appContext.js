@@ -152,16 +152,15 @@ const AppProvider = ({ children }) => {
   // State
   const [lawn, globalDispatch] = useReducer(reducer, initialLawn(lawns))
   const [userId, setUserId] = React.useState(readUserId)
-  // Make sure the data array and the forecast object are not empy
 
   const hasDataAndForecast =
     lawn.data.length !== 0 && Object.keys(lawn.forecast).length !== 0
 
   // Fetching -------------------------------------------------------
-  async function createUser(lawns = []) {
+  function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -173,9 +172,24 @@ const AppProvider = ({ children }) => {
       .catch(err => console.log("Failed to create or update user", err))
   }
 
-  async function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+  function recreateUser(lawns) {
+    // console.log("createUser CALLED!")
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
+
+    const payload = { id: "", lawns }
+    return axios
+      .post(url, payload)
+      .then(res => {
+        setUserId(res.data.id)
+        window.localStorage.setItem(`${lsKey}-userId`, res.data.id)
+      })
+      .catch(err => console.log("Failed to update user id", err))
+  }
+
+  function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -232,7 +246,10 @@ const AppProvider = ({ children }) => {
         setLoading(false)
         return { forecast, petData }
       })
-      .catch(err => console.log("Failed to fetch data from server", err))
+      .catch(err => {
+        recreateUser(lawns)
+        console.log("Failed to fetch data from server", err)
+      })
   }
 
   function createHasUserWatered(selDate) {
@@ -260,6 +277,7 @@ const AppProvider = ({ children }) => {
       lawnCopy.forecast = forecast
       lawnCopy.data = petData
       updateLawn(lawnCopy)
+      return lawnCopy
     }
   }
 
@@ -285,13 +303,17 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
     const payload = { id: userId, lawns: metrics }
     return axios
       .post(url, payload)
       .then(res => res.data)
       .catch(err => console.log("Failed to create or update user", err))
+  }
+
+  const getData = async lawns => {
+    return await Promise.all(lawns.map(lawn => updateDataAndForecast(lawn)))
   }
 
   React.useEffect(() => {
@@ -313,7 +335,9 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      updateDataAndForecast(lawn)
+      getData(lawns)
+      // const data = getData(lawns)
+      // console.log(data)
       navigate("/lawn/")
     }
     setLoading(false)

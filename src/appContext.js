@@ -108,7 +108,7 @@ const AppProvider = ({ children }) => {
   const [version] = useState("v1.0")
 
   // ADD Lawn -------------------------
-  async function addLawn(newLawn) {
+  function addLawn(newLawn) {
     let newLawnCopy = { ...lawn, ...newLawn }
     if (newLawnCopy.irrigationDate) {
       const irrigationDateIdx = newLawnCopy.data.dates.findIndex(
@@ -248,6 +248,7 @@ const AppProvider = ({ children }) => {
       })
       .catch(err => {
         recreateUser(lawns)
+        updateUser(lawns)
         console.log("Failed to fetch data from server", err)
       })
   }

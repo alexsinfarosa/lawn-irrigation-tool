@@ -55,7 +55,7 @@ const IrrigationPage = () => {
         <StyledButton
           to={lawn.lat ? "/sprinkler/" : "/irrigation/"}
           disabled={lawn.lat ? false : true}
-          onClick={async () => {
+          onClick={() => {
             if (lawn.lat !== null) {
               globalDispatch({
                 type: "setDate",

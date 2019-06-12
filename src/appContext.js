@@ -159,8 +159,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -174,8 +174,8 @@ const AppProvider = ({ children }) => {
 
   function recreateUser(lawns) {
     // console.log("createUser CALLED!")
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -188,8 +188,8 @@ const AppProvider = ({ children }) => {
   }
 
   function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    const url = `https://stage.lawnwatering.org/v0/forecast`
-    // const url = `/v0/forecast`
+    // const url = `https://stage.lawnwatering.org/v0/forecast`
+    const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -303,8 +303,8 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
     const payload = { id: userId, lawns: metrics }
     return axios
       .post(url, payload)

@@ -73,7 +73,7 @@ export default function LawnGraph({ lawn }) {
   const domain = calculateDomain(reversed)
 
   // forecast ------------------------------------
-  const forecast = lawn.forecast.daily.data.slice(1, 3)
+  const forecast = lawn.forecast.daily.data.slice(0, 3).reverse()
   // console.log(forecast)
 
   // determine index of the clicked drop icon ------

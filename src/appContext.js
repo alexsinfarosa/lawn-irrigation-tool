@@ -274,6 +274,7 @@ const AppProvider = ({ children }) => {
         lawn.lat,
         lawn.data.hasUserWatered
       )
+
       const lawnCopy = { ...lawn }
       lawnCopy.forecast = forecast
       lawnCopy.data = petData
@@ -292,6 +293,7 @@ const AppProvider = ({ children }) => {
           hasUserWatered: l.data.hasUserWatered,
           shouldWater: mainFunction(l).map(d => d.shouldWater),
         },
+        // address: l.address, // Testing only...
         id: l.id,
         lat: Number(l.lat.toFixed(2)),
         lng: Number(l.lng.toFixed(2)),
@@ -306,6 +308,7 @@ const AppProvider = ({ children }) => {
 
     // const url = `https://stage.lawnwatering.org/v0/user`
     const url = `/v0/user`
+
     const payload = { id: userId, lawns: metrics }
     return axios
       .post(url, payload)

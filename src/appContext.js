@@ -99,27 +99,28 @@ function readUserId() {
     return userIdStorage !== null ? userIdStorage : null
   }
 }
-// Local Storage -------------------------------------------
 
+// Local Storage -------------------------------------------
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v1.0")
+  const [version] = useState("v1.1")
 
   // ADD Lawn -------------------------
   function addLawn(newLawn) {
     let newLawnCopy = { ...lawn, ...newLawn }
+
     if (newLawnCopy.irrigationDate) {
       const irrigationDateIdx = newLawnCopy.data.dates.findIndex(
         date => date === newLawnCopy.irrigationDate
       )
       newLawnCopy = addRemoveWater(newLawnCopy, irrigationDateIdx)
     }
+
     const newLawns = [newLawnCopy, ...lawns]
 
     if (hasDataAndForecast) {
-      // console.log("hasDataAndForecast")
       writeToLS(newLawns)
     }
 
@@ -141,7 +142,7 @@ const AppProvider = ({ children }) => {
     lawnCopy.updated = Date.now()
 
     let lawnsCopy = [...lawns]
-    const idx = lawns.findIndex(l => l.id === lawn.id)
+    const idx = lawnsCopy.findIndex(l => l.id === lawnCopy.id)
     lawnsCopy[idx] = lawnCopy
 
     writeToLS(lawnsCopy)
@@ -159,8 +160,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -172,24 +173,9 @@ const AppProvider = ({ children }) => {
       .catch(err => console.log("Failed to create or update user", err))
   }
 
-  function recreateUser(lawns) {
-    // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
-
-    const payload = { id: "", lawns }
-    return axios
-      .post(url, payload)
-      .then(res => {
-        setUserId(res.data.id)
-        window.localStorage.setItem(`${lsKey}-userId`, res.data.id)
-      })
-      .catch(err => console.log("Failed to update user id", err))
-  }
-
   function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
+    const url = `https://stage.lawnwatering.org/v0/forecast`
+    // const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -201,7 +187,8 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
-        setLoading(true)
+        console.log(res)
+        // setLoading(true)
         const { forecast, irrigation } = res.data
 
         const datesNoYears = [
@@ -241,13 +228,9 @@ const AppProvider = ({ children }) => {
           }
         }
 
-        // globalDispatch({ type: "setForecast", forecast })
-        // globalDispatch({ type: "setPETData", petData })
-        setLoading(false)
         return { forecast, petData }
       })
       .catch(err => {
-        recreateUser(lawns)
         updateUser(lawns)
         console.log("Failed to fetch data from server", err)
       })
@@ -265,8 +248,8 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
-    // console.log(minutes, lawn.address)
-    if (minutes > 360) {
+    console.log(minutes, lawn.address)
+    if (minutes) {
       // console.log("Fetching forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
         userId,
@@ -278,7 +261,6 @@ const AppProvider = ({ children }) => {
       const lawnCopy = { ...lawn }
       lawnCopy.forecast = forecast
       lawnCopy.data = petData
-      updateLawn(lawnCopy)
       return lawnCopy
     }
   }
@@ -306,8 +288,8 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
+    const url = `https://stage.lawnwatering.org/v0/user`
+    // const url = `/v0/user`
 
     const payload = { id: userId, lawns: metrics }
     return axios
@@ -316,12 +298,12 @@ const AppProvider = ({ children }) => {
       .catch(err => console.log("Failed to create or update user", err))
   }
 
-  const getData = async lawns => {
+  const updateAllLawns = async lawns => {
+    setLoading(true)
     return await Promise.all(lawns.map(lawn => updateDataAndForecast(lawn)))
   }
 
   React.useEffect(() => {
-    setLoading(true)
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
@@ -339,12 +321,14 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      getData(lawns)
-      // const data = getData(lawns)
-      // console.log(data)
+      updateAllLawns(lawns).then(data => {
+        console.log(data)
+        // data.forEach(lawn => updateLawn(lawn))
+      })
+      setLoading(false)
+
       navigate("/lawn/")
     }
-    setLoading(false)
   }, [])
 
   // console.log(lawn)

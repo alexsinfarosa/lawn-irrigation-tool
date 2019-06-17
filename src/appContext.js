@@ -321,8 +321,8 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      updateAllLawns(lawns).then(data => {
-        data.forEach(lawn => updateLawn(lawn))
+      updateAllLawns(lawns).then(res => {
+        res.forEach(lawn => updateLawn(lawn))
       })
       setLoading(false)
 

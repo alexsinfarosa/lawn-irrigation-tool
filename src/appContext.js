@@ -160,8 +160,8 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
 
     const payload = { id: "", lawns }
     return axios
@@ -174,8 +174,8 @@ const AppProvider = ({ children }) => {
   }
 
   function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    const url = `https://stage.lawnwatering.org/v0/forecast`
-    // const url = `/v0/forecast`
+    // const url = `https://stage.lawnwatering.org/v0/forecast`
+    const url = `/v0/forecast`
 
     const payload = {
       id,
@@ -187,7 +187,7 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
-        console.log(res)
+        // console.log(res)
         // setLoading(true)
         const { forecast, irrigation } = res.data
 
@@ -248,8 +248,8 @@ const AppProvider = ({ children }) => {
 
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
-    console.log(minutes, lawn.address)
-    if (minutes) {
+    // console.log(minutes, lawn.address)
+    if (minutes > 360) {
       // console.log("Fetching forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
         userId,
@@ -288,8 +288,8 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    const url = `https://stage.lawnwatering.org/v0/user`
-    // const url = `/v0/user`
+    // const url = `https://stage.lawnwatering.org/v0/user`
+    const url = `/v0/user`
 
     const payload = { id: userId, lawns: metrics }
     return axios
@@ -322,8 +322,7 @@ const AppProvider = ({ children }) => {
       }
 
       updateAllLawns(lawns).then(data => {
-        console.log(data)
-        // data.forEach(lawn => updateLawn(lawn))
+        data.forEach(lawn => updateLawn(lawn))
       })
       setLoading(false)
 

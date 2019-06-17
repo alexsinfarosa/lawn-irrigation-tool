@@ -238,9 +238,6 @@ const AppProvider = ({ children }) => {
         return { forecast, petData }
       })
       .catch(err => {
-        // updateUser(lawns)
-        // delay 3sec
-        // fetchDataFromServer()
         console.log("Failed to fetch data from server", err)
       })
   }
@@ -309,7 +306,15 @@ const AppProvider = ({ children }) => {
 
   const updateAllLawns = async lawns => {
     setLoading(true)
-    return await Promise.all(lawns.map(lawn => updateDataAndForecast(lawn)))
+    return await Promise.all(
+      lawns.map(lawn => updateDataAndForecast(lawn))
+    ).catch(err => {
+      // console.log(err)
+      updateUser(lawns)
+      setTimeout(() => {
+        updateAllLawns(lawns)
+      }, 4000)
+    })
   }
 
   React.useEffect(() => {
@@ -321,6 +326,7 @@ const AppProvider = ({ children }) => {
         // window.localStorage.setItem(`${lsKey}-userId`, userId)
         window.localStorage.setItem(`${lsKey}-count`, 1)
       }
+      setLoading(false)
     } else {
       // Incrementing number of times app was opened
       const countRef = JSON.parse(window.localStorage.getItem(`${lsKey}-count`))

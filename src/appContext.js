@@ -134,6 +134,7 @@ const AppProvider = ({ children }) => {
 
     newLawns.length === 0 ? removeAllLS() : writeToLS(newLawns)
     setLawns(newLawns)
+    updateUser(newLawns)
   }
 
   // UPDATE Lawn -----------------------
@@ -148,6 +149,12 @@ const AppProvider = ({ children }) => {
     writeToLS(lawnsCopy)
     setLawns(lawnsCopy)
     updateUser(lawnsCopy)
+  }
+
+  function updateLawns(lawns) {
+    writeToLS(lawns)
+    setLawns(lawns)
+    updateUser(lawns)
   }
 
   // State
@@ -231,7 +238,9 @@ const AppProvider = ({ children }) => {
         return { forecast, petData }
       })
       .catch(err => {
-        updateUser(lawns)
+        // updateUser(lawns)
+        // delay 3sec
+        // fetchDataFromServer()
         console.log("Failed to fetch data from server", err)
       })
   }
@@ -249,7 +258,7 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes, lawn.address)
-    if (minutes > 360) {
+    if (minutes) {
       // console.log("Fetching forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
         userId,
@@ -321,9 +330,7 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      updateAllLawns(lawns).then(res => {
-        res.forEach(lawn => updateLawn(lawn))
-      })
+      updateAllLawns(lawns).then(results => updateLawns(results))
       setLoading(false)
 
       navigate("/lawn/")

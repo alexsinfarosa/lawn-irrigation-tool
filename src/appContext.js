@@ -105,7 +105,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v1.1")
+  const [version] = useState("v1.2")
 
   // ADD Lawn -------------------------
   function addLawn(newLawn) {
@@ -152,6 +152,7 @@ const AppProvider = ({ children }) => {
   }
 
   function updateLawns(lawns) {
+    // console.log(lawns)
     writeToLS(lawns)
     setLawns(lawns)
     updateUser(lawns)
@@ -174,6 +175,7 @@ const AppProvider = ({ children }) => {
     return axios
       .post(url, payload)
       .then(res => {
+        // console.log(res)
         setUserId(res.data.id)
         window.localStorage.setItem(`${lsKey}-userId`, res.data.id)
       })
@@ -255,7 +257,7 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes, lawn.address)
-    if (minutes) {
+    if (minutes > 360) {
       // console.log("Fetching forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
         userId,
@@ -268,6 +270,8 @@ const AppProvider = ({ children }) => {
       lawnCopy.forecast = forecast
       lawnCopy.data = petData
       return lawnCopy
+    } else {
+      return lawn
     }
   }
 
@@ -309,7 +313,7 @@ const AppProvider = ({ children }) => {
     return await Promise.all(
       lawns.map(lawn => updateDataAndForecast(lawn))
     ).catch(err => {
-      // console.log(err)
+      console.log(err)
       updateUser(lawns)
       setTimeout(() => {
         updateAllLawns(lawns)
@@ -336,7 +340,10 @@ const AppProvider = ({ children }) => {
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))
       }
 
-      updateAllLawns(lawns).then(results => updateLawns(results))
+      updateAllLawns(lawns).then(results => {
+        // console.log(results)
+        updateLawns(results)
+      })
       setLoading(false)
 
       navigate("/lawn/")

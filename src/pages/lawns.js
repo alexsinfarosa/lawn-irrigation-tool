@@ -153,7 +153,7 @@ const LawnsPage = () => {
           alignItems="center"
           minHeight="60px"
         >
-          <Link to="/location">
+          <Link to="/location/">
             <Fab
               color="primary"
               aria-label="Add Lawn"

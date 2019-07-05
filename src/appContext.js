@@ -105,7 +105,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v1.2")
+  const [version] = useState("v1.3")
 
   // ADD Lawn -------------------------
   function addLawn(newLawn) {
@@ -258,7 +258,8 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes, lawn.address)
-    if (minutes > 360) {
+    if (true) {
+      setLoading(true)
       // console.log("Updating forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
         userId,
@@ -272,6 +273,7 @@ const AppProvider = ({ children }) => {
       lawnCopy.data = petData
       lawnCopy.updated = Date.now()
       // console.log(lawnCopy)
+      setLoading(false)
       return lawnCopy
     } else {
       // console.log(lawn)
@@ -352,7 +354,7 @@ const AppProvider = ({ children }) => {
         // console.log(results)
         updateLawns(results)
       })
-      setLoading(false)
+      // setLoading(false)
 
       navigate("/lawn/")
     }

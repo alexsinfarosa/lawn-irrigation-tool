@@ -253,11 +253,22 @@ export default function LawnGraph({ lawn }) {
         mt={-2}
       >
         <Typography variant="h5">
-          {isWaterAllowed(lawn.streetNumber)
-            ? todayObj.shouldWater
-              ? "Water Today!"
-              : "No Need to Water Today!"
-            : "Ordinance Prohibits Watering Today"}
+          {isWaterAllowed(lawn.streetNumber) ? (
+            todayObj.shouldWater ? (
+              <div style={{ textAlign: "center" }}>
+                <div>Water Today!</div>
+                {!todayObj.hasUserWatered && (
+                  <div style={{ fontSize: 14 }}>
+                    Press the icon if you have watered
+                  </div>
+                )}
+              </div>
+            ) : (
+              "No Need to Water Today!"
+            )
+          ) : (
+            "Ordinance Prohibits Watering Today"
+          )}
         </Typography>
       </Box>
 

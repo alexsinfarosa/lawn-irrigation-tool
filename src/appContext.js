@@ -258,7 +258,7 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes, lawn.address)
-    if (true) {
+    if (minutes > 360) {
       setLoading(true)
       // console.log("Updating forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(

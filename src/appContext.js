@@ -277,6 +277,7 @@ const AppProvider = ({ children }) => {
       return lawnCopy
     } else {
       // console.log(lawn)
+      setLoading(false)
       return lawn
     }
   }

@@ -10,7 +10,7 @@ import { GridContainer } from "../components/styled/sharedComponents"
 import { StyledButton } from "../components/styled/sharedComponents"
 
 // iutils
-import { DatePicker } from "material-ui-pickers"
+import { DatePicker } from "@material-ui/pickers"
 
 import AppContext from "../appContext"
 
@@ -22,7 +22,7 @@ const IrrigationPage = () => {
 
   return (
     <Layout>
-      <SEO title="Location" />
+      <SEO title="Irrigation" />
 
       <GridContainer>
         <Header icon="chevron-left" title="Irrigation Date - (step 2/3)" />

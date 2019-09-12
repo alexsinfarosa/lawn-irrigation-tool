@@ -27,20 +27,6 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: "gatsby-plugin-react-svg",
-      options: {
-        rule: {
-          include: /assets/,
-        },
-      },
-    },
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: "UA-137506548-1",
-      },
-    },
-    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `lawn-irrigation-tool`,
@@ -54,6 +40,22 @@ module.exports = {
         // crossOrigin: `use-credentials`,
       },
     },
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /assets/, // See below to configure properly
+        },
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-137506548-1",
+      },
+    },
+    // this (optional) plugin enables Progressive Web App + Offline functionality
+    // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,
   ],
 }

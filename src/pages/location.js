@@ -272,6 +272,7 @@ const LocationPage = () => {
                 state.lng,
                 state.lat
               )
+              // console.log(forecast, petData)
               globalDispatch({ type: "setForecast", forecast })
               globalDispatch({ type: "setPETData", petData })
             }

@@ -6,6 +6,9 @@ import { addRemoveWater, mainFunction } from "./utils/api"
 import differenceInMinutes from "date-fns/differenceInMinutes"
 import { navigate } from "gatsby"
 
+import format from "date-fns/format"
+import addDays from "date-fns/addDays"
+
 const AppContext = createContext({})
 
 // Initial Lawn -----------------------------------------
@@ -105,7 +108,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v1.3")
+  const [version] = useState("v1.4")
 
   // ADD Lawn -------------------------
   function addLawn(newLawn) {
@@ -258,7 +261,7 @@ const AppProvider = ({ children }) => {
   async function updateDataAndForecast(lawn) {
     const minutes = differenceInMinutes(Date.now(), lawn.updated)
     // console.log(minutes, lawn.address)
-    if (minutes > 360) {
+    if (minutes > 60) {
       setLoading(true)
       // console.log("Updating forecast and PET data...")
       const { forecast, petData } = await fetchDataFromServer(
@@ -268,11 +271,26 @@ const AppProvider = ({ children }) => {
         lawn.data.hasUserWatered
       )
 
+      const today = format(new Date(), "M/d/yyyy")
+      const tomorrow = format(addDays(new Date(), 1), "M/d/yyyy")
+      const dayAfterTomorrow = format(addDays(new Date(), 2), "M/d/yyyy")
+
+      const dataIsOk =
+        petData.dates.includes(today) &&
+        petData.dates.includes(tomorrow) &&
+        petData.dates.includes(dayAfterTomorrow)
+
+      // console.log(today, tomorrow, dayAfterTomorrow, dataIsOk)
+      // console.log(petData.dates)
+
       const lawnCopy = { ...lawn }
-      lawnCopy.forecast = forecast
-      lawnCopy.data = petData
-      lawnCopy.updated = Date.now()
-      // console.log(lawnCopy)
+
+      if (dataIsOk) {
+        lawnCopy.forecast = forecast
+        lawnCopy.data = petData
+        lawnCopy.updated = Date.now()
+      }
+
       setLoading(false)
       return lawnCopy
     } else {

@@ -16,7 +16,7 @@ let urlCreateUser = `${baseUrl}/v0/user`
 let urlFetchDataFromServer = `${baseUrl}/v0/forecast`
 let urlUpdateUser = `${baseUrl}/v0/user`
 
-const production = false
+const production = true
 if (production) {
   urlCreateUser = `/v0/user`
   urlFetchDataFromServer = `/v0/forecast`

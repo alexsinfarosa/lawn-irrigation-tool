@@ -53,7 +53,12 @@ export default function LawnGraph({ lawn }) {
   // today utils ----------------------------------
   const todayDate = new Date().toLocaleDateString()
   const todayIdx = results.findIndex(d => d.date === todayDate)
-  const todayObj = results.find(d => d.date === todayDate)
+  let todayObj = results.find(d => d.date === todayDate)
+  // console.log(todayIdx, todayObj)
+
+  if (todayIdx < 0) {
+    todayObj = { shouldWater: false }
+  }
 
   React.useEffect(() => {
     // console.log("lawnGraph useEffect")

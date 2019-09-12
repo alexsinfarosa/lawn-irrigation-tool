@@ -350,14 +350,14 @@ const AppProvider = ({ children }) => {
   }
 
   React.useEffect(() => {
-    if (lawns === "undefined" || lawns.includes(null)) {
+    if (typeof lawns === "undefined" || lawns.includes(null)) {
       console.log("localStorage is damaged! - Reset it")
       removeAllLS()
     }
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
       const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
-      if (userIdRef === null) {
+      if (userIdRef === null || typeof userIdRef === "undefined") {
         createUser()
         // window.localStorage.setItem(`${lsKey}-userId`, userId)
         window.localStorage.setItem(`${lsKey}-count`, 1)

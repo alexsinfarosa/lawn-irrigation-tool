@@ -81,7 +81,7 @@ const LocationPage = () => {
   // STATE ------------------------------------------------
   const [state, localDispatch] = React.useReducer(reducer, initialState)
   const [errorMessage, setErrorMessage] = React.useState("")
-
+  // console.log(state)
   // Handle address change --------------------------------
   const handleAddressChange = address => {
     localDispatch({ type: "setAddress", address })

@@ -11,6 +11,18 @@ import addDays from "date-fns/addDays"
 
 const AppContext = createContext({})
 
+const baseUrl = `https://stage.lawnwatering.org`
+let urlCreateUser = `${baseUrl}/v0/user`
+let urlFetchDataFromServer = `${baseUrl}/v0/forecast`
+let urlUpdateUser = `${baseUrl}/v0/user`
+
+const production = false
+if (production) {
+  urlCreateUser = `/v0/user`
+  urlFetchDataFromServer = `/v0/forecast`
+  urlUpdateUser = `/v0/user`
+}
+
 // Initial Lawn -----------------------------------------
 const initialLawn = lawns => {
   if (lawns.length === 0) {
@@ -172,12 +184,9 @@ const AppProvider = ({ children }) => {
   // Fetching -------------------------------------------------------
   function createUser(lawns = []) {
     // console.log("createUser CALLED!")
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
-
     const payload = { id: "", lawns }
     return axios
-      .post(url, payload)
+      .post(urlCreateUser, payload)
       .then(res => {
         // console.log(res)
         setUserId(res.data.id)
@@ -187,9 +196,6 @@ const AppProvider = ({ children }) => {
   }
 
   function fetchDataFromServer(id, lon, lat, hasUserWatered = null) {
-    // const url = `https://stage.lawnwatering.org/v0/forecast`
-    const url = `/v0/forecast`
-
     const payload = {
       id,
       lon: Number(lon.toFixed(2)),
@@ -198,7 +204,7 @@ const AppProvider = ({ children }) => {
     }
 
     return axios
-      .post(url, payload)
+      .post(urlFetchDataFromServer, payload)
       .then(res => {
         // console.log(res)
         // setLoading(true)
@@ -323,12 +329,9 @@ const AppProvider = ({ children }) => {
 
     // console.log(metrics)
 
-    // const url = `https://stage.lawnwatering.org/v0/user`
-    const url = `/v0/user`
-
     const payload = { id: userId, lawns: metrics }
     return axios
-      .post(url, payload)
+      .post(urlUpdateUser, payload)
       .then(res => res.data)
       .catch(err => console.log("Failed to create or update user", err))
   }

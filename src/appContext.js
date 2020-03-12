@@ -16,7 +16,7 @@ let urlCreateUser = `${baseUrl}/v0/user`
 let urlFetchDataFromServer = `${baseUrl}/v0/forecast`
 let urlUpdateUser = `${baseUrl}/v0/user`
 
-const production = true
+const production = false
 if (production) {
   urlCreateUser = `/v0/user`
   urlFetchDataFromServer = `/v0/forecast`
@@ -108,10 +108,11 @@ function removeAllLS() {
 
 function readUserId() {
   if (typeof window !== "undefined") {
-    const userIdStorage = window.localStorage.getItem(
-      "lawn-irrigation-tool-userId"
-    )
-    return userIdStorage !== null ? userIdStorage : null
+    const userIdRef = window.localStorage.getItem("lawn-irrigation-tool-userId")
+    const isUserId = userIdRef !== "null" || userIdRef !== "undefined"
+    if (isUserId) {
+      return userIdRef
+    }
   }
 }
 
@@ -350,23 +351,37 @@ const AppProvider = ({ children }) => {
   }
 
   React.useEffect(() => {
-    if (typeof lawns === "undefined" || lawns.includes(null)) {
+    // Reset data every year
+    const years = lawns.map(location => {
+      const date = location.data.dates[0]
+      return +date.split("/")[2]
+    })
+
+    const mustDeleteData = years.some(year => year < new Date().getFullYear())
+    console.log(!readUserId)
+    if (
+      lawns === "undefined" ||
+      lawns.includes(null) ||
+      mustDeleteData ||
+      !readUserId
+    ) {
       console.log("localStorage is damaged! - Reset it")
       removeAllLS()
+      setLoading(false)
+      return
     }
+
     if (lawns.length === 0) {
       // First time the app is opened the useId is and the count are created
-      const userIdRef = window.localStorage.getItem(`${lsKey}-userId`)
-      if (userIdRef === null || typeof userIdRef === "undefined") {
+      if (!userId) {
         createUser()
-        // window.localStorage.setItem(`${lsKey}-userId`, userId)
         window.localStorage.setItem(`${lsKey}-count`, 1)
       }
       setLoading(false)
     } else {
       // Incrementing number of times app was opened
       const countRef = JSON.parse(window.localStorage.getItem(`${lsKey}-count`))
-      if (countRef !== null) {
+      if (!countRef) {
         const count = Number(countRef + 1)
         setCountRef(count)
         window.localStorage.setItem(`${lsKey}-count`, JSON.stringify(count))

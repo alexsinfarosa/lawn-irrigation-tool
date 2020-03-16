@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: "/nyamwater",
+  pathPrefix: process.env.GATSBY_PATH_PREFIX, // it only works if you run gatsby build --prefix-paths
   siteMetadata: {
     title: `Lawn Irrigation Tool`,
     description: `Lawn irrigation tool`,
@@ -31,8 +31,7 @@ module.exports = {
       options: {
         name: `lawn-irrigation-tool`,
         short_name: `Irrigation Tool`,
-        start_url: `/nyamwater`,
-        // start_url: `/`,
+        start_url: process.env.GATSBY_PATH_PREFIX,
         background_color: `#556cd6`,
         theme_color: `#556cd6`,
         display: `standalone`,

@@ -11,17 +11,18 @@ import addDays from "date-fns/addDays"
 
 const AppContext = createContext({})
 
-const baseUrl = `https://stage.lawnwatering.org`
-let urlCreateUser = `${baseUrl}/v0/user`
-let urlFetchDataFromServer = `${baseUrl}/v0/forecast`
-let urlUpdateUser = `${baseUrl}/v0/user`
+// const baseUrl = `https://stage.lawnwatering.org`
+// let GATSBY_URL_CREATE_USER = `${baseUrl}/v0/user`
+// let urlFetchDataFromServer = `${baseUrl}/v0/forecast`
+// let urlUpdateUser = `${baseUrl}/v0/user`
 
-const production = false
-if (production) {
-  urlCreateUser = `/v0/user`
-  urlFetchDataFromServer = `/v0/forecast`
-  urlUpdateUser = `/v0/user`
-}
+// const production = false
+// console.log(process.env.GATSBY_URL_FETCH_DATA_FROM_SERVER)
+// if (production) {
+//   GATSBY_URL_CREATE_USER = `/v0/user`
+//   urlFetchDataFromServer = `/v0/forecast`
+//   urlUpdateUser = `/v0/user`
+// }
 
 // Initial Lawn -----------------------------------------
 const initialLawn = lawns => {
@@ -121,7 +122,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [countRef, setCountRef] = useState(0)
   const [lawns, setLawns] = useState(readFromLS)
-  const [version] = useState("v1.4")
+  const [version] = useState("v1.5")
 
   // ADD Lawn -------------------------
   function addLawn(newLawn) {
@@ -187,7 +188,7 @@ const AppProvider = ({ children }) => {
     // console.log("createUser CALLED!")
     const payload = { id: "", lawns }
     return axios
-      .post(urlCreateUser, payload)
+      .post(process.env.GATSBY_URL_CREATE_USER, payload)
       .then(res => {
         // console.log(res)
         setUserId(res.data.id)
@@ -205,7 +206,7 @@ const AppProvider = ({ children }) => {
     }
 
     return axios
-      .post(urlFetchDataFromServer, payload)
+      .post(process.env.GATSBY_URL_FETCH_DATA_FROM_SERVER, payload)
       .then(res => {
         // console.log(res)
         // setLoading(true)
@@ -332,7 +333,7 @@ const AppProvider = ({ children }) => {
 
     const payload = { id: userId, lawns: metrics }
     return axios
-      .post(urlUpdateUser, payload)
+      .post(process.env.GATSBY_URL_UPDATE_USER, payload)
       .then(res => res.data)
       .catch(err => console.log("Failed to create or update user", err))
   }
@@ -358,7 +359,7 @@ const AppProvider = ({ children }) => {
     })
 
     const mustDeleteData = years.some(year => year < new Date().getFullYear())
-    console.log(!readUserId)
+    // console.log(years, mustDeleteData, !readUserId())
     if (
       lawns === "undefined" ||
       lawns.includes(null) ||
